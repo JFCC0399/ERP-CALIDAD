@@ -1,13 +1,13 @@
-import React, { useState, useRef,useEffect  } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { Page, Text, View, Document, StyleSheet, PDFViewer, PDFDownloadLink, Image, Font } from '@react-pdf/renderer'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Layout from '../components/Layout'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import SignatureCanvas from 'react-signature-canvas' 
+import SignatureCanvas from 'react-signature-canvas'
 import { IconCheck } from '@tabler/icons-react'
-import { Accordion,  AccordionContent,  AccordionItem,  AccordionTrigger} from '@/components/ui/accordion'
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select'
 import { Bold } from 'lucide-react'
 import { WidthIcon } from '@radix-ui/react-icons'
 
@@ -18,8 +18,8 @@ import GothamNarrowMedium from '../../public/fonts/GothamNarrow-Medium.otf'
 
 Font.register({
   family: 'GothamNarrow',
-  src: GothamNarrowMedium,
-});
+  src: GothamNarrowMedium
+})
 
 const styles = StyleSheet.create({
   page: { padding: 30 },
@@ -30,20 +30,20 @@ const styles = StyleSheet.create({
     marginVertical: 10
   },
   row: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 5 },
-  inputLabel: { fontSize: 12, fontWeight: 'bold',fontFamily:'GothamNarrow'  },
+  inputLabel: { fontSize: 12, fontWeight: 'bold', fontFamily: 'GothamNarrow' },
   signatureCanvasContainer: { border: '1px solid #ccc', padding: '10px', marginTop: '20px' },
   table: {
     display: 'table',
     width: '100%',
     borderWidth: 2,
     borderColor: '#000',
-    marginTop: 15 ,
-    height:'auto'
+    marginTop: 15,
+    height: 'auto'
   },
   tableRow: {
     flexDirection: 'row',
-    height:'auto'
-    
+    height: 'auto'
+
   },
   cellLabel: {
     flex: 1,
@@ -54,11 +54,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: 'center',
     justifyContent: 'center',
-    width: '100%',       // Asegura que ocupe el 100% del espacio disponible
+    width: '100%', // Asegura que ocupe el 100% del espacio disponible
     fontFamily: 'GothamNarrow',
-    flexWrap: 'wrap',    // Permite que el texto se envuelva si no cabe
-    overflow: 'hidden',  
-    height:'auto'
+    flexWrap: 'wrap', // Permite que el texto se envuelva si no cabe
+    overflow: 'hidden',
+    height: 'auto'
   },
   cellValue: {
     flex: 1,
@@ -67,8 +67,8 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 8,
 
-    fontFamily:'GothamNarrow',
-    height:'auto'
+    fontFamily: 'GothamNarrow',
+    height: 'auto'
   },
   cellLabelWhite: {
     backgroundColor: '#FFFFFF',
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontFamily: 'GothamNarrow',
     minHeight: 20,
-    height:'auto'
+    height: 'auto'
 
   }
 
@@ -95,16 +95,16 @@ const ActaPDF = ({ formData, firmaBase64Inspector, firmaBase64Chofer }) => (
     <Page style={styles.page}>
       <View style={styles.logoSection}>
         {/* image */}
-        
+
         <Image
           style={[styles.logo, { height: 60, width: 150 }]} // Ajusta el tamaño de la imagen según sea necesario
           src='/src/assets/images/LOGO.jpg'
         />
         <View style={{ alignItems: 'center' }}> {/* Centra los textos */}
-          <Text style={{ fontSize: 24, fontWeight: 'bold',fontFamily:'GothamNarrow' }}>ACTA DE DESCARGA</Text>
+          <Text style={{ fontSize: 24, fontWeight: 'bold', fontFamily: 'GothamNarrow' }}>ACTA DE DESCARGA</Text>
           <View style={{ alignItems: 'center', marginTop: 5 }}>
-            <Text style={{ fontSize: 14,fontFamily:'GothamNarrow'  }}>F-I-CAL-02-01</Text>
-            <Text style={{ fontSize: 14,fontFamily:'GothamNarrow'  }}>Rev.7 (08-12-2024)</Text>
+            <Text style={{ fontSize: 14, fontFamily: 'GothamNarrow' }}>F-I-CAL-02-01</Text>
+            <Text style={{ fontSize: 14, fontFamily: 'GothamNarrow' }}>Rev.7 (08-12-2024)</Text>
           </View>
         </View>
       </View>
@@ -176,187 +176,182 @@ const ActaPDF = ({ formData, firmaBase64Inspector, firmaBase64Chofer }) => (
       </View>
       <View style={{ marginBottom: 20 }} />
 
-      
-  
       <View style={{ width: '100%' }}>
-       
 
-          <Text style={[styles.cellLabel, { width: '100%' }]}>Condiciones de transporte:</Text>
-          
-          <View style={styles.tableRow}>
+        <Text style={[styles.cellLabel, { width: '100%' }]}>Condiciones de transporte:</Text>
+
+        <View style={styles.tableRow}>
           <Text />
           <Text style={{ width: '60.5%' }} />
 
           <Text style={styles.cellLabelWhite}>Observaciones</Text>
 
         </View>
-          <View style={{ width: '100%' }}>
+        <View style={{ width: '100%' }}>
 
-            <View style={styles.tableRow}>
-              <View style={{ flex: 1, flexDirection: 'column' }}>
+          <View style={styles.tableRow}>
+            <View style={{ flex: 1, flexDirection: 'column' }}>
 
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.20}]}>Temperatura del set point:</Text>
-                  <Text style={[styles.cellValue, { flex: 0.40}]}>{formData.tempSetPoint || ''}</Text>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.20 }]}>Temperatura del set point:</Text>
+                <Text style={[styles.cellValue, { flex: 0.40 }]}>{formData.tempSetPoint || ''}</Text>
 
-                  <Text style={[styles.cellLabelWhite, { flex: 0.40}]}>{formData.observacionesSetPoint || ''}</Text>
-
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.20}]}>Temperatura de pantalla:</Text>
-                  <Text style={[styles.cellValue, { flex: 0.40}]}>{formData.tempPantalla || ''}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.40}]}>{formData.observacionesPantalla || ''}</Text>
-
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabel, { flex: 0.28}]} />
-                  <Text style={[styles.cellLabel, { flex: 0.17 }]}>cumple</Text>
-                  <Text style={[styles.cellLabel, { flex: 0.17 }]}>no cumple</Text>
-
-                  <Text style={[styles.cellLabel, { flex: 0.52 }]}>observaciones</Text>
-
-                </View >
-                {/* concatenacion */}
-                <View style={[styles.tableRow, {height:'auto' }]}>
-                  <Text style={[styles.cellLabelWhite, { flex:0.66 }]}>Termografo:</Text>
-
-                  <View style={{ flex: 0.42, }}>
-
-                    <Text style={styles.cellValue}>{formData.option === 'Si' ? 'SI' : ''}</Text>
-                    <Text style={styles.cellValue} >{formData.option2 === 'Si' ? 'SI' : ''}</Text>
-                  </View>
-                  <View style={{ flex: 0.43 }}>
-                    <Text style={styles.cellValue}>{formData.option === 'No' ? 'No ' : ''}</Text>
-                    <Text style={styles.cellValue }>{formData.option2 === 'No' ? 'No' : ''}</Text>
-                  </View>
-
-                  <View style={{ flex: 0.3 }}>
-                    <Text style={styles.cellValue}>Origen</Text>
-       
-                    <Text style={styles.cellValue}>Destino:</Text>
-
-                  </View>
-                  <View style={{ flex: 0.98 ,minHeight:60 }}>
-                    <Text style={styles.cellValue}>{formData.tempOrigen || ''}</Text>
-                    <Text style={styles.cellValue}>{formData.tempDestino || ''}</Text>
-                  </View>
-                </View>
-
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Limpio,libre de malos olores:</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionLimpio==='Si'?"Si":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionLimpio==='No'?"No":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 1.3 }]} > {formData.limpio|| '' }</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Caja cerrada , en buen estado(sin hoyos o endiduras ):</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionCaja==='Si'?"Si":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionCaja==='No'?"No":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 1.3 }]} >{formData.cajaCerrada|| ''}</Text>
-                </View>
-
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Lona en buen estado:</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionLona==='Si'?"Si":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionLona==='No'?"No":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 1.3 }]} >{formData.lona|| '' }</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Libre de fauna nociva:</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionLibre==='Si'?"Si":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionLibre==='No'?"No":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 1.3 }]} >{formData.fauna|| '' }</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Carga en buen estado:</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionCarga==='Si'?"Si":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionCarga==='No'?"No":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 1.3 }]} >{formData.carga|| '' }</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>seguridad de carga</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionSeguridad==='Si'?"Si":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionSeguridad==='No'?"No":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 1.3 }]} >{formData.seguridadCarga|| '' }</Text>
-                </View>
-                <View style={styles.tableRow}>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>sellado:</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionSellado==='Si'?"Si":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 0.4 }]} >{formData.optionSellado==='No'?"No":""}</Text>
-                  <Text style={[styles.cellLabelWhite, { flex: 1.3 }]} >{formData.sellado|| '' }</Text>
-                </View>
+                <Text style={[styles.cellLabelWhite, { flex: 0.40 }]}>{formData.observacionesSetPoint || ''}</Text>
 
               </View>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.20 }]}>Temperatura de pantalla:</Text>
+                <Text style={[styles.cellValue, { flex: 0.40 }]}>{formData.tempPantalla || ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.40 }]}>{formData.observacionesPantalla || ''}</Text>
+
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabel, { flex: 0.28 }]} />
+                <Text style={[styles.cellLabel, { flex: 0.17 }]}>cumple</Text>
+                <Text style={[styles.cellLabel, { flex: 0.17 }]}>no cumple</Text>
+
+                <Text style={[styles.cellLabel, { flex: 0.52 }]}>observaciones</Text>
+
+              </View>
+              {/* concatenacion */}
+              <View style={[styles.tableRow, { height: 'auto' }]}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.66 }]}>Termografo:</Text>
+
+                <View style={{ flex: 0.42 }}>
+
+                  <Text style={styles.cellValue}>{formData.option === 'Si' ? 'SI' : ''}</Text>
+                  <Text style={styles.cellValue}>{formData.option2 === 'Si' ? 'SI' : ''}</Text>
+                </View>
+                <View style={{ flex: 0.43 }}>
+                  <Text style={styles.cellValue}>{formData.option === 'No' ? 'No ' : ''}</Text>
+                  <Text style={styles.cellValue}>{formData.option2 === 'No' ? 'No' : ''}</Text>
+                </View>
+
+                <View style={{ flex: 0.3 }}>
+                  <Text style={styles.cellValue}>Origen</Text>
+
+                  <Text style={styles.cellValue}>Destino:</Text>
+
+                </View>
+                <View style={{ flex: 0.98, minHeight: 60 }}>
+                  <Text style={styles.cellValue}>{formData.tempOrigen || ''}</Text>
+                  <Text style={styles.cellValue}>{formData.tempDestino || ''}</Text>
+                </View>
+              </View>
+
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Limpio,libre de malos olores:</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionLimpio === 'Si' ? 'Si' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionLimpio === 'No' ? 'No' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}> {formData.limpio || ''}</Text>
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Caja cerrada , en buen estado(sin hoyos o endiduras ):</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionCaja === 'Si' ? 'Si' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionCaja === 'No' ? 'No' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>{formData.cajaCerrada || ''}</Text>
+              </View>
+
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Lona en buen estado:</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionLona === 'Si' ? 'Si' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionLona === 'No' ? 'No' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>{formData.lona || ''}</Text>
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Libre de fauna nociva:</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionLibre === 'Si' ? 'Si' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionLibre === 'No' ? 'No' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>{formData.fauna || ''}</Text>
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Carga en buen estado:</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionCarga === 'Si' ? 'Si' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionCarga === 'No' ? 'No' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>{formData.carga || ''}</Text>
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>seguridad de carga</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionSeguridad === 'Si' ? 'Si' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionSeguridad === 'No' ? 'No' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>{formData.seguridadCarga || ''}</Text>
+              </View>
+              <View style={styles.tableRow}>
+                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>sellado:</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionSellado === 'Si' ? 'Si' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>{formData.optionSellado === 'No' ? 'No' : ''}</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>{formData.sellado || ''}</Text>
+              </View>
+
             </View>
+          </View>
+
+        </View>
+
+        <Text style={[styles.cellLabel, { height: 15, fontSize: 10 }]}>Placas caja:</Text>
+        <View style={{ width: '100%' }}>
+          <View style={styles.tableRow}>
+            <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Hay tarimas dañadas :</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>SI</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>#{formData.tarimasDanadas} </Text>
 
           </View>
-      
-      
-          <Text style={[styles.cellLabel, {height:15, fontSize:10}]}>Placas caja:</Text>
-          <View style={{ width: '100%' }}>
-            <View style={styles.tableRow}>
-              <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Hay tarimas dañadas :</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>SI</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>#{formData.tarimasDanadas} </Text>
+          <View style={styles.tableRow}>
+            <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Cajas identificadas :</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>SI</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>#{formData.cajasIdentificadas}</Text>
 
-            </View>
-            <View style={styles.tableRow}>
-              <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Cajas identificadas :</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>SI</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>#{formData.cajasIdentificadas}</Text>
-
-            </View>
-            <View style={styles.tableRow}>
-              <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Cajas dañadas por maniobra:</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}> SI </Text>
-
-              <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
-              <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>#{formData.danadasManiobra}</Text>
-
-            </View>
           </View>
+          <View style={styles.tableRow}>
+            <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>Cajas dañadas por maniobra:</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}> SI </Text>
 
-     
+            <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
+            <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>#{formData.danadasManiobra}</Text>
+
+          </View>
+        </View>
+
       </View>
-      
+
       <View style={{ marginBottom: 20 }} />
 
       <View style={[styles.tableRow, { marginBottom: 15, width: '100%' }]}>
-        <View style={[ {height:100, width: '26%' }]}>
-          <Text style={[styles.cellLabel,{} ] }>Temperatura de pulpa</Text>
+        <View style={[{ height: 100, width: '26%' }]}>
+          <Text style={[styles.cellLabel, {}]}>Temperatura de pulpa</Text>
           <Text style={styles.cellValue}>A</Text>
           <Text style={styles.cellValue}>M</Text>
           <Text style={styles.cellValue}>B</Text>
         </View>
-        <View style={[ { width: '10%' }]}>
-          <Text style={[styles.cellLabel,{height:20} ] }>Puerta</Text>
+        <View style={[{ width: '10%' }]}>
+          <Text style={[styles.cellLabel, { height: 20 }]}>Puerta</Text>
           <Text style={styles.cellValue}>{formData.tempAPuerta}</Text>
           <Text style={styles.cellValue}>{formData.tempMPuerta}</Text>
           <Text style={styles.cellValue}>{formData.tempBPuerta}</Text>
         </View>
-        <View style={[ { width: '10%' }]}>
-          <Text style={[styles.cellLabel,{height:20} ] }>Medio</Text>
+        <View style={[{ width: '10%' }]}>
+          <Text style={[styles.cellLabel, { height: 20 }]}>Medio</Text>
           <Text style={styles.cellValue}>{formData.tempAMedio}</Text>
           <Text style={styles.cellValue}>{formData.tempMMedio}</Text>
           <Text style={styles.cellValue}>{formData.tempBMedio}</Text>
         </View>
-        <View style={[ { width: '10%' }]}>
-          <Text style={[styles.cellLabel,{height:20} ] }>Fondo</Text>
+        <View style={[{ width: '10%' }]}>
+          <Text style={[styles.cellLabel, { height: 20 }]}>Fondo</Text>
           <Text style={styles.cellValue}>{formData.tempAFondo}</Text>
           <Text style={styles.cellValue}>{formData.tempMFondo}</Text>
           <Text style={styles.cellValue}>{formData.tempBFondo}</Text>
         </View>
-        <View style={[ { width: '30%' }]}>
-          <Text style={[styles.cellLabel, ] }>Rango de Temperatura</Text>
-          <View style={[styles.tableRow, {height:50} ]}>
+        <View style={[{ width: '30%' }]}>
+          <Text style={[styles.cellLabel]}>Rango de Temperatura</Text>
+          <View style={[styles.tableRow, { height: 50 }]}>
             <Text style={styles.cellValue}>Min:{formData.tempMin}</Text>
             <Text style={styles.cellValue}>Max:{formData.tempMax}</Text>
           </View>
 
         </View>
-        <View style={[ { width: '30%' }]}>
+        <View style={[{ width: '30%' }]}>
           <Text style={styles.cellLabel}>Ideal</Text>
           <Text style={styles.cellValue}> {formData.tempIdeal}°C </Text>
         </View>
@@ -372,50 +367,47 @@ const ActaPDF = ({ formData, firmaBase64Inspector, firmaBase64Chofer }) => (
           </Text>
         </Text>
         <Text style={styles.cellValue}>{formData.resultadosInv || ''}</Text>
-      
+
       </View>
 
-      <Text style={[styles.cellLabel, {flex:0.15, fontSize:14}]}>Hago constar que estoy de acuerdo con lo verificado y registrado en el presente{'\n'}documento</Text>
-      
-      <View >
-      
-    
-          <View style={styles.tableRow}>
-              <Text style={[styles.cellLabel,{width:'12%',textAlign:'center', fontSize:10, height:200 }]}> Verifico descarga{'\n'} (Inspector de Calidad)</Text>
-              <View style={{width:'38%'}}> 
-                <Text style={[styles.cellValue,{flex:0.3} ]}>Nombre:{formData.nombreInspector}</Text>
-                
-                <View style={[styles.cellValue,{} ]}>
-                  <Text style={[styles.inputLabel,{paddingBottom:10} ]}>Firma:</Text>
-                  {firmaBase64Inspector && (
-                    <Image src={firmaBase64Inspector} style={{ width: 200, height: 150 }} />
-                  )}
+      <Text style={[styles.cellLabel, { flex: 0.15, fontSize: 14 }]}>Hago constar que estoy de acuerdo con lo verificado y registrado en el presente{'\n'}documento</Text>
 
-                </View>
-              </View>
-              <Text style={[styles.cellLabel,{width:'12%', fontSize:10} ]}> Chofer</Text>
-              <View style={{width:'38%'} }> 
-                <Text style={[styles.cellValue,{flex:0.3} ]}>Nombre:{formData.nombreChofer}</Text>
-                <View style={[styles.cellValue,{}]}>
-                  <Text style={[styles.inputLabel,{paddingBottom:10} ]}>Firma:</Text>
-                  {firmaBase64Chofer && (
-                    <Image src={firmaBase64Chofer} style={{ width: 200, height: 150  }} />
-                  )}
+      <View>
 
-                </View>
-              </View>
+        <View style={styles.tableRow}>
+          <Text style={[styles.cellLabel, { width: '12%', textAlign: 'center', fontSize: 10, height: 200 }]}> Verifico descarga{'\n'} (Inspector de Calidad)</Text>
+          <View style={{ width: '38%' }}>
+            <Text style={[styles.cellValue, { flex: 0.3 }]}>Nombre:{formData.nombreInspector}</Text>
+
+            <View style={[styles.cellValue, {}]}>
+              <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>Firma:</Text>
+              {firmaBase64Inspector && (
+                <Image src={firmaBase64Inspector} style={{ width: 200, height: 150 }} />
+              )}
+
+            </View>
           </View>
+          <Text style={[styles.cellLabel, { width: '12%', fontSize: 10 }]}> Chofer</Text>
+          <View style={{ width: '38%' }}>
+            <Text style={[styles.cellValue, { flex: 0.3 }]}>Nombre:{formData.nombreChofer}</Text>
+            <View style={[styles.cellValue, {}]}>
+              <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>Firma:</Text>
+              {firmaBase64Chofer && (
+                <Image src={firmaBase64Chofer} style={{ width: 200, height: 150 }} />
+              )}
+
+            </View>
+          </View>
+        </View>
       </View>
 
-
-      <Text style={[styles.cellLabelWhite, { flex: 0.1}]}>Limpio,libre de malos olores:</Text>
+      <Text style={[styles.cellLabelWhite, { flex: 0.1 }]}>Limpio,libre de malos olores:</Text>
       {formData.image1 && (
-    <Image
-      source={{ uri: formData.image1 }} 
-      style={{ width: '200px', marginTop: '20px' }}
-    
-    />
-  )}
+        <Image
+          source={{ uri: formData.image1 }}
+          style={{ width: '200px', marginTop: '20px' }}
+        />
+      )}
     </Page>
 
   </Document>
@@ -428,8 +420,8 @@ const ActaDeLlegada = () => {
     terminoVerificacion: '',
     oc: '',
     proveedor: '',
-    origen:'',
-    factura:'',
+    origen: '',
+    factura: '',
     especie: '',
     variedades: '',
     frioDescarga: '',
@@ -470,25 +462,25 @@ const ActaDeLlegada = () => {
     nombreInspector: '',
     nombreChofer: '',
     option: '',
-    option2:'',
-    optionLimpio:'',
-    optionCaja:'',
-    optionLona:'',
-    optionLibre:'',
-    optionCarga:'',
-    optionSeguridad:'',
-    optionSellado:'',
-    imageTermografo:'',
-    imageMalosOlores:'',
-    imageCajaCerrada:'',
-    imageLonaBuenEstado:'',
-    imageLibreFauna:'',
-    imagecargaBuenEstado:'',
-    imageSeguridadCarga:'',
-    imageSellado:'',
-    tarimasDanadas:'',
-    cajasIdentificadas:'',
-    danadasManiobra:''
+    option2: '',
+    optionLimpio: '',
+    optionCaja: '',
+    optionLona: '',
+    optionLibre: '',
+    optionCarga: '',
+    optionSeguridad: '',
+    optionSellado: '',
+    imageTermografo: '',
+    imageMalosOlores: '',
+    imageCajaCerrada: '',
+    imageLonaBuenEstado: '',
+    imageLibreFauna: '',
+    imagecargaBuenEstado: '',
+    imageSeguridadCarga: '',
+    imageSellado: '',
+    tarimasDanadas: '',
+    cajasIdentificadas: '',
+    danadasManiobra: ''
   })
 
   const [firmaBase64Inspector, setFirmaBase64Inspector] = useState(null)
@@ -498,24 +490,22 @@ const ActaDeLlegada = () => {
 
   const signaturePadInspector = useRef<any>(null) // Refs para el signature pad
   const signaturePadChofer = useRef<any>(null)
-  const [image, setImage] = useState(null);
-  
+  const [image, setImage] = useState(null)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prevData) => ({ ...prevData, [name]: value }))
   }
-  
+
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; // Obtener el primer archivo seleccionado
+    const file = e.target.files[0] // Obtener el primer archivo seleccionado
     if (file) {
       // Crear una URL temporal para el archivo seleccionado
-      var  imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl); // Guardar la URL temporal de la imagen en el estado
-      formData.image1=imageUrl
+      const imageUrl = URL.createObjectURL(file)
+      setImage(imageUrl) // Guardar la URL temporal de la imagen en el estado
+      formData.image1 = imageUrl
     }
-  };
-  
+  }
 
   useEffect(() => {
     const allTemperatures = [
@@ -572,29 +562,28 @@ const ActaDeLlegada = () => {
     }
   }
 
-
   const handleImageUpload = (e, key) => {
-    const file = e.target.files[0]; // Obtener el primer archivo seleccionado
-    if (!file) return;
-  
+    const file = e.target.files[0] // Obtener el primer archivo seleccionado
+    if (!file) return
+
     // Validar si ya se alcanzó el límite total de 8 imágenes
     const existingImages = Object.values(formData).filter((val) =>
-      val.startsWith("blob:")
-    ).length;
-  
+      val.startsWith('blob:')
+    ).length
+
     if (existingImages >= 8) {
-      alert("Solo puedes subir un máximo de 8 imágenes.");
-      return;
+      alert('Solo puedes subir un máximo de 8 imágenes.')
+      return
     }
-  
+
     // Crear una URL temporal para la imagen y actualizar el campo correspondiente
-    const imageUrl = URL.createObjectURL(file);
-    setFormData((prevData) => ({ ...prevData, [key]: imageUrl }));
-  };
+    const imageUrl = URL.createObjectURL(file)
+    setFormData((prevData) => ({ ...prevData, [key]: imageUrl }))
+  }
 
   const handleImageDelete = (key) => {
-    setFormData((prevData) => ({ ...prevData, [key]: "" }));
-  };
+    setFormData((prevData) => ({ ...prevData, [key]: '' }))
+  }
 
   return (
     <Layout>
@@ -610,34 +599,40 @@ const ActaDeLlegada = () => {
               <AccordionItem value='item-1'>
                 <AccordionTrigger>Fecha y Verificación</AccordionTrigger>
                 <AccordionContent>
-                  <label>Fecha: </label>
-                  <Input type='date' name='fecha' value={formData.fecha} onChange={handleInputChange} />
-                  <label>Inicio de verificación:  </label>
-                  <Input type='text' name='inicioVerificacion' value={formData.inicioVerificacion} onChange={handleInputChange} />
-                  <label>Término de verificación: </label>
-                  <Input type='text' name='terminoVerificacion' value={formData.terminoVerificacion} onChange={handleInputChange} />
-                  <label>O.C.: </label>
-                  <Input type='text' name='oc' value={formData.oc} onChange={handleInputChange} />
+                  <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', alignItems: 'center' }}>
+                    <label htmlFor='fecha'>Fecha:</label>
+                    <Input type='date' id='fecha' name='fecha' value={formData.fecha} onChange={handleInputChange} />
 
-                  <label>Proveedor: </label>
-                  <Input type='text' name='proveedor' value={formData.proveedor} onChange={handleInputChange} />
+                    <label htmlFor='inicioVerificacion'>Inicio de verificación:</label>
+                    <Input type='text' id='inicioVerificacion' name='inicioVerificacion' value={formData.inicioVerificacion} onChange={handleInputChange} />
 
-                  <label>origen: </label>
-                  <Input type='text' name='origen' value={formData.origen} onChange={handleInputChange} />
-                  <label>Factura: </label>
-                  <Input type='text' name='factura' value={formData.factura} onChange={handleInputChange} />
+                    <label htmlFor='terminoVerificacion'>Término de verificación:</label>
+                    <Input type='text' id='terminoVerificacion' name='terminoVerificacion' value={formData.terminoVerificacion} onChange={handleInputChange} />
 
-                  <label>Especie: </label>
-                  <Input type='text' name='especie' value={formData.especie} onChange={handleInputChange} />
+                    <label htmlFor='oc'>O.C.:</label>
+                    <Input type='text' id='oc' name='oc' value={formData.oc} onChange={handleInputChange} />
 
-                  <label>Variedades: </label>
-                  <Input type='text' name='variedades' value={formData.variedades} onChange={handleInputChange} />
+                    <label htmlFor='proveedor'>Proveedor:</label>
+                    <Input type='text' id='proveedor' name='proveedor' value={formData.proveedor} onChange={handleInputChange} />
 
-                  <label>Frío de descarga: </label>
-                  <Input type='text' name='frioDescarga' value={formData.frioDescarga} onChange={handleInputChange} />
+                    <label htmlFor='origen'>Origen:</label>
+                    <Input type='text' id='origen' name='origen' value={formData.origen} onChange={handleInputChange} />
 
-                  <label>Cajas recibidas: </label>
-                  <Input type='text' name='cajasRecibidas' value={formData.cajasRecibidas} onChange={handleInputChange} />
+                    <label htmlFor='factura'>Factura:</label>
+                    <Input type='text' id='factura' name='factura' value={formData.factura} onChange={handleInputChange} />
+
+                    <label htmlFor='especie'>Especie:</label>
+                    <Input type='text' id='especie' name='especie' value={formData.especie} onChange={handleInputChange} />
+
+                    <label htmlFor='variedades'>Variedades:</label>
+                    <Input type='text' id='variedades' name='variedades' value={formData.variedades} onChange={handleInputChange} />
+
+                    <label htmlFor='frioDescarga'>Frío de descarga:</label>
+                    <Input type='text' id='frioDescarga' name='frioDescarga' value={formData.frioDescarga} onChange={handleInputChange} />
+
+                    <label htmlFor='cajasRecibidas'>Cajas recibidas:</label>
+                    <Input type='text' id='cajasRecibidas' name='cajasRecibidas' value={formData.cajasRecibidas} onChange={handleInputChange} />
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -646,20 +641,22 @@ const ActaDeLlegada = () => {
               <AccordionItem value='item-2'>
                 <AccordionTrigger>Transporte</AccordionTrigger>
                 <AccordionContent>
-                  <label>Línea transportista: </label>
-                  <Input type='text' name='lineaTransportista' value={formData.lineaTransportista} onChange={handleInputChange} />
+                  <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', alignItems: 'center' }}>
+                    <label>Línea transportista: </label>
+                    <Input type='text' name='lineaTransportista' value={formData.lineaTransportista} onChange={handleInputChange} />
 
-                  <label>Número de contenedor: </label>
-                  <Input type='text' name='numeroContenedor' value={formData.numeroContenedor} onChange={handleInputChange} />
+                    <label>Número de contenedor: </label>
+                    <Input type='text' name='numeroContenedor' value={formData.numeroContenedor} onChange={handleInputChange} />
 
-                  <label>Placas camión: </label>
-                  <Input type='text' name='placasCamion' value={formData.placasCamion} onChange={handleInputChange} />
+                    <label>Placas camión: </label>
+                    <Input type='text' name='placasCamion' value={formData.placasCamion} onChange={handleInputChange} />
 
-                  <label>Placas caja: </label>
-                  <Input type='text' name='placasCaja' value={formData.placasCaja} onChange={handleInputChange} />
+                    <label>Placas caja: </label>
+                    <Input type='text' name='placasCaja' value={formData.placasCaja} onChange={handleInputChange} />
 
-                  <label>Chofer: </label>
-                  <Input type='text' name='chofer' value={formData.chofer} onChange={handleInputChange} />
+                    <label>Chofer: </label>
+                    <Input type='text' name='chofer' value={formData.chofer} onChange={handleInputChange} />
+                  </div>
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -667,62 +664,49 @@ const ActaDeLlegada = () => {
             <Accordion type='single' collapsible>
               <AccordionItem value='item-2'>
                 <AccordionTrigger>Condiciones de Transporte</AccordionTrigger>
-                
                 <AccordionContent>
-                  <label>Temperatura de set point: </label>
-                  <Input type='text' name='tempSetPoint' value={formData.tempSetPoint} onChange={handleInputChange} />
+                  <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '8px 16px', alignItems: 'center' }}>
+                    <label htmlFor='tempSetPoint'>Temperatura de set point:</label>
+                    <Input type='text' id='tempSetPoint' name='tempSetPoint' value={formData.tempSetPoint} onChange={handleInputChange} />
 
-                  <label>Observaciones set point: </label>
-                  <Input type='text' name='observacionesSetPoint' value={formData.observacionesSetPoint} onChange={handleInputChange} />
+                    <label htmlFor='observacionesSetPoint'>Observaciones set point:</label>
+                    <Input type='text' id='observacionesSetPoint' name='observacionesSetPoint' value={formData.observacionesSetPoint} onChange={handleInputChange} />
 
-                  <label>Temperatura de pantalla: </label>
-                  <Input type='text' name='tempPantalla' value={formData.tempPantalla} onChange={handleInputChange} />
+                    <label htmlFor='tempPantalla'>Temperatura de pantalla:</label>
+                    <Input type='text' id='tempPantalla' name='tempPantalla' value={formData.tempPantalla} onChange={handleInputChange} />
 
-                  <label>Observaciones pantalla: </label>
-                  <Input type='text' name='observacionesPantalla' value={formData.observacionesPantalla} onChange={handleInputChange} />
+                    <label htmlFor='observacionesPantalla'>Observaciones pantalla:</label>
+                    <Input type='text' id='observacionesPantalla' name='observacionesPantalla' value={formData.observacionesPantalla} />
 
-                  <div style={{ marginBottom: 10 }}>
-                    <label>Termógrafo: </label>
-                    <Input type='text' name='termografo' value={formData.termografo} onChange={handleInputChange} />
+                    <label htmlFor='termografo'>Termógrafo:</label>
+                    <Input type='text' id='termografo' name='termografo' value={formData.termografo} onChange={handleInputChange} />
+
+                    <label>Cumple termógrafo:</label>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Button name='option' value='Si' onClick={handleInputChange}>
+                        Sí
+                      </Button>
+                      <Button name='option' value='No' onClick={handleInputChange}>
+                        No
+                      </Button>
+                    </div>
+
+                    <label>Cumple termógrafo 2:</label>
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      <Button name='option2' value='Si' onClick={handleInputChange}>
+                        Sí
+                      </Button>
+                      <Button name='option2' value='No' onClick={handleInputChange}>
+                        No
+                      </Button>
+                    </div>
+
+                    <label htmlFor='tempOrigen'>Temperatura de origen:</label>
+                    <Input type='text' id='tempOrigen' name='tempOrigen' value={formData.tempOrigen} onChange={handleInputChange} />
+
+                    <label htmlFor='tempDestino'>Temperatura de destino:</label>
+                    <Input type='text' id='tempDestino' name='tempDestino' value={formData.tempDestino} onChange={handleInputChange} />
                   </div>
-
-                  <div style={{ marginBottom: 30 }}>
-                    <label>Cumple termografo  </label>
-
-                    <div style={{ marginBottom: 20 }}>
-                 
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="option" value="Si"onClick={handleInputChange}>
-                      Sí
-                    </Button>
-                    <Button   name="option" value="No"onClick={handleInputChange}>
-                      No
-                    </Button>
-                  </div>
-                  </div>
-
-                  <div style={{ marginBottom: 30 }}>
-                    <label>Cumple termografo2  </label>
-
-                    <div style={{ marginBottom: 20 }}>
-                 
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="option2" value="Si"onClick={handleInputChange}>
-                      Sí
-                    </Button>
-                    <Button   name="option2" value="No"onClick={handleInputChange}>
-                      No
-                    </Button>
-                  </div>
-                  </div>
-
-                  <div style={{ marginBottom: 10 }}>
-                    <label>Temperatura de origen: </label>
-                    <Input type='text' name='tempOrigen' value={formData.tempOrigen} onChange={handleInputChange} />
-                  </div>
-
-                  <label>Temperatura de destino: </label>
-                  <Input type='text' name='tempDestino' value={formData.tempDestino} onChange={handleInputChange} />
-
-                  
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
@@ -731,26 +715,25 @@ const ActaDeLlegada = () => {
               <AccordionItem value='item-2'>
                 <AccordionTrigger>Inspección de Transporte</AccordionTrigger>
                 <AccordionContent>
-                <div style={{ marginBottom: 30 }}>
+                  <div style={{ marginBottom: 30 }}>
                     <label>Cumple termografo  </label>
                     <div style={{ marginBottom: 20 }}>
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="optionLimpio" value="Si"onClick={handleInputChange}> Sí </Button>
-                    <Button   name="optionLimpio" value="No"onClick={handleInputChange}>  No </Button>
+                      <Button style={{ flex: 5, marginRight: '10px' }} name='optionLimpio' value='Si' onClick={handleInputChange}> Sí </Button>
+                      <Button name='optionLimpio' value='No' onClick={handleInputChange}>  No </Button>
+                    </div>
                   </div>
-                 </div>
 
                   <label>Descripcion: </label>
-                  
+
                   <Input type='text' name='limpio' value={formData.limpio} onChange={handleInputChange} />
-                  
+
                   <div style={{ marginBottom: 30 }}>
                     <label>Caja cerrada, en buen estado  </label>
                     <div style={{ marginBottom: 20 }}>
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="optionCaja" value="Si"onClick={handleInputChange}> Sí </Button>
-                    <Button   name="optionCaja" value="No"onClick={handleInputChange}>  No </Button>
+                      <Button style={{ flex: 5, marginRight: '10px' }} name='optionCaja' value='Si' onClick={handleInputChange}> Sí </Button>
+                      <Button name='optionCaja' value='No' onClick={handleInputChange}>  No </Button>
+                    </div>
                   </div>
-                 </div>
-
 
                   <label>DEscription</label>
                   <Input type='text' name='cajaCerrada' value={formData.cajaCerrada} onChange={handleInputChange} />
@@ -758,108 +741,98 @@ const ActaDeLlegada = () => {
                   <div style={{ marginBottom: 30 }}>
                     <label>Lona en buen estado:   </label>
                     <div style={{ marginBottom: 20 }}>
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="optionLona" value="Si"onClick={handleInputChange}> Sí </Button>
-                    <Button   name="optionLona" value="No"onClick={handleInputChange}>  No </Button>
+                      <Button style={{ flex: 5, marginRight: '10px' }} name='optionLona' value='Si' onClick={handleInputChange}> Sí </Button>
+                      <Button name='optionLona' value='No' onClick={handleInputChange}>  No </Button>
+                    </div>
                   </div>
-                 </div>
 
                   <label>Descripcion</label>
                   <Input type='text' name='lona' value={formData.lona} onChange={handleInputChange} />
-                  
-                  
+
                   <div>
-                    <label htmlFor="file-malos-olores" style={{ cursor: "pointer" }}>
+                    <label htmlFor='file-malos-olores' style={{ cursor: 'pointer' }}>
                       Subir imagen de malos olores
                     </label>
                     <input
-                      type="file"
-                      id="file-malos-olores"
-                      accept="image/*"
-                      style={{ display: "none" }}
-                      onChange={(e) => handleImageUpload(e, "imageMalosOlores")}
+                      type='file'
+                      id='file-malos-olores'
+                      accept='image/*'
+                      style={{ display: 'none' }}
+                      onChange={(e) => handleImageUpload(e, 'imageMalosOlores')}
                     />
                     {formData.imageMalosOlores && (
                       <div>
                         <img
                           src={formData.imageMalosOlores}
-                          alt="Malos olores"
-                          style={{ width: "200px", marginTop: "10px" }}
+                          alt='Malos olores'
+                          style={{ width: '200px', marginTop: '10px' }}
                         />
-                        <button onClick={() => handleImageDelete("imageMalosOlores")}>
+                        <button onClick={() => handleImageDelete('imageMalosOlores')}>
                           Eliminar
                         </button>
                       </div>
                     )}
                   </div>
 
-
                   <div style={{ marginBottom: 30 }}>
                     <label>Libre de fauna nociva:   </label>
                     <div style={{ marginBottom: 20 }}>
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="optionLibre" value="Si"onClick={handleInputChange}> Sí </Button>
-                    <Button   name="optionLibre" value="No"onClick={handleInputChange}>  No </Button>
+                      <Button style={{ flex: 5, marginRight: '10px' }} name='optionLibre' value='Si' onClick={handleInputChange}> Sí </Button>
+                      <Button name='optionLibre' value='No' onClick={handleInputChange}>  No </Button>
+                    </div>
                   </div>
-                 </div>
-                  
-                  
 
                   <label>DEscripcion: </label>
                   <Input type='text' name='fauna' value={formData.fauna} onChange={handleInputChange} />
-                  
+
                   <div style={{ marginBottom: 30 }}>
                     <label>Carga en buen estado:  </label>
                     <div style={{ marginBottom: 20 }}>
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="optionCarga" value="Si"onClick={handleInputChange}> Sí </Button>
-                    <Button   name="optionCarga" value="No"onClick={handleInputChange}>  No </Button>
+                      <Button style={{ flex: 5, marginRight: '10px' }} name='optionCarga' value='Si' onClick={handleInputChange}> Sí </Button>
+                      <Button name='optionCarga' value='No' onClick={handleInputChange}>  No </Button>
+                    </div>
                   </div>
-                 </div>
-                  
 
                   <label>Descripcion: </label>
                   <Input type='text' name='carga' value={formData.carga} onChange={handleInputChange} />
-                    
-                  
-                  
 
                   <div style={{ marginBottom: 30 }}>
                     <label>Seguridad de carga:  </label>
                     <div style={{ marginBottom: 20 }}>
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="optionSeguridad" value="Si"onClick={handleInputChange}> Sí </Button>
-                    <Button   name="optionSeguridad" value="No"onClick={handleInputChange}>  No </Button>
+                      <Button style={{ flex: 5, marginRight: '10px' }} name='optionSeguridad' value='Si' onClick={handleInputChange}> Sí </Button>
+                      <Button name='optionSeguridad' value='No' onClick={handleInputChange}>  No </Button>
+                    </div>
                   </div>
-                 </div>
-                  
 
                   <label>Descripcion: </label>
                   <Input type='text' name='seguridadCarga' value={formData.seguridadCarga} onChange={handleInputChange} />
-         
 
                   <div style={{ marginBottom: 30 }}>
                     <label>Sellado:  </label>
                     <div style={{ marginBottom: 20 }}>
-                    <Button  style={{ flex: 5, marginRight: "10px" }} name="optionSellado" value="Si"onClick={handleInputChange}> Sí </Button>
-                    <Button   name="optionSellado" value="No"onClick={handleInputChange}>  No </Button>
+                      <Button style={{ flex: 5, marginRight: '10px' }} name='optionSellado' value='Si' onClick={handleInputChange}> Sí </Button>
+                      <Button name='optionSellado' value='No' onClick={handleInputChange}>  No </Button>
+                    </div>
                   </div>
-                 </div> 
-                 <label>Descripcion: </label>
-                 <Input type='text' name='sellado' value={formData.sellado} onChange={handleInputChange} />
+                  <label>Descripcion: </label>
+                  <Input type='text' name='sellado' value={formData.sellado} onChange={handleInputChange} />
 
-                 <div>
-                  <Button>
-                    <label htmlFor="file-input" style={{ cursor: 'pointer' }}>
-                      Seleccionar Imagen
-                    </label>
-                  </Button>
-                  <input
-                    type="file"
-                    id="file-input"
-                    accept="image/*" // Solo imágenes
-                    style={{ display: 'none' }} // Ocultar el input real
-                    onChange={handleFileChange}
-                  />
-                  
-                  {image && <img src={image} alt="Selected" style={{ width: '300px', marginTop: '20px' }} />}
-                </div>
+                  <div>
+                    <Button>
+                      <label htmlFor='file-input' style={{ cursor: 'pointer' }}>
+                        Seleccionar Imagen
+                      </label>
+                    </Button>
+                    <input
+                      type='file'
+                      id='file-input'
+                      accept='image/*' // Solo imágenes
+                      style={{ display: 'none' }} // Ocultar el input real
+                      onChange={handleFileChange}
+                    />
+
+                    {image && <img src={image} alt='Selected' style={{ width: '300px', marginTop: '20px' }} />}
+                  </div>
 
                 </AccordionContent>
               </AccordionItem>
@@ -883,76 +856,75 @@ const ActaDeLlegada = () => {
               <AccordionItem value='item-2'>
                 <AccordionTrigger>Temperatura de Pulpa</AccordionTrigger>
                 <AccordionContent>
-                <table>
-                <thead>
-                  <tr>
-                    <th colspan="2"><h3>Puerta</h3></th>
-                    <th ><h3>Medio</h3></th>
-                    <th ><h3>Fondo</h3></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><label>A   </label></td>
-                    {/* <td><InputNumber value={formData.tempAPuerta} prefix="&uarr; " suffix="℃" min={0} max={40} /></td> */}
-                    <td><Input type='number' name='tempAPuerta' value={formData.tempAPuerta} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                    <td><Input type='number' name='tempAMedio' value={formData.tempAMedio} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                    <td><Input type='number' name='tempAFondo' value={formData.tempAFondo} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                  </tr>
-                  <tr>
-                    <td><label>M   </label></td>
-                    <td><Input type='number' name='tempMPuerta' value={formData.tempMPuerta} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                    <td><Input type='number' name='tempMMedio' value={formData.tempMMedio} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                    <td><Input type='number' name='tempMFondo' value={formData.tempMFondo} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                  </tr>
-                  <tr>
-                    <td><label>B   </label></td>
-                    <td><Input type='number' name='tempBPuerta' value={formData.tempBPuerta} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                    <td><Input type='number' name='tempBMedio' value={formData.tempBMedio} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                    <td><Input type='number' name='tempBFondo' value={formData.tempBFondo} onChange={(e) => { handleInputChange(e); calculateTemperatureRange(); }} /></td>
-                  </tr>
-                </tbody>
-              </table>
-              <div style={{paddingTop:10}}>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th colspan='2'><h3>Puerta</h3></th>
+                        <th><h3>Medio</h3></th>
+                        <th><h3>Fondo</h3></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><label>A   </label></td>
+                        {/* <td><InputNumber value={formData.tempAPuerta} prefix="&uarr; " suffix="℃" min={0} max={40} /></td> */}
+                        <td><Input type='number' name='tempAPuerta' value={formData.tempAPuerta} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                        <td><Input type='number' name='tempAMedio' value={formData.tempAMedio} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                        <td><Input type='number' name='tempAFondo' value={formData.tempAFondo} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                      </tr>
+                      <tr>
+                        <td><label>M   </label></td>
+                        <td><Input type='number' name='tempMPuerta' value={formData.tempMPuerta} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                        <td><Input type='number' name='tempMMedio' value={formData.tempMMedio} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                        <td><Input type='number' name='tempMFondo' value={formData.tempMFondo} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                      </tr>
+                      <tr>
+                        <td><label>B   </label></td>
+                        <td><Input type='number' name='tempBPuerta' value={formData.tempBPuerta} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                        <td><Input type='number' name='tempBMedio' value={formData.tempBMedio} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                        <td><Input type='number' name='tempBFondo' value={formData.tempBFondo} onChange={(e) => { handleInputChange(e); calculateTemperatureRange() }} /></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div style={{ paddingTop: 10 }}>
 
-              <h3> <strong>Temperatura Ideal</strong></h3>
-              <Select name="tempIdeal" onValueChange={(value) => handleInputChange({ target: { name: 'tempIdeal', value } })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecciona una fruta" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="4">Manzanas (4°C)</SelectItem>
-                  <SelectItem value="7">Plátanos (7°C)</SelectItem>
-                  <SelectItem value="1">Uvas (1°C)</SelectItem>
-                  <SelectItem value="0">Fresas (0°C)</SelectItem>
-                  <SelectItem value="-1">Mango (-1°C)</SelectItem>
-                </SelectContent>
-              </Select>
-              </div>
-              
+                    <h3> <strong>Temperatura Ideal</strong></h3>
+                    <Select name='tempIdeal' onValueChange={(value) => handleInputChange({ target: { name: 'tempIdeal', value } })}>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Selecciona una fruta' />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value='4'>Manzanas (4°C)</SelectItem>
+                        <SelectItem value='7'>Plátanos (7°C)</SelectItem>
+                        <SelectItem value='1'>Uvas (1°C)</SelectItem>
+                        <SelectItem value='0'>Fresas (0°C)</SelectItem>
+                        <SelectItem value='-1'>Mango (-1°C)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
 
-<div>
-  {Object.entries(formData)
-    .filter(([key]) => key.startsWith("image"))
-    .map(([key, value]) => (
-      value && (
-        <div key={key}>
-          <Text style={{ fontWeight: "bold" }}>
-            {key.replace(/image/, "").replace(/([A-Z])/g, " $1")}:
-          </Text>
-          <img
-            src={value}
-            alt={key}
-            style={{ width: "200px", marginTop: "10px" }}
-          />
-        </div>
-      )
-    ))}
-</div>
+            <div>
+              {Object.entries(formData)
+                .filter(([key]) => key.startsWith('image'))
+                .map(([key, value]) => (
+                  value && (
+                    <div key={key}>
+                      <Text style={{ fontWeight: 'bold' }}>
+                        {key.replace(/image/, '').replace(/([A-Z])/g, ' $1')}:
+                      </Text>
+                      <img
+                        src={value}
+                        alt={key}
+                        style={{ width: '200px', marginTop: '10px' }}
+                      />
+                    </div>
+                  )
+                ))}
+            </div>
 
             <h2>Resultados de la Investigación</h2>
             <Input type='text' name='resultadosInv' value={formData.resultadosInv} onChange={handleInputChange} />
