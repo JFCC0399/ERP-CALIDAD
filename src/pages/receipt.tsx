@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { PDFViewer, Font } from '@react-pdf/renderer'
+import { PDFViewer, Font ,PDFDownloadLink} from '@react-pdf/renderer'
 import * as pdfjsLib from 'pdfjs-dist'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -1374,6 +1374,10 @@ const ActaDeLlegada = () => {
                   currentPage={currentPage}
                 />
               </PDFViewer>
+
+              <PDFDownloadLink document={<ActaPDF formData={formData} firmaBase64Inspector={firmaBase64Inspector} firmaBase64Chofer={firmaBase64Chofer}  currentPage={1,2,3} />} fileName='acta_de_llegada.pdf'>
+                <Button variant='primary'>Descargar PDF</Button>
+              </PDFDownloadLink>
 
             <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }} />
             <div style={{ marginTop: 20, textAlign: 'center' }} />
