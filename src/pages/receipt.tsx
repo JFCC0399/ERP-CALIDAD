@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import GothamNarrowMedium from "../../../../../fonts/GothamNarrow-Medium.otf"
+import GothamNarrowMedium from "/fonts/GothamNarrow-Medium.otf"
 import { fetchActas, insert } from '../../connections/querys'
 import {
   Dialog,
@@ -46,7 +46,7 @@ const ActaDeLlegada = () => {
   const [formData, setFormData] = useState(formInitial)
   const [currentPage, setCurrentPage] = useState(1)
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState<number | null>(null)
   const [actasList, setActasList] = useState<Acta[]>([])
   const [actaDetails, setActaDetails] = useState(null)
 
@@ -55,20 +55,20 @@ const ActaDeLlegada = () => {
   const [temperatureRange, setTemperatureRange] = useState(null)
   const signaturePadInspector = useRef<any>(null) // Refs para el signature pad
   const signaturePadChofer = useRef<any>(null)
-  const goToNextPage = () => {
+  const goToNextPage = (): void => {
     setCurrentPage(2)
   }
 
-  const goToNextPage2 = () => {
+  const goToNextPage2 = (): void => {
     setCurrentPage(1)
   }
 
-  const goToPreviousPage = () => {
+  const goToPreviousPage = (): void => {
     setCurrentPage(3)
   }
 
-  const handleInsert = () => {
-    insert(formData) // Llama a la función insert y pasa formData
+  const handleInsert = async (): Promise<void> => {
+    await insert(formData) // Llama a la función insert y pasa formData
   }
 
   interface Acta {
@@ -129,12 +129,12 @@ const ActaDeLlegada = () => {
 
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target
     setFormData((prevData) => ({ ...prevData, [name]: value }))
   }
 
-  const handleSelect = (idActa) => {
+  const handleSelect = (idActa: number): void => {
     setValue(idActa)
     setOpen(false)
 
@@ -208,7 +208,7 @@ const ActaDeLlegada = () => {
     }
   }
 
-  const handleFileChange3 = (event, key) => {
+  const handleFileChange3 = (event: React.ChangeEvent<HTMLInputElement>, key: string) => {
     const files = event.target.files
     const fileArray = Array.from(files).map((file) =>
       URL.createObjectURL(file)
@@ -235,7 +235,6 @@ const ActaDeLlegada = () => {
     }
 
     getActasData()
-
     const allTemperatures = [
       formData.tempAPuerta,
       formData.tempAMedio,
@@ -249,7 +248,6 @@ const ActaDeLlegada = () => {
     ]
       .map((temp) => Number(temp) || null) // Convierte a número o `null` si no es un número
       .filter((temp) => temp !== null) /// Aseguramos que sean números válidos
-
     // Si no hay temperaturas válidas, no hacer nada
     if (allTemperatures.length === 0) return
 
@@ -278,26 +276,26 @@ const ActaDeLlegada = () => {
   ])
 
   // Función para limpiar ambas firmas
-  const clearSignature = () => {
-    if (signaturePadInspector.current) {
+  const clearSignature = (): void => {
+    if (signaturePadInspector.current !== null) {
       signaturePadInspector.current.clear()
     }
     setFirmaBase64Inspector(null) // Estado para la firma del inspector
 
-    if (signaturePadChofer.current) {
+    if (signaturePadChofer.current !== null) {
       signaturePadChofer.current.clear()
     }
     setFirmaBase64Chofer(null) // Estado para la firma del chofer
   }
 
   // Función para guardar ambas firmas
-  const saveSignature = () => {
-    if (signaturePadInspector.current) {
+  const saveSignature = (): void => {
+    if (signaturePadInspector.current !== null) {
       const dataUrlInspector = signaturePadInspector.current.toDataURL()
       setFirmaBase64Inspector(dataUrlInspector) // Guarda la firma del inspector
     }
 
-    if (signaturePadChofer.current) {
+    if (signaturePadChofer.current !== null) {
       const dataUrlChofer = signaturePadChofer.current.toDataURL()
       setFirmaBase64Chofer(dataUrlChofer) // Guarda la firma del chofer
     }
@@ -307,7 +305,6 @@ const ActaDeLlegada = () => {
     <Layout>
       <div style={{ padding: '20px' }}>
         <h1>Acta de Llegada</h1>
-
         <div>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -318,8 +315,8 @@ const ActaDeLlegada = () => {
                 className='w-[200px] justify-between'
               >
                 {value
-                  ? actasList.find((acta) => acta.id === Number(value))?.oc
-                  : 'Select Acta...'}
+                  ? actasList.find((acta) => acta.id === value)?.oc
+                    : 'Select Acta...'}
                 <ChevronsUpDown className='w-4 h-4 ml-2 opacity-50 shrink-0' />
               </Button>
             </PopoverTrigger>
@@ -329,21 +326,20 @@ const ActaDeLlegada = () => {
                 <CommandList>
                     <CommandEmpty>No Acta found.</CommandEmpty>
                     <CommandGroup>
-                        {actasList.map((acta) => (
-                          <CommandItem
-                            key={acta.id}
-                            value={acta.id.toString()}
-                            onSelect={() => handleSelect(acta.id)}
-                          >
-
-                            <Check
-                              className={`mr-2 h-4 w-4 ${value === acta.id ? 'opacity-100' : 'opacity-0'}`}
-                            />
-                            {acta.oc}{' '}
-                            {/* Aquí puedes mostrar la fecha o cualquier otra información relevante */}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      {actasList.map((acta) => (
+                        <CommandItem
+                          key={acta.id}
+                          value={acta.id.toString()}
+                          onSelect={() => handleSelect(acta.id)}
+                        >
+                          <Check
+                            className={`mr-2 h-4 w-4 ${value === acta.id ? 'opacity-100' : 'opacity-0'}`}
+                          />
+                          {acta.oc}{' '}
+                          {/* Aquí puedes mostrar la fecha o cualquier otra información relevante */}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
                   </CommandList>
               </Command>
             </PopoverContent>
@@ -409,12 +405,8 @@ const ActaDeLlegada = () => {
                       </div>
                   ))}
                 </CardContent>
-                <CardFooter>
-                      {/* Puedes agregar botones o acciones adicionales en el footer */}
-                    </CardFooter>
               </Card>
             </AccordionContent>
-
           </AccordionItem>
         </Accordion>
 
@@ -1337,13 +1329,11 @@ const ActaDeLlegada = () => {
         <Button onClick={handleInsert}>Guardar datos en la Bd</Button>
 
         <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
-          <PDFDownloadLink
-document={<DowloadnPDF
+            <PDFDownloadLink document={<DowloadnPDF
               formData={formData}
               firmaBase64Inspector={firmaBase64Inspector}
               firmaBase64Chofer={firmaBase64Chofer}
-                                       />} fileName='acta_de_llegada.pdf'
-            >
+            />} fileName='acta_de_llegada.pdf'>
               <Button variant='primary'>Descargar PDF</Button>
             </PDFDownloadLink>
         </div>
@@ -1357,44 +1347,37 @@ document={<DowloadnPDF
             <DialogTitle>Vista del Documento</DialogTitle>
             <DialogDescription>
               Navega por el documento PDF y haz clic en los botones para moverte entre las páginas.
-              </DialogDescription>
+            </DialogDescription>
           </DialogHeader>
 
           <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             {currentPage === 1 && (
               <Button onClick={goToNextPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                  Ir a la Página 2
-                </Button>
-            )}
+                Ir a la Página 2
+              </Button>
+              )}
             {currentPage === 2 && (
               <Button onClick={goToPreviousPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                  Ir a la Página 3
-                </Button>
+                Ir a la Página 3
+              </Button>
             )}
-
             {currentPage === 3 && (
               <Button onClick={goToNextPage2} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                  Volver a la Página 1
-                </Button>
+                Volver a la Página 1
+              </Button>
             )}
 
             <PDFViewer width='100%' height='500px'>
               <ActaPDF
-                  formData={formData}
-                  firmaBase64Inspector={firmaBase64Inspector}
-                  firmaBase64Chofer={firmaBase64Chofer}
-                  currentPage={currentPage}
-                />
+                formData={formData}
+                firmaBase64Inspector={firmaBase64Inspector}
+                firmaBase64Chofer={firmaBase64Chofer}
+                currentPage={currentPage}
+              />
             </PDFViewer>
-
-            <PDFDownloadLink document={<ActaPDF formData={formData} firmaBase64Inspector={firmaBase64Inspector} firmaBase64Chofer={firmaBase64Chofer} currentPage={1, 2, 3} />} fileName='acta_de_llegada.pdf'>
-                <Button variant='primary'>Descargar PDF</Button>
-              </PDFDownloadLink>
-
             <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }} />
             <div style={{ marginTop: 20, textAlign: 'center' }} />
           </div>
-
           <DialogFooter>
             <Button variant='outline'>Cerrar</Button>
           </DialogFooter>
