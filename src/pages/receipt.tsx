@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
-import { PDFViewer, Font ,PDFDownloadLink} from '@react-pdf/renderer'
+import { PDFDownloadLink, PDFViewer, Font } from '@react-pdf/renderer'
 import * as pdfjsLib from 'pdfjs-dist'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import GothamNarrowMedium from '/fonts/GothamNarrow-Medium.otf'
+import GothamNarrowMedium from "../../../../../fonts/GothamNarrow-Medium.otf"
 import { fetchActas, insert } from '../../connections/querys'
 import {
   Dialog,
@@ -30,9 +30,10 @@ import {
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
-import { formInitial } from "../components/pdfComponents/format"
+import { formInitial } from '../components/pdfComponents/format'
 
 import ActaPDF from '../components/pdfComponents/pdfView'
+import DowloadnPDF from '../components/pdfComponents/pdfDownload'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@2.11.338/es5/build/pdf.worker.min.js'
 
@@ -43,7 +44,7 @@ Font.register({
 
 const ActaDeLlegada = () => {
   const [formData, setFormData] = useState(formInitial)
-  const [currentPage, setCurrentPage] = useState(1)  
+  const [currentPage, setCurrentPage] = useState(1)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState('')
   const [actasList, setActasList] = useState<Acta[]>([])
@@ -226,7 +227,6 @@ const ActaDeLlegada = () => {
   }
 
   useEffect(() => {
-    
     const getActasData = async () => {
       const data = await fetchActas()
       if (data != null) {
@@ -319,16 +319,16 @@ const ActaDeLlegada = () => {
               >
                 {value
                   ? actasList.find((acta) => acta.id === Number(value))?.oc
-                    : 'Select Acta...'}
+                  : 'Select Acta...'}
                 <ChevronsUpDown className='w-4 h-4 ml-2 opacity-50 shrink-0' />
               </Button>
             </PopoverTrigger>
             <PopoverContent className='w-[200px] p-0'>
               <Command>
                 <CommandInput placeholder='Search Acta...' />
-                  <CommandList>
+                <CommandList>
                     <CommandEmpty>No Acta found.</CommandEmpty>
-                      <CommandGroup>
+                    <CommandGroup>
                         {actasList.map((acta) => (
                           <CommandItem
                             key={acta.id}
@@ -380,7 +380,7 @@ const ActaDeLlegada = () => {
               }}
             >
               Datos Pedido
-              </AccordionTrigger>
+            </AccordionTrigger>
             <AccordionContent style={{ padding: '8px' }}>
               <Card style={{ padding: '8px' }}>
                 <CardContent>
@@ -396,7 +396,7 @@ const ActaDeLlegada = () => {
                     { label: 'Variedades:', type: 'text', name: 'variedades' },
                     { label: 'Frío de descarga:', type: 'text', name: 'frioDescarga' },
                     { label: 'Cajas recibidas:', type: 'text', name: 'cajasRecibidas' }
-                    ].map(({ label, type, name }) => (
+                  ].map(({ label, type, name }) => (
                       <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                         <label style={{ flex: '0 0 200px', fontWeight: 'bold' }}>{label}</label>
                         <Input
@@ -407,9 +407,9 @@ const ActaDeLlegada = () => {
                           style={{ flex: '1', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
                         />
                       </div>
-                    ))}
+                  ))}
                 </CardContent>
-                    <CardFooter>
+                <CardFooter>
                       {/* Puedes agregar botones o acciones adicionales en el footer */}
                     </CardFooter>
               </Card>
@@ -432,7 +432,7 @@ const ActaDeLlegada = () => {
               }}
             >
               Transporte
-              </AccordionTrigger>
+            </AccordionTrigger>
             <AccordionContent>
               {[
                 { label: 'Línea transportista:', name: 'lineaTransportista' },
@@ -459,7 +459,7 @@ const ActaDeLlegada = () => {
         <Accordion type='single' collapsible style={{ padding: '8px 0' }}>
           <AccordionItem value='item-2'>
             <AccordionTrigger
-                style={{
+              style={{
                   fontSize: '20px',
                   fontWeight: 'bold',
                   padding: '12px 16px',
@@ -468,18 +468,18 @@ const ActaDeLlegada = () => {
                   textAlign: 'center',
                   cursor: 'pointer'
                 }}
-              >
-                Condiciones de transporte
+            >
+              Condiciones de transporte
                 </AccordionTrigger>
             <AccordionContent>
-                {[
-                    { label: 'Temperatura de set point:', name: 'tempSetPoint' },
-                    { label: 'Observaciones set point:', name: 'observacionesSetPoint' },
-                    { label: 'Temperatura de pantalla:', name: 'tempPantalla' },
-                    { label: 'Observaciones pantalla:', name: 'observacionesPantalla' },
-                    { label: 'Temperatura de origen:', name: 'tempOrigen' },
-                    { label: 'Temperatura de destino:', name: 'tempDestino' }
-                  ].map(({ label, name }) => (
+              {[
+                  { label: 'Temperatura de set point:', name: 'tempSetPoint' },
+                  { label: 'Observaciones set point:', name: 'observacionesSetPoint' },
+                  { label: 'Temperatura de pantalla:', name: 'tempPantalla' },
+                  { label: 'Observaciones pantalla:', name: 'observacionesPantalla' },
+                  { label: 'Temperatura de origen:', name: 'tempOrigen' },
+                  { label: 'Temperatura de destino:', name: 'tempDestino' }
+                ].map(({ label, name }) => (
                     <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                       <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>{label}</label>
                       <Input
@@ -490,23 +490,23 @@ const ActaDeLlegada = () => {
                         style={{ flex: '1', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
                       />
                     </div>
-                  ))}
+                ))}
 
-                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                    <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Termógrafo:</label>
-                    <Input
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                  <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Termógrafo:</label>
+                  <Input
                       type='text'
                       name='termografo'
                       value={formData.termografo}
                       onChange={handleInputChange}
                       style={{ flex: '1', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
                     />
-                  </div>
+                </div>
 
-                {[
-                    { label: 'Cumple termógrafo:', name: 'option' },
-                    { label: 'Cumple termógrafo2:', name: 'option2' }
-                  ].map(({ label, name }) => (
+              {[
+                  { label: 'Cumple termógrafo:', name: 'option' },
+                  { label: 'Cumple termógrafo2:', name: 'option2' }
+                ].map(({ label, name }) => (
                     <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                       <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>{label}</label>
                       <div style={{ display: 'flex', gap: '10px' }}>
@@ -528,15 +528,15 @@ const ActaDeLlegada = () => {
                         </Button>
                       </div>
                     </div>
-                  ))}
-              </AccordionContent>
+                ))}
+            </AccordionContent>
           </AccordionItem>
         </Accordion>
 
         <Accordion type='single' collapsible style={{ padding: '8px 0' }}>
           <AccordionItem value='item-2'>
             <AccordionTrigger
-                style={{
+              style={{
                   fontSize: '20px',
                   fontWeight: 'bold',
                   padding: '12px 16px',
@@ -545,13 +545,13 @@ const ActaDeLlegada = () => {
                   textAlign: 'center',
                   cursor: 'pointer'
                 }}
-              >
-                Inspección de transporte
+            >
+              Inspección de transporte
                 </AccordionTrigger>
             <AccordionContent>
-                <div style={{ marginBottom: 30 }}>
-                    <label>Limpio </label>
-                    <div style={{ marginBottom: 20 }}>
+              <div style={{ marginBottom: 30 }}>
+                  <label>Limpio </label>
+                  <div style={{ marginBottom: 20 }}>
                       <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionLimpio'
@@ -595,7 +595,7 @@ const ActaDeLlegada = () => {
                                 )
                               : <p style={{ color: 'red', marginTop: '10px' }}>
                                 No puedes agregar más de 8 imágenes
-                              </p>}
+                                </p>}
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
                               {formData.imageLimpio.map((imageUrl, index) => (
                                 <img
@@ -615,19 +615,19 @@ const ActaDeLlegada = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-                <label style={{ marginBottom: 30 }}>
-                    Pon una descripcion{' '}
-                  </label>
-                <Input
-                    type='text'
-                    name='limpio'
-                    value={formData.limpio}
-                    onChange={handleInputChange}
-                  />
-                <div style={{ marginBottom: 30 }}>
-                    <label>Caja cerrada, en buen estado </label>
-                    <div style={{ marginBottom: 20 }}>
+                </div>
+              <label style={{ marginBottom: 30 }}>
+                  Pon una descripcion{' '}
+                </label>
+              <Input
+                  type='text'
+                  name='limpio'
+                  value={formData.limpio}
+                  onChange={handleInputChange}
+                />
+              <div style={{ marginBottom: 30 }}>
+                  <label>Caja cerrada, en buen estado </label>
+                  <div style={{ marginBottom: 20 }}>
                       <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionCaja'
@@ -671,7 +671,7 @@ const ActaDeLlegada = () => {
                                 )
                               : <p style={{ color: 'red', marginTop: '10px' }}>
                                 No puedes agregar más de 8 imágenes
-                                </p>}
+                              </p>}
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
                               {formData.imageCajaCerrada.map(
@@ -689,17 +689,17 @@ const ActaDeLlegada = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-                <label>Description</label>
-                <Input
-                    type='text'
-                    name='cajaCerrada'
-                    value={formData.cajaCerrada}
-                    onChange={handleInputChange}
-                  />
-                <div style={{ marginBottom: 30 }}>
-                    <label>Lona en buen estado: </label>
-                    <div style={{ marginBottom: 20 }}>
+                </div>
+              <label>Description</label>
+              <Input
+                  type='text'
+                  name='cajaCerrada'
+                  value={formData.cajaCerrada}
+                  onChange={handleInputChange}
+                />
+              <div style={{ marginBottom: 30 }}>
+                  <label>Lona en buen estado: </label>
+                  <div style={{ marginBottom: 20 }}>
                       <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionLona'
@@ -757,17 +757,17 @@ const ActaDeLlegada = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-                <label>Descripcion</label>
-                <Input
-                    type='text'
-                    name='lona'
-                    value={formData.lona}
-                    onChange={handleInputChange}
-                  />
-                <div style={{ marginBottom: 30 }}>
-                    <label>Libre de fauna nociva: </label>
-                    <div style={{ marginBottom: 20 }}>
+                </div>
+              <label>Descripcion</label>
+              <Input
+                  type='text'
+                  name='lona'
+                  value={formData.lona}
+                  onChange={handleInputChange}
+                />
+              <div style={{ marginBottom: 30 }}>
+                  <label>Libre de fauna nociva: </label>
+                  <div style={{ marginBottom: 20 }}>
                       <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionLibre'
@@ -828,17 +828,17 @@ const ActaDeLlegada = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-                <label>Descripcion: </label>
-                <Input
-                    type='text'
-                    name='fauna'
-                    value={formData.fauna}
-                    onChange={handleInputChange}
-                  />
-                <div style={{ marginBottom: 30 }}>
-                    <label>Carga en buen estado: </label>
-                    <div style={{ marginBottom: 20 }}>
+                </div>
+              <label>Descripcion: </label>
+              <Input
+                  type='text'
+                  name='fauna'
+                  value={formData.fauna}
+                  onChange={handleInputChange}
+                />
+              <div style={{ marginBottom: 30 }}>
+                  <label>Carga en buen estado: </label>
+                  <div style={{ marginBottom: 20 }}>
                       <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionCarga'
@@ -896,17 +896,17 @@ const ActaDeLlegada = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-                <label>Descripcion: </label>
-                <Input
-                    type='text'
-                    name='carga'
-                    value={formData.carga}
-                    onChange={handleInputChange}
-                  />
-                <div style={{ marginBottom: 30 }}>
-                    <label>Seguridad de carga: </label>
-                    <div style={{ marginBottom: 20 }}>
+                </div>
+              <label>Descripcion: </label>
+              <Input
+                  type='text'
+                  name='carga'
+                  value={formData.carga}
+                  onChange={handleInputChange}
+                />
+              <div style={{ marginBottom: 30 }}>
+                  <label>Seguridad de carga: </label>
+                  <div style={{ marginBottom: 20 }}>
                       <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionSeguridad'
@@ -967,15 +967,15 @@ const ActaDeLlegada = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-                <label>Descripcion: </label>
-                <Input
+                </div>
+              <label>Descripcion: </label>
+              <Input
                   type='text'
                   name='seguridadCarga'
                   value={formData.seguridadCarga}
                   onChange={handleInputChange}
                 />
-                <div style={{ marginBottom: 30 }}>
+              <div style={{ marginBottom: 30 }}>
                   <label>Sellado: </label>
                   <div style={{ marginBottom: 20 }}>
                     <Button
@@ -995,7 +995,7 @@ const ActaDeLlegada = () => {
                       {' '}
                       No{' '}
                     </Button>
-                      {formData.optionSellado === 'No' && (
+                    {formData.optionSellado === 'No' && (
                         <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
@@ -1027,16 +1027,16 @@ const ActaDeLlegada = () => {
                           </div>
                         </div>
                       )}
-                    </div>
                   </div>
-                <label>Descripcion: </label>
-                <Input
+                </div>
+              <label>Descripcion: </label>
+              <Input
                   type='text'
                   name='sellado'
                   value={formData.sellado}
                   onChange={handleInputChange}
                 />
-              </AccordionContent>
+            </AccordionContent>
           </AccordionItem>
         </Accordion>
 
@@ -1054,7 +1054,7 @@ const ActaDeLlegada = () => {
               }}
             >
               Placas Caja
-              </AccordionTrigger>
+            </AccordionTrigger>
             <AccordionContent>
               <label>Hay tarimas dañadas?: </label>
               <Input
@@ -1077,7 +1077,7 @@ const ActaDeLlegada = () => {
                 value={formData.danadasManiobra}
                 onChange={handleInputChange}
               />
-              </AccordionContent>
+            </AccordionContent>
           </AccordionItem>
         </Accordion>
 
@@ -1117,18 +1117,18 @@ const ActaDeLlegada = () => {
                   <tr>
                     <td>
                       <label>A </label>
-                    </td>                      
+                    </td>
                     <td>
                       <Input
                         type='number'
                         name='tempAPuerta'
                         value={formData.tempAPuerta}
                         onChange={(e) => {
-                        handleInputChange(e)
+                          handleInputChange(e)
                         }}
                       />
-                        </td>
-                        <td>
+                    </td>
+                    <td>
                           <Input
                             type='number'
                             name='tempAMedio'
@@ -1138,7 +1138,7 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                        <td>
+                    <td>
                           <Input
                             type='number'
                             name='tempAFondo'
@@ -1148,8 +1148,8 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                      </tr>
-                      <tr>
+                  </tr>
+                  <tr>
                         <td>
                           <label>M </label>
                         </td>
@@ -1184,7 +1184,7 @@ const ActaDeLlegada = () => {
                           />
                         </td>
                       </tr>
-                      <tr>
+                  <tr>
                         <td>
                           <label>B </label>
                         </td>
@@ -1219,14 +1219,14 @@ const ActaDeLlegada = () => {
                           />
                         </td>
                       </tr>
-                    </tbody>
-                  </table>
-                <div style={{ paddingTop: 10 }}>
-                    <h3>
+                </tbody>
+              </table>
+              <div style={{ paddingTop: 10 }}>
+                  <h3>
                       {' '}
                       <strong>Temperatura Ideal</strong>
                     </h3>
-                    <Select
+                  <Select
                       name='tempIdeal'
                       onValueChange={(value) =>
                         handleInputChange({
@@ -1244,8 +1244,8 @@ const ActaDeLlegada = () => {
                         <SelectItem value='-1'>Mango (-1°C)</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-              </AccordionContent>
+                </div>
+            </AccordionContent>
           </AccordionItem>
         </Accordion>
 
@@ -1264,69 +1264,69 @@ const ActaDeLlegada = () => {
           </CardHeader>
           <CardContent>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                {/* Names and Signatures Row */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
-                    {/* Inspector Section */}
-                    <div style={{ flex: 1, textAlign: 'center' }}>
-          <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
-                Nombre Inspector de Calidad
+              {/* Names and Signatures Row */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
+                  {/* Inspector Section */}
+                  <div style={{ flex: 1, textAlign: 'center' }}>
+                      <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
+            Nombre Inspector de Calidad
               </label>
-          <Input
-                type='text'
-                name='nombreInspector'
-                value={formData.nombreInspector}
-                onChange={handleInputChange}
-                style={{ marginBottom: '10px', width: '100%' }}
-              />
-          <h2 style={{ margin: '10px 0' }}>Firma Inspector de Calidad</h2>
-          <div
-                style={{
+                      <Input
+            type='text'
+            name='nombreInspector'
+            value={formData.nombreInspector}
+            onChange={handleInputChange}
+            style={{ marginBottom: '10px', width: '100%' }}
+          />
+                      <h2 style={{ margin: '10px 0' }}>Firma Inspector de Calidad</h2>
+                      <div
+            style={{
                   border: '2px solid black',
                   padding: 10,
                   display: 'inline-block',
                   boxSizing: 'border-box'
                 }}
-              >
-                <SignatureCanvas
+          >
+            <SignatureCanvas
                   ref={signaturePadInspector}
                   penColor='black'
                   canvasProps={{ width: 250, height: 100, className: 'signature-canvas' }}
                 />
-              </div>
-        </div>
+          </div>
+                    </div>
 
-                    {/* Chofer Section */}
-                    <div style={{ flex: 1, textAlign: 'center' }}>
-          <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Nombre Chofer</label>
-          <Input
-                type='text'
-                name='nombreChofer'
-                value={formData.nombreChofer}
-                onChange={handleInputChange}
-                style={{ marginBottom: '10px', width: '100%' }}
-              />
-          <h2 style={{ margin: '10px 0' }}>Firma del Chofer</h2>
-          <div
-                style={{
+                  {/* Chofer Section */}
+                  <div style={{ flex: 1, textAlign: 'center' }}>
+                      <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Nombre Chofer</label>
+                      <Input
+            type='text'
+            name='nombreChofer'
+            value={formData.nombreChofer}
+            onChange={handleInputChange}
+            style={{ marginBottom: '10px', width: '100%' }}
+          />
+                      <h2 style={{ margin: '10px 0' }}>Firma del Chofer</h2>
+                      <div
+            style={{
                   border: '2px solid black',
                   padding: 10,
                   display: 'inline-block',
                   boxSizing: 'border-box'
                 }}
-              >
-                <SignatureCanvas
+          >
+            <SignatureCanvas
                   ref={signaturePadChofer}
                   penColor='black'
                   canvasProps={{ width: 250, height: 100, className: 'signature-canvas' }}
                 />
-              </div>
-        </div>
-                  </div>
-              </div>
+          </div>
+                    </div>
+                </div>
+            </div>
           </CardContent>
           <CardFooter>
             <p style={{ textAlign: 'center' }}>
-                Revise los datos y asegúrese de que las firmas sean claras antes de proceder.
+              Revise los datos y asegúrese de que las firmas sean claras antes de proceder.
         </p>
           </CardFooter>
         </Card>
@@ -1335,6 +1335,18 @@ const ActaDeLlegada = () => {
         <Button onClick={saveSignature}>Guardar Firma</Button>
 
         <Button onClick={handleInsert}>Guardar datos en la Bd</Button>
+
+        <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
+          <PDFDownloadLink
+document={<DowloadnPDF
+              formData={formData}
+              firmaBase64Inspector={firmaBase64Inspector}
+              firmaBase64Chofer={firmaBase64Chofer}
+                                       />} fileName='acta_de_llegada.pdf'
+            >
+              <Button variant='primary'>Descargar PDF</Button>
+            </PDFDownloadLink>
+        </div>
       </div>
       <Dialog>
         <DialogTrigger asChild>
@@ -1344,38 +1356,38 @@ const ActaDeLlegada = () => {
           <DialogHeader>
             <DialogTitle>Vista del Documento</DialogTitle>
             <DialogDescription>
-                Navega por el documento PDF y haz clic en los botones para moverte entre las páginas.
+              Navega por el documento PDF y haz clic en los botones para moverte entre las páginas.
               </DialogDescription>
           </DialogHeader>
 
           <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             {currentPage === 1 && (
-                <Button onClick={goToNextPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
+              <Button onClick={goToNextPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
                   Ir a la Página 2
-            </Button>
-              )}
+                </Button>
+            )}
             {currentPage === 2 && (
-                <Button onClick={goToPreviousPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
+              <Button onClick={goToPreviousPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
                   Ir a la Página 3
-            </Button>
-              )}
+                </Button>
+            )}
 
             {currentPage === 3 && (
-                <Button onClick={goToNextPage2} style={{ padding: '10px 20px', fontSize: '16px' }}>
+              <Button onClick={goToNextPage2} style={{ padding: '10px 20px', fontSize: '16px' }}>
                   Volver a la Página 1
-            </Button>
-              )}
+                </Button>
+            )}
 
             <PDFViewer width='100%' height='500px'>
-                <ActaPDF
+              <ActaPDF
                   formData={formData}
                   firmaBase64Inspector={firmaBase64Inspector}
                   firmaBase64Chofer={firmaBase64Chofer}
                   currentPage={currentPage}
                 />
-              </PDFViewer>
+            </PDFViewer>
 
-              <PDFDownloadLink document={<ActaPDF formData={formData} firmaBase64Inspector={firmaBase64Inspector} firmaBase64Chofer={firmaBase64Chofer}  currentPage={1,2,3} />} fileName='acta_de_llegada.pdf'>
+            <PDFDownloadLink document={<ActaPDF formData={formData} firmaBase64Inspector={firmaBase64Inspector} firmaBase64Chofer={firmaBase64Chofer} currentPage={1, 2, 3} />} fileName='acta_de_llegada.pdf'>
                 <Button variant='primary'>Descargar PDF</Button>
               </PDFDownloadLink>
 
