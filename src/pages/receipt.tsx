@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import GothamNarrowMedium from "/fonts/GothamNarrow-Medium.otf"
+import GothamNarrowMedium from '/fonts/GothamNarrow-Medium.otf'
 import { fetchActas, insert } from '../../connections/querys'
 import {
   Dialog,
@@ -55,18 +55,25 @@ const ActaDeLlegada = () => {
   const [temperatureRange, setTemperatureRange] = useState(null)
   const signaturePadInspector = useRef<any>(null) // Refs para el signature pad
   const signaturePadChofer = useRef<any>(null)
-  const goToNextPage = (): void => {
-    setCurrentPage(2)
-  }
 
-  const goToNextPage2 = (): void => {
-    setCurrentPage(1)
-  }
+  const getButtonConfig = (currentPage) => {
+    switch (currentPage) {
+      case 1:
+        return { onClick: () => setCurrentPage(2), label: 'Ir a la Página 2' };
+      case 2:
+        return { onClick: () => setCurrentPage(3), label: 'Ir a la Página 3' };
+      case 3:
+        return { onClick: () => setCurrentPage(1), label: 'Volver a la Página 1' };
+      default:
+        return null;
+    }
+  };
+  
+  
+  const buttonConfig = getButtonConfig(currentPage);
 
-  const goToPreviousPage = (): void => {
-    setCurrentPage(3)
-  }
 
+ 
   const handleInsert = async (): Promise<void> => {
     await insert(formData) // Llama a la función insert y pasa formData
   }
@@ -208,22 +215,17 @@ const ActaDeLlegada = () => {
     }
   }
 
-  const handleFileChange3 = (event: React.ChangeEvent<HTMLInputElement>, key: string) => {
+  const handleFileChangeImage = (event: React.ChangeEvent<HTMLInputElement>, key: string) => {
     const files = event.target.files
     const fileArray = Array.from(files).map((file) =>
       URL.createObjectURL(file)
     )
-    console.log(key)
-
     // Actualizar dinámicamente el conjunto de imágenes
     setFormData((prevData) => ({
       ...prevData,
       [key]: [...prevData[key], ...fileArray] // Actualiza solo el conjunto específico (image2, image3, etc.)
     }))
-    console.log(
-      'la longitud imageCajacerrada es ',
-      formData.imageCajaCerrada.length + 1
-    )
+
   }
 
   useEffect(() => {
@@ -316,7 +318,7 @@ const ActaDeLlegada = () => {
               >
                 {value
                   ? actasList.find((acta) => acta.id === value)?.oc
-                    : 'Select Acta...'}
+                  : 'Select Acta...'}
                 <ChevronsUpDown className='w-4 h-4 ml-2 opacity-50 shrink-0' />
               </Button>
             </PopoverTrigger>
@@ -324,8 +326,8 @@ const ActaDeLlegada = () => {
               <Command>
                 <CommandInput placeholder='Search Acta...' />
                 <CommandList>
-                    <CommandEmpty>No Acta found.</CommandEmpty>
-                    <CommandGroup>
+                  <CommandEmpty>No Acta found.</CommandEmpty>
+                  <CommandGroup>
                       {actasList.map((acta) => (
                         <CommandItem
                           key={acta.id}
@@ -340,7 +342,7 @@ const ActaDeLlegada = () => {
                         </CommandItem>
                       ))}
                     </CommandGroup>
-                  </CommandList>
+                </CommandList>
               </Command>
             </PopoverContent>
           </Popover>
@@ -393,7 +395,7 @@ const ActaDeLlegada = () => {
                     { label: 'Frío de descarga:', type: 'text', name: 'frioDescarga' },
                     { label: 'Cajas recibidas:', type: 'text', name: 'cajasRecibidas' }
                   ].map(({ label, type, name }) => (
-                      <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                         <label style={{ flex: '0 0 200px', fontWeight: 'bold' }}>{label}</label>
                         <Input
                           type={type}
@@ -452,27 +454,27 @@ const ActaDeLlegada = () => {
           <AccordionItem value='item-2'>
             <AccordionTrigger
               style={{
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  padding: '12px 16px',
-                  borderRadius: '8px',
-                  border: '2px solid #7A2A1E',
-                  textAlign: 'center',
-                  cursor: 'pointer'
-                }}
+                fontSize: '20px',
+                fontWeight: 'bold',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                border: '2px solid #7A2A1E',
+                textAlign: 'center',
+                cursor: 'pointer'
+              }}
             >
               Condiciones de transporte
-                </AccordionTrigger>
+            </AccordionTrigger>
             <AccordionContent>
               {[
-                  { label: 'Temperatura de set point:', name: 'tempSetPoint' },
-                  { label: 'Observaciones set point:', name: 'observacionesSetPoint' },
-                  { label: 'Temperatura de pantalla:', name: 'tempPantalla' },
-                  { label: 'Observaciones pantalla:', name: 'observacionesPantalla' },
-                  { label: 'Temperatura de origen:', name: 'tempOrigen' },
-                  { label: 'Temperatura de destino:', name: 'tempDestino' }
-                ].map(({ label, name }) => (
-                    <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                { label: 'Temperatura de set point:', name: 'tempSetPoint' },
+                { label: 'Observaciones set point:', name: 'observacionesSetPoint' },
+                { label: 'Temperatura de pantalla:', name: 'tempPantalla' },
+                { label: 'Observaciones pantalla:', name: 'observacionesPantalla' },
+                { label: 'Temperatura de origen:', name: 'tempOrigen' },
+                { label: 'Temperatura de destino:', name: 'tempDestino' }
+              ].map(({ label, name }) => (
+                  <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                       <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>{label}</label>
                       <Input
                         type='text'
@@ -482,24 +484,24 @@ const ActaDeLlegada = () => {
                         style={{ flex: '1', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
                       />
                     </div>
-                ))}
+              ))}
 
               <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                  <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Termógrafo:</label>
-                  <Input
-                      type='text'
-                      name='termografo'
-                      value={formData.termografo}
-                      onChange={handleInputChange}
-                      style={{ flex: '1', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-                    />
-                </div>
+                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Termógrafo:</label>
+                <Input
+                    type='text'
+                    name='termografo'
+                    value={formData.termografo}
+                    onChange={handleInputChange}
+                    style={{ flex: '1', padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
+                  />
+              </div>
 
               {[
-                  { label: 'Cumple termógrafo:', name: 'option' },
-                  { label: 'Cumple termógrafo2:', name: 'option2' }
-                ].map(({ label, name }) => (
-                    <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                { label: 'Cumple termógrafo:', name: 'option' },
+                { label: 'Cumple termógrafo2:', name: 'option2' }
+              ].map(({ label, name }) => (
+                  <div key={name} style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
                       <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>{label}</label>
                       <div style={{ display: 'flex', gap: '10px' }}>
                         <Button
@@ -520,7 +522,7 @@ const ActaDeLlegada = () => {
                         </Button>
                       </div>
                     </div>
-                ))}
+              ))}
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -529,22 +531,22 @@ const ActaDeLlegada = () => {
           <AccordionItem value='item-2'>
             <AccordionTrigger
               style={{
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  padding: '12px 16px',
-                  borderRadius: '8px',
-                  border: '2px solid #7A2A1E',
-                  textAlign: 'center',
-                  cursor: 'pointer'
-                }}
+                fontSize: '20px',
+                fontWeight: 'bold',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                border: '2px solid #7A2A1E',
+                textAlign: 'center',
+                cursor: 'pointer'
+              }}
             >
               Inspección de transporte
-                </AccordionTrigger>
+            </AccordionTrigger>
             <AccordionContent>
               <div style={{ marginBottom: 30 }}>
-                  <label>Limpio </label>
-                  <div style={{ marginBottom: 20 }}>
-                      <Button
+                <label>Limpio </label>
+                <div style={{ marginBottom: 20 }}>
+                    <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionLimpio'
                         value='Si'
@@ -553,7 +555,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         Sí{' '}
                       </Button>
-                      <Button
+                    <Button
                         name='optionLimpio'
                         value='No'
                         onClick={handleInputChange}
@@ -562,7 +564,7 @@ const ActaDeLlegada = () => {
                         No{' '}
                       </Button>
 
-                      {formData.optionLimpio === 'No' && (
+                    {formData.optionLimpio === 'No' && (
                         <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
@@ -582,12 +584,12 @@ const ActaDeLlegada = () => {
                                   multiple
                                   style={{ display: 'none' }}
                                   onChange={(e) =>
-                                    handleFileChange3(e, 'imageLimpio')}
+                                    handleFileChangeImage(e, 'imageLimpio')}
                                 />
                                 )
                               : <p style={{ color: 'red', marginTop: '10px' }}>
                                 No puedes agregar más de 8 imágenes
-                                </p>}
+                              </p>}
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
                               {formData.imageLimpio.map((imageUrl, index) => (
                                 <img
@@ -606,21 +608,21 @@ const ActaDeLlegada = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-                </div>
+                  </div>
+              </div>
               <label style={{ marginBottom: 30 }}>
-                  Pon una descripcion{' '}
-                </label>
+                Pon una descripcion{' '}
+              </label>
               <Input
-                  type='text'
-                  name='limpio'
-                  value={formData.limpio}
-                  onChange={handleInputChange}
-                />
+                type='text'
+                name='limpio'
+                value={formData.limpio}
+                onChange={handleInputChange}
+              />
               <div style={{ marginBottom: 30 }}>
-                  <label>Caja cerrada, en buen estado </label>
-                  <div style={{ marginBottom: 20 }}>
-                      <Button
+                <label>Caja cerrada, en buen estado </label>
+                <div style={{ marginBottom: 20 }}>
+                    <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionCaja'
                         value='Si'
@@ -629,7 +631,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         Sí{' '}
                       </Button>
-                      <Button
+                    <Button
                         name='optionCaja'
                         value='No'
                         onClick={handleInputChange}
@@ -637,7 +639,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         No{' '}
                       </Button>
-                      {formData.optionCaja === 'No' && (
+                    {formData.optionCaja === 'No' && (
                         <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
@@ -658,12 +660,12 @@ const ActaDeLlegada = () => {
                                   multiple
                                   style={{ display: 'none' }}
                                   onChange={(e) =>
-                                    handleFileChange3(e, 'imageCajaCerrada')}
+                                    handleFileChangeImage(e, 'imageCajaCerrada')}
                                 />
                                 )
                               : <p style={{ color: 'red', marginTop: '10px' }}>
                                 No puedes agregar más de 8 imágenes
-                              </p>}
+                                </p>}
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
                               {formData.imageCajaCerrada.map(
@@ -680,19 +682,19 @@ const ActaDeLlegada = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-                </div>
+                  </div>
+              </div>
               <label>Description</label>
               <Input
-                  type='text'
-                  name='cajaCerrada'
-                  value={formData.cajaCerrada}
-                  onChange={handleInputChange}
-                />
+                type='text'
+                name='cajaCerrada'
+                value={formData.cajaCerrada}
+                onChange={handleInputChange}
+              />
               <div style={{ marginBottom: 30 }}>
-                  <label>Lona en buen estado: </label>
-                  <div style={{ marginBottom: 20 }}>
-                      <Button
+                <label>Lona en buen estado: </label>
+                <div style={{ marginBottom: 20 }}>
+                    <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionLona'
                         value='Si'
@@ -701,7 +703,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         Sí{' '}
                       </Button>
-                      <Button
+                    <Button
                         name='optionLona'
                         value='No'
                         onClick={handleInputChange}
@@ -709,7 +711,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         No{' '}
                       </Button>
-                      {formData.optionLona === 'No' && (
+                    {formData.optionLona === 'No' && (
                         <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
@@ -725,7 +727,7 @@ const ActaDeLlegada = () => {
                               multiple
                               style={{ display: 'none' }}
                               onChange={(e) =>
-                                handleFileChange3(e, 'imageLonaBuenEstado')}
+                                handleFileChangeImage(e, 'imageLonaBuenEstado')}
                             />
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
@@ -748,19 +750,19 @@ const ActaDeLlegada = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-                </div>
+                  </div>
+              </div>
               <label>Descripcion</label>
               <Input
-                  type='text'
-                  name='lona'
-                  value={formData.lona}
-                  onChange={handleInputChange}
-                />
+                type='text'
+                name='lona'
+                value={formData.lona}
+                onChange={handleInputChange}
+              />
               <div style={{ marginBottom: 30 }}>
-                  <label>Libre de fauna nociva: </label>
-                  <div style={{ marginBottom: 20 }}>
-                      <Button
+                <label>Libre de fauna nociva: </label>
+                <div style={{ marginBottom: 20 }}>
+                    <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionLibre'
                         value='Si'
@@ -769,7 +771,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         Sí{' '}
                       </Button>
-                      <Button
+                    <Button
                         name='optionLibre'
                         value='No'
                         onClick={handleInputChange}
@@ -777,7 +779,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         No{' '}
                       </Button>
-                      {formData.optionLibre === 'No' && (
+                    {formData.optionLibre === 'No' && (
                         <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
@@ -796,7 +798,7 @@ const ActaDeLlegada = () => {
                               multiple
                               style={{ display: 'none' }}
                               onChange={(e) =>
-                                handleFileChange3(e, 'imageLibreFauna')}
+                                handleFileChangeImage(e, 'imageLibreFauna')}
                             />
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
@@ -819,19 +821,19 @@ const ActaDeLlegada = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-                </div>
+                  </div>
+              </div>
               <label>Descripcion: </label>
               <Input
-                  type='text'
-                  name='fauna'
-                  value={formData.fauna}
-                  onChange={handleInputChange}
-                />
+                type='text'
+                name='fauna'
+                value={formData.fauna}
+                onChange={handleInputChange}
+              />
               <div style={{ marginBottom: 30 }}>
-                  <label>Carga en buen estado: </label>
-                  <div style={{ marginBottom: 20 }}>
-                      <Button
+                <label>Carga en buen estado: </label>
+                <div style={{ marginBottom: 20 }}>
+                    <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionCarga'
                         value='Si'
@@ -840,7 +842,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         Sí{' '}
                       </Button>
-                      <Button
+                    <Button
                         name='optionCarga'
                         value='No'
                         onClick={handleInputChange}
@@ -848,7 +850,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         No{' '}
                       </Button>
-                      {formData.optionCarga === 'No' && (
+                    {formData.optionCarga === 'No' && (
                         <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
@@ -864,7 +866,7 @@ const ActaDeLlegada = () => {
                               multiple
                               style={{ display: 'none' }}
                               onChange={(e) =>
-                                handleFileChange3(e, 'imageCargaBuenEstado')}
+                                handleFileChangeImage(e, 'imageCargaBuenEstado')}
                             />
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
@@ -887,19 +889,19 @@ const ActaDeLlegada = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-                </div>
+                  </div>
+              </div>
               <label>Descripcion: </label>
               <Input
-                  type='text'
-                  name='carga'
-                  value={formData.carga}
-                  onChange={handleInputChange}
-                />
+                type='text'
+                name='carga'
+                value={formData.carga}
+                onChange={handleInputChange}
+              />
               <div style={{ marginBottom: 30 }}>
-                  <label>Seguridad de carga: </label>
-                  <div style={{ marginBottom: 20 }}>
-                      <Button
+                <label>Seguridad de carga: </label>
+                <div style={{ marginBottom: 20 }}>
+                    <Button
                         style={{ flex: 5, marginRight: '10px' }}
                         name='optionSeguridad'
                         value='Si'
@@ -908,7 +910,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         Sí{' '}
                       </Button>
-                      <Button
+                    <Button
                         name='optionSeguridad'
                         value='No'
                         onClick={handleInputChange}
@@ -916,7 +918,7 @@ const ActaDeLlegada = () => {
                         {' '}
                         No{' '}
                       </Button>
-                      {formData.optionSeguridad === 'No' && (
+                    {formData.optionSeguridad === 'No' && (
                         <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
@@ -935,7 +937,7 @@ const ActaDeLlegada = () => {
                               multiple
                               style={{ display: 'none' }}
                               onChange={(e) =>
-                                handleFileChange3(e, 'imageSeguridadCarga')}
+                                handleFileChangeImage(e, 'imageSeguridadCarga')}
                             />
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
@@ -958,18 +960,18 @@ const ActaDeLlegada = () => {
                           </div>
                         </div>
                       )}
-                    </div>
-                </div>
+                  </div>
+              </div>
               <label>Descripcion: </label>
               <Input
-                  type='text'
-                  name='seguridadCarga'
-                  value={formData.seguridadCarga}
-                  onChange={handleInputChange}
-                />
+                type='text'
+                name='seguridadCarga'
+                value={formData.seguridadCarga}
+                onChange={handleInputChange}
+              />
               <div style={{ marginBottom: 30 }}>
-                  <label>Sellado: </label>
-                  <div style={{ marginBottom: 20 }}>
+                <label>Sellado: </label>
+                <div style={{ marginBottom: 20 }}>
                     <Button
                       style={{ flex: 5, marginRight: '10px' }}
                       name='optionSellado'
@@ -988,7 +990,7 @@ const ActaDeLlegada = () => {
                       No{' '}
                     </Button>
                     {formData.optionSellado === 'No' && (
-                        <div>
+                      <div>
                           <div style={{ marginBottom: 30 }}>
                             <Button>
                               <label htmlFor='file-input-sellado' style={{ cursor: 'pointer' }}>
@@ -1003,7 +1005,7 @@ const ActaDeLlegada = () => {
                               multiple
                               style={{ display: 'none' }}
                               onChange={(e) =>
-                                handleFileChange3(e, 'imageSellado')}
+                                handleFileChangeImage(e, 'imageSellado')}
                             />
 
                             <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
@@ -1018,16 +1020,16 @@ const ActaDeLlegada = () => {
                             </div>
                           </div>
                         </div>
-                      )}
+                    )}
                   </div>
-                </div>
+              </div>
               <label>Descripcion: </label>
               <Input
-                  type='text'
-                  name='sellado'
-                  value={formData.sellado}
-                  onChange={handleInputChange}
-                />
+                type='text'
+                name='sellado'
+                value={formData.sellado}
+                onChange={handleInputChange}
+              />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -1049,22 +1051,215 @@ const ActaDeLlegada = () => {
             </AccordionTrigger>
             <AccordionContent>
               <label>Hay tarimas dañadas?: </label>
+              <Button
+                        style={{ flex: 5, marginRight: '10px' }}
+                        name='optiontarimasDanadas'
+                        value='Si'
+                        onClick={handleInputChange}
+                      >
+                        {' '}
+                        Sí{' '}
+                      </Button>
+                    <Button
+                        name='optiontarimasDanadas'
+                        value='No'
+                        onClick={handleInputChange}
+                      >
+                        {' '}
+                        No{' '}
+                      </Button>
+                     {formData.optiontarimasDanadas === 'No' && (
+                        <div>
+                          <div style={{ marginBottom: 30 }}>
+                            <Button>
+                              <label
+                                htmlFor='file-input-tarimas'
+                                style={{ cursor: 'pointer' }}
+                              >
+                                Seleccionar Imagen
+                              </label>
+                            </Button>
+                            {formData.imagestarimasDanadas.length < 8
+                              ? (
+                                <input
+                                  type='file'
+                                  id='file-input-tarimas'
+                                  accept='image/*'
+                                  multiple
+                                  style={{ display: 'none' }}
+                                  onChange={(e) =>
+                                    handleFileChangeImage(e, 'imagestarimasDanadas')}
+                                />
+                                )
+                              : <p style={{ color: 'red', marginTop: '10px' }}>
+                                No puedes agregar más de 8 imágenes
+                              </p>}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
+                              {formData.imagestarimasDanadas.map((imageUrl, index) => (
+                                <img
+                                  key={index}
+                                  src={imageUrl}
+                                  alt='imagestarimasDanadas'
+                                  style={{
+                                    width: '200px',
+                                    height: '200px',
+                                    margin: '10px',
+                                    objectFit: 'cover'
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+              <label style={{ marginBottom: 30 }}>
+                Pon una descripcion{' '}
+              </label>
               <Input
-                type='number'
+                type='text'
                 name='tarimasDanadas'
                 value={formData.tarimasDanadas}
                 onChange={handleInputChange}
               />
               <label>Cajas Identificadas: </label>
+
+              <Button
+                        style={{ flex: 5, marginRight: '10px' }}
+                        name='optioncajasIdentificadas'
+                        value='Si'
+                        onClick={handleInputChange}
+                      >
+                        {' '}
+                        Sí{' '}
+                      </Button>
+                      
+                    <Button
+                        name='optioncajasIdentificadas'
+                        value='No'
+                        onClick={handleInputChange}>
+                        {' '}
+                        No{' '}
+                      </Button>
+                     {formData.optioncajasIdentificadas === 'No' && (
+                        <div>
+                          <div style={{ marginBottom: 30 }}>
+                            <Button>
+                              <label
+                                htmlFor='file-input-caja'
+                                style={{ cursor: 'pointer' }}
+                              >
+                                Seleccionar Imagen
+                              </label>
+                            </Button>
+                            {formData.imagescajasIdentificadas.length < 8
+                              ? (
+                                <input
+                                  type='file'
+                                  id='file-input-caja'
+                                  accept='image/*'
+                                  multiple
+                                  style={{ display: 'none' }}
+                                  onChange={(e) =>
+                                    handleFileChangeImage(e,'imagescajasIdentificadas')}
+                                />
+                                )
+                              : <p style={{ color: 'red', marginTop: '10px' }}>
+                                No puedes agregar más de 8 imágenes
+                              </p>}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
+                              {formData.imagescajasIdentificadas.map((imageUrl, index) => (
+                                <img
+                                  key={index}
+                                  src={imageUrl}
+                                  alt='imagescajasIdentificadas'
+                                  style={{
+                                    width: '200px',
+                                    height: '200px',
+                                    margin: '10px',
+                                    objectFit: 'cover'
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+               <label style={{ marginBottom: 30 }}>
+                Pon una descripcion{' '}
+              </label>
               <Input
-                type='number'
+                type='text'
                 name='cajasIdentificadas'
                 value={formData.cajasIdentificadas}
                 onChange={handleInputChange}
               />
               <label>Cajas Dañadas por Maniobra: </label>
+              <Button
+                        style={{ flex: 5, marginRight: '10px' }}
+                        name='optiondanadasManiobra'
+                        value='Si'
+                        onClick={handleInputChange}
+                      >
+                        {' '}
+                        Sí{' '}
+                      </Button>
+                    <Button
+                        name='optiondanadasManiobra'
+                        value='No'
+                        onClick={handleInputChange}
+                      >
+                        {' '}
+                        No{' '}
+                      </Button>
+                     {formData.optiondanadasManiobra === 'No' && (
+                        <div>
+                          <div style={{ marginBottom: 30 }}>
+                            <Button>
+                              <label
+                                htmlFor='file-input-danadas'
+                                style={{ cursor: 'pointer' }}
+                              >
+                                Seleccionar Imagen
+                              </label>
+                            </Button>
+                            {formData.imagesdanadasManiobra.length < 8
+                              ? (
+                                <input
+                                  type='file'
+                                  id='file-input-danadas'
+                                  accept='image/*'
+                                  multiple
+                                  style={{ display: 'none' }}
+                                  onChange={(e) =>
+                                    handleFileChangeImage(e, 'imagesdanadasManiobra')}
+                                />
+                                )
+                              : <p style={{ color: 'red', marginTop: '10px' }}>
+                                No puedes agregar más de 8 imágenes
+                              </p>}
+                            <div style={{ display: 'flex', flexWrap: 'wrap', marginTop: '20px' }}>
+                              {formData.imagesdanadasManiobra.map((imageUrl, index) => (
+                                <img
+                                  key={index}
+                                  src={imageUrl}
+                                  alt='imagesdanadasManiobra'
+                                  style={{
+                                    width: '200px',
+                                    height: '200px',
+                                    margin: '10px',
+                                    objectFit: 'cover'
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+               <label style={{ marginBottom: 30 }}>
+                Pon una descripcion{' '}
+              </label>
               <Input
-                type='number'
+                type='text'
                 name='danadasManiobra'
                 value={formData.danadasManiobra}
                 onChange={handleInputChange}
@@ -1121,7 +1316,7 @@ const ActaDeLlegada = () => {
                       />
                     </td>
                     <td>
-                          <Input
+                      <Input
                             type='number'
                             name='tempAMedio'
                             value={formData.tempAMedio}
@@ -1129,9 +1324,9 @@ const ActaDeLlegada = () => {
                               handleInputChange(e)
                             }}
                           />
-                        </td>
+                    </td>
                     <td>
-                          <Input
+                      <Input
                             type='number'
                             name='tempAFondo'
                             value={formData.tempAFondo}
@@ -1139,13 +1334,13 @@ const ActaDeLlegada = () => {
                               handleInputChange(e)
                             }}
                           />
-                        </td>
+                    </td>
                   </tr>
                   <tr>
-                        <td>
+                    <td>
                           <label>M </label>
                         </td>
-                        <td>
+                    <td>
                           <Input
                             type='number'
                             name='tempMPuerta'
@@ -1155,7 +1350,7 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                        <td>
+                    <td>
                           <Input
                             type='number'
                             name='tempMMedio'
@@ -1165,7 +1360,7 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                        <td>
+                    <td>
                           <Input
                             type='number'
                             name='tempMFondo'
@@ -1175,12 +1370,12 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                      </tr>
+                  </tr>
                   <tr>
-                        <td>
+                    <td>
                           <label>B </label>
                         </td>
-                        <td>
+                    <td>
                           <Input
                             type='number'
                             name='tempBPuerta'
@@ -1190,7 +1385,7 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                        <td>
+                    <td>
                           <Input
                             type='number'
                             name='tempBMedio'
@@ -1200,7 +1395,7 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                        <td>
+                    <td>
                           <Input
                             type='number'
                             name='tempBFondo'
@@ -1210,33 +1405,33 @@ const ActaDeLlegada = () => {
                             }}
                           />
                         </td>
-                      </tr>
+                  </tr>
                 </tbody>
               </table>
               <div style={{ paddingTop: 10 }}>
-                  <h3>
-                      {' '}
-                      <strong>Temperatura Ideal</strong>
-                    </h3>
-                  <Select
-                      name='tempIdeal'
-                      onValueChange={(value) =>
+                <h3>
+                    {' '}
+                    <strong>Temperatura Ideal</strong>
+                  </h3>
+                <Select
+                    name='tempIdeal'
+                    onValueChange={(value) =>
                         handleInputChange({
                           target: { name: 'tempIdeal', value }
                         })}
-                    >
-                      <SelectTrigger>
+                  >
+                    <SelectTrigger>
                         <SelectValue placeholder='Selecciona una fruta' />
                       </SelectTrigger>
-                      <SelectContent>
+                    <SelectContent>
                         <SelectItem value='4'>Manzanas (4°C)</SelectItem>
                         <SelectItem value='7'>Plátanos (7°C)</SelectItem>
                         <SelectItem value='1'>Uvas (1°C)</SelectItem>
                         <SelectItem value='0'>Fresas (0°C)</SelectItem>
                         <SelectItem value='-1'>Mango (-1°C)</SelectItem>
                       </SelectContent>
-                    </Select>
-                </div>
+                  </Select>
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -1258,68 +1453,68 @@ const ActaDeLlegada = () => {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {/* Names and Signatures Row */}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px' }}>
-                  {/* Inspector Section */}
-                  <div style={{ flex: 1, textAlign: 'center' }}>
-                      <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
-            Nombre Inspector de Calidad
+                {/* Inspector Section */}
+                <div style={{ flex: 1, textAlign: 'center' }}>
+                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>
+                        Nombre Inspector de Calidad
               </label>
-                      <Input
-            type='text'
-            name='nombreInspector'
-            value={formData.nombreInspector}
-            onChange={handleInputChange}
-            style={{ marginBottom: '10px', width: '100%' }}
-          />
-                      <h2 style={{ margin: '10px 0' }}>Firma Inspector de Calidad</h2>
-                      <div
-            style={{
-                  border: '2px solid black',
-                  padding: 10,
-                  display: 'inline-block',
-                  boxSizing: 'border-box'
-                }}
-          >
-            <SignatureCanvas
-                  ref={signaturePadInspector}
-                  penColor='black'
-                  canvasProps={{ width: 250, height: 100, className: 'signature-canvas' }}
-                />
-          </div>
-                    </div>
+                    <Input
+                        type='text'
+                        name='nombreInspector'
+                        value={formData.nombreInspector}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: '10px', width: '100%' }}
+                      />
+                    <h2 style={{ margin: '10px 0' }}>Firma Inspector de Calidad</h2>
+                    <div
+                        style={{
+              border: '2px solid black',
+              padding: 10,
+              display: 'inline-block',
+              boxSizing: 'border-box'
+            }}
+                      >
+                        <SignatureCanvas
+              ref={signaturePadInspector}
+              penColor='black'
+              canvasProps={{ width: 250, height: 100, className: 'signature-canvas' }}
+            />
+                      </div>
+                  </div>
 
-                  {/* Chofer Section */}
-                  <div style={{ flex: 1, textAlign: 'center' }}>
-                      <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Nombre Chofer</label>
-                      <Input
-            type='text'
-            name='nombreChofer'
-            value={formData.nombreChofer}
-            onChange={handleInputChange}
-            style={{ marginBottom: '10px', width: '100%' }}
-          />
-                      <h2 style={{ margin: '10px 0' }}>Firma del Chofer</h2>
-                      <div
-            style={{
-                  border: '2px solid black',
-                  padding: 10,
-                  display: 'inline-block',
-                  boxSizing: 'border-box'
-                }}
-          >
-            <SignatureCanvas
-                  ref={signaturePadChofer}
-                  penColor='black'
-                  canvasProps={{ width: 250, height: 100, className: 'signature-canvas' }}
-                />
-          </div>
-                    </div>
-                </div>
+                {/* Chofer Section */}
+                <div style={{ flex: 1, textAlign: 'center' }}>
+                    <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '5px' }}>Nombre Chofer</label>
+                    <Input
+                        type='text'
+                        name='nombreChofer'
+                        value={formData.nombreChofer}
+                        onChange={handleInputChange}
+                        style={{ marginBottom: '10px', width: '100%' }}
+                      />
+                    <h2 style={{ margin: '10px 0' }}>Firma del Chofer</h2>
+                    <div
+                        style={{
+              border: '2px solid black',
+              padding: 10,
+              display: 'inline-block',
+              boxSizing: 'border-box'
+            }}
+                      >
+                        <SignatureCanvas
+              ref={signaturePadChofer}
+              penColor='black'
+              canvasProps={{ width: 250, height: 100, className: 'signature-canvas' }}
+            />
+                      </div>
+                  </div>
+              </div>
             </div>
           </CardContent>
           <CardFooter>
             <p style={{ textAlign: 'center' }}>
               Revise los datos y asegúrese de que las firmas sean claras antes de proceder.
-        </p>
+            </p>
           </CardFooter>
         </Card>
         <div style={{ paddingTop: 5 }} />
@@ -1329,11 +1524,13 @@ const ActaDeLlegada = () => {
         <Button onClick={handleInsert}>Guardar datos en la Bd</Button>
 
         <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
-            <PDFDownloadLink document={<DowloadnPDF
+          <PDFDownloadLink
+             document={<DowloadnPDF
               formData={formData}
               firmaBase64Inspector={firmaBase64Inspector}
               firmaBase64Chofer={firmaBase64Chofer}
-            />} fileName='acta_de_llegada.pdf'>
+                                       />} fileName='acta_de_llegada.pdf'
+            >
               <Button variant='primary'>Descargar PDF</Button>
             </PDFDownloadLink>
         </div>
@@ -1351,22 +1548,13 @@ const ActaDeLlegada = () => {
           </DialogHeader>
 
           <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            {currentPage === 1 && (
-              <Button onClick={goToNextPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                Ir a la Página 2
-              </Button>
-              )}
-            {currentPage === 2 && (
-              <Button onClick={goToPreviousPage} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                Ir a la Página 3
-              </Button>
-            )}
-            {currentPage === 3 && (
-              <Button onClick={goToNextPage2} style={{ padding: '10px 20px', fontSize: '16px' }}>
-                Volver a la Página 1
-              </Button>
-            )}
+          
 
+             
+                <Button onClick={buttonConfig.onClick} style={{ padding: '10px 20px', fontSize: '16px' }}>
+                  {buttonConfig.label}
+                </Button>
+              
             <PDFViewer width='100%' height='500px'>
               <ActaPDF
                 formData={formData}

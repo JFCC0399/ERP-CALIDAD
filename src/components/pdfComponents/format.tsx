@@ -55,6 +55,9 @@ export const formInitial = {
   optionCarga: '',
   optionSeguridad: '',
   optionSellado: '',
+  optiontarimasDanadas:'',
+  optioncajasIdentificadas:'',
+  optiondanadasManiobra:'',
   imageTermografo: [],
   imageLimpio: [],
   imageMalosOlores: [],
@@ -64,9 +67,14 @@ export const formInitial = {
   imageCargaBuenEstado: [],
   imageSeguridadCarga: [],
   imageSellado: [],
+  imagestarimasDanadas:[],
+  imagescajasIdentificadas:[],
+  imagesdanadasManiobra:[],
   tarimasDanadas: '',
   cajasIdentificadas: '',
-  danadasManiobra: '',
-  image2: [],
-  image3: []
+  danadasManiobra: ''
+ 
+
 }
+
+
