@@ -674,52 +674,138 @@ const ActaDeLlegada = (): JSX.Element => {
                   }}
                 />
               </div>
-              {[
-                { label: "Cumple termógrafo:", name: "option" },
-                { label: "Cumple termógrafo2:", name: "option2" },
-              ].map(({ label, name }) => (
-                <div
-                  key={name}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "20px",
-                  }}
+              <label style={{ flex: "0 0 250px", fontWeight: "bold" }}>
+                cunmple termografo:
+              </label>
+              <div style={{ marginBottom: 20 }}>
+                <Button
+                  style={{ flex: 5, marginRight: "10px" }}
+                  name="option"
+                  value="Si"
+                  onClick={handleInputChange}
                 >
-                  <label style={{ flex: "0 0 250px", fontWeight: "bold" }}>
-                    {label}
-                  </label>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <Button
-                      style={{
-                        padding: "8px 16px",
-                        borderRadius: "4px",
-                        backgroundColor: "#9A3324",
-                        cursor: "pointer",
-                      }}
-                      name={name}
-                      value="Si"
-                      onClick={handleInputChange}
-                    >
-                      Sí
-                    </Button>
-                    <Button
-                      style={{
-                        padding: "8px 16px",
-                        borderRadius: "4px",
-                        backgroundColor: "#ccc",
-                        color: "#000",
-                        cursor: "pointer",
-                      }}
-                      name={name}
-                      value="No"
-                      onClick={handleInputChange}
-                    >
-                      No
-                    </Button>
+                  {" "}
+                  Sí{" "}
+                </Button>
+                <Button name="option" value="No" onClick={handleInputChange}>
+                  {" "}
+                  No{" "}
+                </Button>
+                {formData.option === "No" && (
+                  <div>
+                    <div style={{ marginBottom: 30 }}>
+                      <Button>
+                        <label
+                          htmlFor="file-input-termografo1"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Seleccionar Imagen
+                        </label>
+                      </Button>
+
+                      <input
+                        type="file"
+                        id="file-input-termografo1"
+                        accept="image/*"
+                        multiple
+                        style={{ display: "none" }}
+                        onChange={(e) =>
+                          handleFileChange3(e, "imagecumpletermografo")
+                        }
+                      />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          marginTop: "20px",
+                        }}
+                      >
+                        {formData.imagecumpletermografo.map(
+                          (imageUrl: string, index: number) => (
+                            <img
+                              key={index}
+                              src={imageUrl}
+                              style={{
+                                width: "200px",
+                                height: "200px",
+                                margin: "10px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )}
+              </div>
+              <label style={{ flex: "0 0 250px", fontWeight: "bold" }}>
+                cunmple termografo2:
+              </label>
+              <div style={{ marginBottom: 20 }}>
+                <Button
+                  style={{ flex: 5, marginRight: "10px" }}
+                  name="option2"
+                  value="Si"
+                  onClick={handleInputChange}
+                >
+                  {" "}
+                  Sí{" "}
+                </Button>
+                <Button name="option2" value="No" onClick={handleInputChange}>
+                  {" "}
+                  No{" "}
+                </Button>
+                {formData.option2 === "No" && (
+                  <div>
+                    <div style={{ marginBottom: 30 }}>
+                      <Button>
+                        <label
+                          htmlFor="file-input-termografo2"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Seleccionar Imagen
+                        </label>
+                      </Button>
+
+                      <input
+                        type="file"
+                        id="file-input-termografo2"
+                        accept="image/*"
+                        multiple
+                        style={{ display: "none" }}
+                        onChange={(e) =>
+                          handleFileChange3(e, "imagecumpletermografo2")
+                        }
+                      />
+
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          marginTop: "20px",
+                        }}
+                      >
+                        {formData.imagecumpletermografo2.map(
+                          (imageUrl: string, index: number) => (
+                            <img
+                              key={index}
+                              src={imageUrl}
+                              style={{
+                                width: "200px",
+                                height: "200px",
+                                margin: "10px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -848,7 +934,7 @@ const ActaDeLlegada = (): JSX.Element => {
                       <div style={{ marginBottom: 30 }}>
                         <Button>
                           <label
-                            htmlFor="file-input-caja"
+                            htmlFor="file-input-caja1"
                             style={{ cursor: "pointer" }}
                           >
                             Seleccionar Imagen
@@ -857,7 +943,7 @@ const ActaDeLlegada = (): JSX.Element => {
                         {formData.imageCajaCerrada.length < 8 ? (
                           <input
                             type="file"
-                            id="file-input-caja"
+                            id="file-input-caja1"
                             accept="image/*"
                             multiple
                             style={{ display: "none" }}
@@ -961,7 +1047,6 @@ const ActaDeLlegada = (): JSX.Element => {
                               <img
                                 key={index}
                                 src={imageUrl}
-                                alt={`imageLonaBuenEstado-${index}`}
                                 style={{
                                   width: "200px",
                                   height: "200px",
@@ -1037,7 +1122,6 @@ const ActaDeLlegada = (): JSX.Element => {
                               <img
                                 key={index}
                                 src={imageUrl}
-                                alt={`Selected ${index}`}
                                 style={{
                                   width: "200px",
                                   height: "200px",
@@ -1309,74 +1393,80 @@ const ActaDeLlegada = (): JSX.Element => {
             </AccordionTrigger>
             <AccordionContent>
               <label>Hay tarimas dañadas?: </label>
-              <Button
-                style={{ flex: 5, marginRight: "10px" }}
-                name="optiontarimasDanadas"
-                value="Si"
-                onClick={handleInputChange}
-              >
-                {" "}
-                Sí{" "}
-              </Button>
-              <Button
-                name="optiontarimasDanadas"
-                value="No"
-                onClick={handleInputChange}
-              >
-                {" "}
-                No{" "}
-              </Button>
-              {formData.optiontarimasDanadas === "No" && (
-                <div>
-                  <div style={{ marginBottom: 30 }}>
-                    <Button>
-                      <label
-                        htmlFor="file-input-tarimas"
-                        style={{ cursor: "pointer" }}
-                      >
-                        Seleccionar Imagen
-                      </label>
-                    </Button>
-                    {formData.imagestarimasDanadas.length < 8 ? (
-                      <input
-                        type="file"
-                        id="file-input-tarimas"
-                        accept="image/*"
-                        multiple
-                        style={{ display: "none" }}
-                        onChange={(e) =>
-                          handleFileChangeImage(e, "imagestarimasDanadas")
-                        }
-                      />
-                    ) : (
-                      <p style={{ color: "red", marginTop: "10px" }}>
-                        No puedes agregar más de 8 imágenes
-                      </p>
-                    )}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        marginTop: "20px",
-                      }}
-                    >
-                      {formData.imagestarimasDanadas.map((imageUrl, index) => (
-                        <img
-                          key={index}
-                          src={imageUrl}
-                          alt="imagestarimasDanadas"
-                          style={{
-                            width: "200px",
-                            height: "200px",
-                            margin: "10px",
-                            objectFit: "cover",
-                          }}
+              <div style={{ marginBottom: 20 }}>
+                <Button
+                  style={{ flex: 5, marginRight: "10px" }}
+                  name="optiontarimasDanadas"
+                  value="Si"
+                  onClick={handleInputChange}
+                >
+                  {" "}
+                  Sí{" "}
+                </Button>
+                <Button
+                  name="optiontarimasDanadas"
+                  value="No"
+                  onClick={handleInputChange}
+                >
+                  {" "}
+                  No{" "}
+                </Button>
+
+                {formData.optiontarimasDanadas === "Si" && (
+                  <div>
+                    <div style={{ marginBottom: 30 }}>
+                      <Button>
+                        <label
+                          htmlFor="file-input-tarimas"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Seleccionar Imagen
+                        </label>
+                      </Button>
+                      {formData.imagestarimasDanadas.length < 8 ? (
+                        <input
+                          type="file"
+                          id="file-input-tarimas"
+                          accept="image/*"
+                          multiple
+                          style={{ display: "none" }}
+                          onChange={(e) =>
+                            handleFileChange3(e, "imagestarimasDanadas")
+                          }
                         />
-                      ))}
+                      ) : (
+                        <p style={{ color: "red", marginTop: "10px" }}>
+                          No puedes agregar más de 8 imágenes
+                        </p>
+                      )}
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          marginTop: "20px",
+                        }}
+                      >
+                        {formData.imagestarimasDanadas.map(
+                          (imageUrl, index) => (
+                            <img
+                              key={index}
+                              src={imageUrl}
+                              alt="imagestarimasDanadas"
+                              style={{
+                                width: "200px",
+                                height: "200px",
+                                margin: "10px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          )
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
               <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
               <Input
                 type="text"
@@ -1386,77 +1476,79 @@ const ActaDeLlegada = (): JSX.Element => {
               />
               <label>Cajas Identificadas: </label>
 
-              <Button
-                style={{ flex: 5, marginRight: "10px" }}
-                name="optioncajasIdentificadas"
-                value="Si"
-                onClick={handleInputChange}
-              >
-                {" "}
-                Sí{" "}
-              </Button>
-
-              <Button
-                name="optioncajasIdentificadas"
-                value="No"
-                onClick={handleInputChange}
-              >
-                {" "}
-                No{" "}
-              </Button>
-              {formData.optioncajasIdentificadas === "No" && (
-                <div>
-                  <div style={{ marginBottom: 30 }}>
-                    <Button>
-                      <label
-                        htmlFor="file-input-caja"
-                        style={{ cursor: "pointer" }}
-                      >
-                        Seleccionar Imagen
-                      </label>
-                    </Button>
-                    {formData.imagescajasIdentificadas.length < 8 ? (
-                      <input
-                        type="file"
-                        id="file-input-caja"
-                        accept="image/*"
-                        multiple
-                        style={{ display: "none" }}
-                        onChange={(e) =>
-                          handleFileChangeImage(e, "imagescajasIdentificadas")
-                        }
-                      />
-                    ) : (
-                      <p style={{ color: "red", marginTop: "10px" }}>
-                        No puedes agregar más de 8 imágenes
-                      </p>
-                    )}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        marginTop: "20px",
-                      }}
-                    >
-                      {formData.imagescajasIdentificadas.map(
-                        (imageUrl, index) => (
-                          <img
-                            key={index}
-                            src={imageUrl}
-                            alt="imagescajasIdentificadas"
-                            style={{
-                              width: "200px",
-                              height: "200px",
-                              margin: "10px",
-                              objectFit: "cover",
-                            }}
-                          />
-                        )
+              <div style={{ marginBottom: 20 }}>
+                <Button
+                  style={{ flex: 5, marginRight: "10px" }}
+                  name="optioncajasIdentificadas"
+                  value="Si"
+                  onClick={handleInputChange}
+                >
+                  {" "}
+                  Sí{" "}
+                </Button>
+                <Button
+                  name="optioncajasIdentificadas"
+                  value="No"
+                  onClick={handleInputChange}
+                >
+                  {" "}
+                  No{" "}
+                </Button>
+                {formData.optioncajasIdentificadas === "Si" && (
+                  <div>
+                    <div style={{ marginBottom: 30 }}>
+                      <Button>
+                        <label
+                          htmlFor="file-input-caja"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Seleccionar Imagen
+                        </label>
+                      </Button>
+                      {formData.imagescajasIdentificadas.length < 8 ? (
+                        <input
+                          type="file"
+                          id="file-input-caja"
+                          accept="image/*"
+                          multiple
+                          style={{ display: "none" }}
+                          onChange={(e) =>
+                            handleFileChange3(e, "imagescajasIdentificadas")
+                          }
+                        />
+                      ) : (
+                        <p style={{ color: "red", marginTop: "10px" }}>
+                          No puedes agregar más de 8 imágenes
+                        </p>
                       )}
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          marginTop: "20px",
+                        }}
+                      >
+                        {formData.imagescajasIdentificadas.map(
+                          (imageUrl, index) => (
+                            <img
+                              key={index}
+                              src={imageUrl}
+                              alt="imagescajasIdentificadas"
+                              style={{
+                                width: "200px",
+                                height: "200px",
+                                margin: "10px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          )
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
               <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
               <Input
                 type="text"
@@ -1465,74 +1557,79 @@ const ActaDeLlegada = (): JSX.Element => {
                 onChange={handleInputChange}
               />
               <label>Cajas Dañadas por Maniobra: </label>
-              <Button
-                style={{ flex: 5, marginRight: "10px" }}
-                name="optiondanadasManiobra"
-                value="Si"
-                onClick={handleInputChange}
-              >
-                {" "}
-                Sí{" "}
-              </Button>
-              <Button
-                name="optiondanadasManiobra"
-                value="No"
-                onClick={handleInputChange}
-              >
-                {" "}
-                No{" "}
-              </Button>
-              {formData.optiondanadasManiobra === "No" && (
-                <div>
-                  <div style={{ marginBottom: 30 }}>
-                    <Button>
-                      <label
-                        htmlFor="file-input-danadas"
-                        style={{ cursor: "pointer" }}
-                      >
-                        Seleccionar Imagen
-                      </label>
-                    </Button>
-                    {formData.imagesdanadasManiobra.length < 8 ? (
-                      <input
-                        type="file"
-                        id="file-input-danadas"
-                        accept="image/*"
-                        multiple
-                        style={{ display: "none" }}
-                        onChange={(e) =>
-                          handleFileChangeImage(e, "imagesdanadasManiobra")
-                        }
-                      />
-                    ) : (
-                      <p style={{ color: "red", marginTop: "10px" }}>
-                        No puedes agregar más de 8 imágenes
-                      </p>
-                    )}
-                    <div
-                      style={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        marginTop: "20px",
-                      }}
-                    >
-                      {formData.imagesdanadasManiobra.map((imageUrl, index) => (
-                        <img
-                          key={index}
-                          src={imageUrl}
-                          alt="imagesdanadasManiobra"
-                          style={{
-                            width: "200px",
-                            height: "200px",
-                            margin: "10px",
-                            objectFit: "cover",
-                          }}
+              <div style={{ marginBottom: 20 }}>
+                <Button
+                  style={{ flex: 5, marginRight: "10px" }}
+                  name="optiondanadasManiobra"
+                  value="Si"
+                  onClick={handleInputChange}
+                >
+                  {" "}
+                  Sí{" "}
+                </Button>
+                <Button
+                  name="optiondanadasManiobra"
+                  value="No"
+                  onClick={handleInputChange}
+                >
+                  {" "}
+                  No{" "}
+                </Button>
+                {formData.optiondanadasManiobra === "Si" && (
+                  <div>
+                    <div style={{ marginBottom: 30 }}>
+                      <Button>
+                        <label
+                          htmlFor="Cajas Identificadas:"
+                          style={{ cursor: "pointer" }}
+                        >
+                          Seleccionar Imagen
+                        </label>
+                      </Button>
+                      {formData.imagesdanadasManiobra.length < 8 ? (
+                        <input
+                          type="file"
+                          id="file-input-danadas"
+                          accept="image/*"
+                          multiple
+                          style={{ display: "none" }}
+                          onChange={(e) =>
+                            handleFileChange3(e, "imagesdanadasManiobra")
+                          }
                         />
-                      ))}
+                      ) : (
+                        <p style={{ color: "red", marginTop: "10px" }}>
+                          No puedes agregar más de 8 imágenes
+                        </p>
+                      )}
+                      <div
+                        style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          marginTop: "20px",
+                        }}
+                      >
+                        {formData.imagesdanadasManiobra.map(
+                          (imageUrl, index) => (
+                            <img
+                              key={index}
+                              src={imageUrl}
+                              alt="imagesdanadasManiobra"
+                              style={{
+                                width: "200px",
+                                height: "200px",
+                                margin: "10px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          )
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
+
               <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
               <Input
                 type="text"
@@ -1873,31 +1970,6 @@ const ActaDeLlegada = (): JSX.Element => {
           <div
             style={{ display: "flex", flexDirection: "column", height: "100%" }}
           >
-            {currentPage === 1 && (
-              <Button
-                onClick={goToNextPage}
-                style={{ padding: "10px 20px", fontSize: "16px" }}
-              >
-                Ir a la Página 2
-              </Button>
-            )}
-            {currentPage === 2 && (
-              <Button
-                onClick={goToPreviousPage}
-                style={{ padding: "10px 20px", fontSize: "16px" }}
-              >
-                Ir a la Página 3
-              </Button>
-            )}
-            {currentPage === 3 && (
-              <Button
-                onClick={goToNextPage2}
-                style={{ padding: "10px 20px", fontSize: "16px" }}
-              >
-                Volver a la Página 1
-              </Button>
-            )}
-
             <Button
               onClick={buttonConfig.onClick}
               style={{ padding: "10px 20px", fontSize: "16px" }}
