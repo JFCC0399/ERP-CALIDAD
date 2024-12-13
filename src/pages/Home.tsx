@@ -19,13 +19,7 @@ const Home = (): JSX.Element => {
         pathname, search
       } = window.location
 
-      const destination = `${pathname}${search}`
-
-      if (destination === '/') {
-        navigate('/dashboard')
-      } else {
-        navigate(destination)
-      }
+      navigate(`${pathname}${search}`)
     }
   }, [isLoggedIn])
 

@@ -26,9 +26,11 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./src/*",
+        "./connections/supabase.ts",
+        "./connections/querys.ts"
       ]
     }
   },
-  "include": ["./src"]
+  "include": ["./src", "database.js"]
 }
