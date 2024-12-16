@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/ERP-CALIDAD/',
+  // base: '/ERP-CALIDAD/',
   plugins: [react()],
   resolve: {
     alias: {
