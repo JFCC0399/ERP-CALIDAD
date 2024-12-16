@@ -22,10 +22,6 @@ const router = createBrowserRouter([
       {
         path: 'receipt',
         element: <Receipt />
-      },
-      {
-        path: 'receipt',
-        element: <Receipt />
       }
 
     ]
