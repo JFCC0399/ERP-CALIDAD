@@ -5,36 +5,25 @@ import { ThemeProvider } from './components/ThemeProvider'
 import { TooltipProvider } from './components/ui/tooltip'
 import './App.css'
 import './index.css'
-import Home from './pages/Home'
-import Dashboard from './pages/Dashboard'
+// import Dashboard from './pages/Dashboard'
 import ErrorBoundary from './pages/ErrorBoundary'
 import Receipt from './pages/receipt'
-
-import PDFView from './pages/example'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
-    children: [
-      {
-        path: 'dashboard',
-        element: <Dashboard />
-      },
-      {
-        path: 'receipt',
-        element: <Receipt />
-      },
-      {
-        path: 'receipt',
-        element: <Receipt />
-      },
-      {
-        path: 'MyDocument',
-        element: <PDFView />
-      }
+    element: <Receipt />
+    // children: [
+    //   {
+    //     path: 'receipt',
+    //     element: <Receipt />
+    //   },
+    //   {
+    //     path: 'receipt',
+    //     element: <Receipt />
+    //   }
 
-    ]
+    // ]
   }
 ])
 
