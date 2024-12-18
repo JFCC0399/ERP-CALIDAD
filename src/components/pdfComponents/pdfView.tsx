@@ -170,7 +170,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 {formData.frioDescarga ?? ''}
               </Text>
               <Text style={styles.cellLabel}>
-                Cajas recibidas: {formData.cajasRecibidas}
+                Cajas recibidas:
               </Text>
               <Text style={styles.cellValue}>
                 {formData.cajasRecibidas ?? ''}
@@ -272,7 +272,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                   </View>
                   <View style={[styles.tableRow, { height: 'auto' }]}>
                     <Text style={[styles.cellLabelWhite, { flex: 0.66 }]}>
-                      Termografo:
+                      Termografo
                     </Text>
 
                     <View style={{ flex: 0.42 }}>

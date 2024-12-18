@@ -236,7 +236,7 @@ const DownloadPDF: React.FC<DownloadPDFProps> = ({ formData, firmaBase64Inspecto
                 </View>
                 <View style={[styles.tableRow, { height: 'auto' }]}>
                   <Text style={[styles.cellLabelWhite, { flex: 0.66 }]}>
-                    Termografo:
+                    Termografo
                   </Text>
                   <View style={{ flex: 0.42 }}>
                     <Text style={styles.cellValue}>

@@ -28,7 +28,7 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import GothamNarrowMedium from '@/fonts/GothamNarrow-Medium.otf'
-import { fetchActas, insert } from '@/connections/querys'
+import { fetchActas, insert, update } from '@/connections/querys'
 import {
   Dialog,
   DialogContent,
@@ -66,7 +66,7 @@ Font.register({
 const ActaDeLlegada = (): JSX.Element => {
   const [formData, setFormData] = useState<FormData>(formInitial)
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState<number | null>(null)
+  const [value, setValue] = useState<string | null>(null)
   const [actasList, setActasList] = useState<Acta[]>([])
 
   const [firmaBase64Inspector, setFirmaBase64Inspector] = useState<string | undefined>('')
@@ -77,6 +77,12 @@ const ActaDeLlegada = (): JSX.Element => {
 
   const handleInsert = async (): Promise<void> => {
     await insert(formData) // Llama a la función insert y pasa formData
+  }
+
+  const handleUpdate = async (): Promise<void> => {
+    await update(formData)
+
+
   }
 
   const handleSelectChange = (value: string): void => {
@@ -97,18 +103,18 @@ const ActaDeLlegada = (): JSX.Element => {
     getIncompleteFields(formData)
   }
 
-  const handleSelect = (idActa: number): void => {
-    setValue(idActa)
+  const handleSelect = (oc: string): void => {
+    setValue(oc)
     setOpen(false)
 
     // Buscar detalles del acta seleccionada
-    const selectedActa = actasList.find((acta) => acta.id === idActa)
+    const selectedActa = actasList.find((acta) => acta.oc === oc)
+    console.log("lo que tiene acta es",selectedActa)
 
     if (selectedActa != null) {
       // Actualizar formData con los datos del acta seleccionada
       setFormData((prevFormData) => ({
         ...prevFormData,
-        id: selectedActa.id,
         fecha: selectedActa.fecha ?? '',
         inicioVerificacion: selectedActa.start_verification ?? '',
         terminoVerificacion: selectedActa.end_verification ?? '',
@@ -116,7 +122,7 @@ const ActaDeLlegada = (): JSX.Element => {
         proveedor: selectedActa.provider ?? '',
         origen: selectedActa.origin ?? '',
         factura: selectedActa.bill ?? '',
-        especie: selectedActa.especie ?? '',
+        especie: selectedActa.specie ?? '',
         variedades: selectedActa.varieties ?? '',
         frioDescarga: selectedActa.cold_disc ?? '',
         cajasRecibidas: selectedActa.boxes_received ?? '',
@@ -129,7 +135,6 @@ const ActaDeLlegada = (): JSX.Element => {
         observacionesSetPoint: selectedActa.setpoint_obs ?? '',
         tempPantalla: selectedActa.screen_temp ?? '',
         observacionesPantalla: selectedActa.screen_obs ?? '',
-        termografo: selectedActa.therm_org ?? '',
         tempOrigen: selectedActa.therm_org ?? '',
         tempDestino: selectedActa.therm_dst ?? '',
         limpio: selectedActa.clean_free ?? '',
@@ -187,27 +192,26 @@ const ActaDeLlegada = (): JSX.Element => {
     }))
 
   }
+  const getActasData = async (): Promise<void> => {
+    const data = await fetchActas()
+
+
+    if (data != null) {
+
+      setActasList(
+        data.map((acta: any) => ({
+          ...acta
+        }))
+      )
+    }
+  }
+
 
   useEffect(() => {
-    const getActasData = async (): Promise<void> => {
-      const data = await fetchActas()
-      if (data != null) {
-        setActasList(
-          data.map((acta: any) => ({
-            ...acta,
-            clean_obs: acta.clean_obs ?? '',
-            close_obs: acta.close_obs ?? '',
-            tarp_obs: acta.tarp_obs ?? '',
-            pest_obs: acta.pest_obs ?? '',
-            load_obs: acta.load_obs ?? '',
-            sec_obs: acta.sec_obs ?? '',
-            seal_obs: acta.seal_obs ?? ''
-          }))
-        )
-      }
-    }
 
     void getActasData()
+
+    // Extraer las temperaturas de formData
     const allTemperatures = [
       formData.tempAPuerta,
       formData.tempAMedio,
@@ -223,22 +227,28 @@ const ActaDeLlegada = (): JSX.Element => {
         const num = Number(temp)
         return isNaN(num) ? null : num
       })
-      .filter((temp) => temp !== null) /// Aseguramos que sean números válidos
+      .filter((temp) => temp !== null)  // Aseguramos que sean números válidos
+
     // Si no hay temperaturas válidas, no hacer nada
     if (allTemperatures.length === 0) return
 
+    // Calcular el máximo y mínimo de las temperaturas válidas
     const maxTemp = Math.max(...allTemperatures)
     const minTemp = Math.min(...allTemperatures)
 
-    // Actualizar el estado con los valores de tempMax y tempMin
-    setFormData((prevData) => ({
-      ...prevData,
-      tempMax: maxTemp.toString(),
-      tempMin: minTemp.toString()
-    }))
+    // Solo actualizamos el estado si maxTemp o minTemp cambiaron
+    setFormData((prevData) => {
+      // Evitar actualización si no ha cambiado el valor
+      if (prevData.tempMax === maxTemp.toString() && prevData.tempMin === minTemp.toString()) {
+        return prevData
+      }
 
-    // Actualizar el rango
-    // setTemperatureRange({ max: maxTemp, min: minTemp })
+      return {
+        ...prevData,
+        tempMax: maxTemp.toString(),
+        tempMin: minTemp.toString()
+      }
+    })
   }, [
     formData.tempAPuerta,
     formData.tempAMedio,
@@ -250,6 +260,7 @@ const ActaDeLlegada = (): JSX.Element => {
     formData.tempBMedio,
     formData.tempBFondo
   ])
+
 
   // Función para limpiar ambas firmas
   const clearSignature = (): void => {
@@ -278,9 +289,19 @@ const ActaDeLlegada = (): JSX.Element => {
   }
 
   const getIncompleteFields = (data: FormData): string[] => {
-    // Filtra las claves cuyo valor sea `undefined`, vacío, o no válido
+    // Filtra las claves cuyo valor sea `undefined`, vacío, o no válido, excluyendo las de imágenes y opciones
+    const excludedFields = [
+      'imagecumpletermografo', 'imageCajaCerrada', 'imageCargaBuenEstado',
+      'imagestarimasDanadas', 'imagecumpletermografo2', 'imageLonaBuenEstado',
+      'imageSeguridadCarga', 'imagescajasIdentificadas', 'imageLimpio',
+      'imageLibreFauna', 'imageSellado', 'imagesdanadasManiobra'
+    ]
+
     return Object.keys(data).filter((key) => {
-      const value = data[key]
+      // Ignorar claves que estén en el array `excludedFields`
+      if (excludedFields.includes(key)) return false
+
+      const value = data[key];
       return value === undefined || value === null || value === '' ||
         (Array.isArray(value) && value.length === 0)
     })
@@ -301,7 +322,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 className='w-[200px] justify-between'
               >
                 {value !== null
-                  ? actasList.find((acta) => acta.id === value)?.oc
+                  ? actasList.find((acta) => acta.oc === value)?.oc
                   : 'Select Acta...'}
                 <ChevronsUpDown className='w-4 h-4 ml-2 opacity-50 shrink-0' />
               </Button>
@@ -314,12 +335,12 @@ const ActaDeLlegada = (): JSX.Element => {
                   <CommandGroup>
                     {actasList.map((acta) => (
                       <CommandItem
-                        key={acta.id}
-                        value={acta.id.toString()}
-                        onSelect={() => handleSelect(acta.id)}
+                        key={acta.oc}
+                        value={acta.oc}
+                        onSelect={() => handleSelect(acta.oc)}
                       >
                         <Check
-                          className={`mr-2 h-4 w-4 ${value === acta.id ? 'opacity-100' : 'opacity-0'}`}
+                          className={`mr-2 h-4 w-4 ${value === acta.oc ? 'opacity-100' : 'opacity-0'}`}
                         />
                         {acta.oc}{' '}
                       </CommandItem>
@@ -526,20 +547,8 @@ const ActaDeLlegada = (): JSX.Element => {
                 }}
               >
                 <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
-                  Termógrafo:
+                  Termógrafo
                 </label>
-                <Input
-                  type='text'
-                  name='termografo'
-                  value={formData.termografo}
-                  onChange={handleInputChange}
-                  style={{
-                    flex: '1',
-                    padding: '8px',
-                    borderRadius: '4px',
-                    border: '1px solid #ccc'
-                  }}
-                />
               </div>
               <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
                 cumple termografo:
@@ -570,24 +579,24 @@ const ActaDeLlegada = (): JSX.Element => {
                         </label>
                       </Button>
 
-                      {formData.imagecumpletermografo?.length<8 ?(
+                      {formData.imagecumpletermografo?.length < 8 ? (
 
-                        
-                      <input
-                      type='file'
-                      id='file-input-termografo1'
-                      accept='image/*'
-                      multiple
-                      style={{ display: 'none' }}
-                      onChange={(e) =>
-                        handleFileChange3(e, 'imagecumpletermografo')}
-                    />
-                      ):(<p style={{ color: 'red', marginTop: '10px' }}>
+
+                        <input
+                          type='file'
+                          id='file-input-termografo1'
+                          accept='image/*'
+                          multiple
+                          style={{ display: 'none' }}
+                          onChange={(e) =>
+                            handleFileChange3(e, 'imagecumpletermografo')}
+                        />
+                      ) : (<p style={{ color: 'red', marginTop: '10px' }}>
                         {' '}
                         No puedes agregar más de 8 imágenes{' '}
                       </p>)}
 
-                  
+
 
                       <div
                         style={{
@@ -643,28 +652,28 @@ const ActaDeLlegada = (): JSX.Element => {
                           Seleccionar Imagen
                         </label>
                       </Button>
-                      {formData.imagecumpletermografo2?.length <8?(
-                         <input
-                        type='file'
-                        id='file-input-termografo2'
-                        accept='image/*'
-                        multiple
-                        style={{ display: 'none' }}
-                        onChange={(e) =>
-                          handleFileChange3(e, 'imagecumpletermografo2')}
-                      />
+                      {formData.imagecumpletermografo2?.length < 8 ? (
+                        <input
+                          type='file'
+                          id='file-input-termografo2'
+                          accept='image/*'
+                          multiple
+                          style={{ display: 'none' }}
+                          onChange={(e) =>
+                            handleFileChange3(e, 'imagecumpletermografo2')}
+                        />
 
 
-                      ):
-                      (
-                        <p style={{ color: 'red', marginTop: '10px' }}>
-                          {' '}
-                          No puedes agregar más de 8 imágenes{' '}
-                        </p>
+                      ) :
+                        (
+                          <p style={{ color: 'red', marginTop: '10px' }}>
+                            {' '}
+                            No puedes agregar más de 8 imágenes{' '}
+                          </p>
 
-                      )}
+                        )}
 
-                     
+
                       <div
                         style={{
                           display: 'flex',
@@ -943,7 +952,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageLonaBuenEstado != null) && formData.imageLonaBuenEstado.map(
+                          {formData.imageLonaBuenEstado?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1033,7 +1042,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageLibreFauna != null) && formData.imageLibreFauna.map(
+                          {formData.imageLibreFauna?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1122,7 +1131,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageCargaBuenEstado != null) && formData.imageCargaBuenEstado.map(
+                          {formData.imageCargaBuenEstado?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1212,7 +1221,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageSeguridadCarga != null) && formData.imageSeguridadCarga.map(
+                          {formData.imageSeguridadCarga?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1297,7 +1306,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageSellado != null) && formData.imageSellado.map(
+                          {formData.imageSellado?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1400,7 +1409,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {(formData.imagestarimasDanadas != null) && formData.imagestarimasDanadas.map(
+                        {formData.imagestarimasDanadas?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1421,7 +1430,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 )}
               </div>
 
-              <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
+              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
               <Input
                 type='text'
                 name='tarimasDanadas'
@@ -1483,7 +1492,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {(formData.imagescajasIdentificadas != null) && formData.imagescajasIdentificadas.map(
+                        {formData.imagescajasIdentificadas?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1504,7 +1513,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 )}
               </div>
 
-              <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
+              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
               <Input
                 type='text'
                 name='cajasIdentificadas'
@@ -1565,7 +1574,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {(formData.imagesdanadasManiobra != null) && formData.imagesdanadasManiobra.map(
+                        {formData.imagesdanadasManiobra?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1586,7 +1595,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 )}
               </div>
 
-              <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
+              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
               <Input
                 type='text'
                 name='danadasManiobra'
@@ -1889,38 +1898,74 @@ const ActaDeLlegada = (): JSX.Element => {
         >
           Guardar datos en la Bd
         </Button>
+        <Button
+          onClick={() => {
+            void handleUpdate()
+            void getActasData()
+
+          }}
+        >
+          Actualizar en la base de datos
+        </Button>
+
+
 
         <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
-
           {(() => {
-            return incompleteFields.length === 0 ? (
-              <PDFDownloadLink
-                document={<DownloadPDF
-                  formData={formData}
-                  firmaBase64Inspector={firmaBase64Inspector}
-                  firmaBase64Chofer={firmaBase64Chofer}
-                />}
-                fileName={`Acta_${formData.oc}.pdf`}
-              >
-                <Button variant='default'>Descargar PDF</Button>
-              </PDFDownloadLink>
-
-            ) : (
-              <Button variant="default" disabled>
-                Faltan campos: {incompleteFields.join(', ')}
-              </Button>
-            );
+            return incompleteFields.length === 0
+              ? (
+                <PDFDownloadLink
+                  document={
+                    <DownloadPDF
+                      formData={formData}
+                      firmaBase64Inspector={firmaBase64Inspector}
+                      firmaBase64Chofer={firmaBase64Chofer}
+                    />
+                  }
+                  fileName={`Acta_${formData.oc ?? 'Descarga'}.pdf`}
+                >
+                  <Button variant='default'>Descargar PDF</Button>
+                </PDFDownloadLink>
+              )
+              : (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant='default'>
+                      Faltan campos
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className='sm:max-w-[1000px]'>
+                    <DialogHeader>
+                      <DialogTitle>Campos Incompletos</DialogTitle>
+                      <DialogDescription>
+                        Por favor completa los siguientes campos antes de descargar el PDF:
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className='flex flex-wrap gap-4'>
+                      {/* Ajusta el ancho de cada columna */}
+                      {[...Array(3)].map((_, colIndex) => (
+                        <ul key={colIndex} className='flex-1 min-w-[150px]'>
+                          {incompleteFields
+                            .filter((_, index) => index % 3 === colIndex) // Divide los elementos por columna
+                            .map((field, index) => (
+                              <li key={index} className='mb-2'>
+                                {field}
+                              </li>
+                            ))}
+                        </ul>
+                      ))}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              )
           })()}
-
-
         </div>
       </div>
-
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">Ver PDF</Button>
+          <Button variant='outline'>Ver PDF</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[800px]">
+        <DialogContent className='sm:max-w-[800px]'>
           <DialogHeader>
             <DialogTitle>Vista del Documento</DialogTitle>
             <DialogDescription>
@@ -1929,7 +1974,7 @@ const ActaDeLlegada = (): JSX.Element => {
             </DialogDescription>
           </DialogHeader>
           <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <PDFViewer width="100%" height="500px">
+            <PDFViewer width='100%' height='500px'>
               <ActaPDF
                 formData={formData}
                 firmaBase64Inspector={firmaBase64Inspector}
@@ -1940,16 +1985,13 @@ const ActaDeLlegada = (): JSX.Element => {
               style={{
                 padding: '10px',
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'center'
               }}
             />
             <div style={{ marginTop: 20, textAlign: 'center' }} />
           </div>
         </DialogContent>
       </Dialog>
-
-
-
     </Layout>
   )
 }
