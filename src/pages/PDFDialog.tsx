@@ -51,7 +51,6 @@ const PDFDialog: React.FC<PDFDialogProps> = ({ formData, firmaBase64Inspector, f
               formData={formData}
               firmaBase64Inspector={firmaBase64Inspector}
               firmaBase64Chofer={firmaBase64Chofer}
-              currentPage={currentPage}
             />
           </PDFViewer>
         </div>

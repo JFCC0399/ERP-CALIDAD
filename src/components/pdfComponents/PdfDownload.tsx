@@ -1,4 +1,5 @@
 import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer'
+import { FormData } from './format'
 // Estilos
 const styles = StyleSheet.create({
   page: { padding: 20 },
@@ -83,73 +84,6 @@ const styles = StyleSheet.create({
     fontFamily: 'GothamNarrow'
   }
 })
-
-// Componente ActaPDF2
-export interface FormData {
-  fecha?: string
-  inicioVerificacion?: string
-  terminoVerificacion?: string
-  oc?: string
-  proveedor?: string
-  origen?: string
-  factura?: string
-  especie?: string
-  variedades?: string
-  frioDescarga?: string
-  cajasRecibidas?: string
-  lineaTransportista?: string
-  numeroContenedor?: string
-  placasCamion?: string
-  placasCaja?: string
-  chofer?: string
-  tempSetPoint?: string
-  observacionesSetPoint?: string
-  tempPantalla?: string
-  observacionesPantalla?: string
-  option?: string
-  option2?: string
-  tempOrigen?: string
-  tempDestino?: string
-  optionLimpio?: string
-  limpio?: string
-  optionCaja?: string
-  cajaCerrada?: string
-  optionLona?: string
-  lona?: string
-  optionLibre?: string
-  fauna?: string
-  optionCarga?: string
-  carga?: string
-  optionSeguridad?: string
-  seguridadCarga?: string
-  optionSellado?: string
-  sellado?: string
-  tarimasDanadas?: string
-  cajasIdentificadas?: string
-  danadasManiobra?: string
-  tempAPuerta?: string
-  tempMPuerta?: string
-  tempBPuerta?: string
-  tempAMedio?: string
-  tempMMedio?: string
-  tempBMedio?: string
-  tempAFondo?: string
-  tempMFondo?: string
-  tempBFondo?: string
-  tempMin?: string
-  tempMax?: string
-  tempIdeal?: string
-  resultadosInv?: string
-  nombreInspector?: string
-  nombreChofer?: string
-  imageLimpio?: string[]
-  imageLibreFauna?: string[]
-  imageCajaCerrada?: string[]
-  imageLonaBuenEstado?: string[]
-  imageCargaBuenEstado?: string[]
-  imageSeguridadCarga?: string[]
-  imageSellado?: string[]
-}
 
 interface DownloadPDFProps {
   formData: FormData
