@@ -1,5 +1,12 @@
-import { Page, Text, View, Document, StyleSheet, Image } from '@react-pdf/renderer'
-import { FormData } from './PdfDownload'
+import {
+  Page,
+  Text,
+  View,
+  Document,
+  StyleSheet,
+  Image
+} from '@react-pdf/renderer';
+import { formInitial } from './format';
 // Estilos
 const styles = StyleSheet.create({
   page: { padding: 20 },
@@ -20,18 +27,18 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     border: '1px solid #ccc',
     padding: '10px',
-    marginTop: '20px'
+    marginTop: '20px',
   },
   table: {
     width: '100%',
     borderWidth: 2,
     borderColor: '#000',
     marginTop: 4,
-    height: 'auto'
+    height: 'auto',
   },
   tableRow: {
     flexDirection: 'row',
-    height: 'auto'
+    height: 'auto',
   },
   cellLabel: {
     flex: 1,
@@ -46,7 +53,7 @@ const styles = StyleSheet.create({
     fontFamily: 'GothamNarrow',
     flexWrap: 'wrap', // Permite que el texto se envuelva si no cabe
     overflow: 'hidden',
-    height: 'auto'
+    height: 'auto',
   },
   cellValue: {
     flex: 1,
@@ -55,7 +62,7 @@ const styles = StyleSheet.create({
     padding: 1,
     fontSize: 12,
     fontFamily: 'GothamNarrow',
-    height: 'auto'
+    height: 'auto',
   },
   cellLabelWhite: {
     backgroundColor: '#FFFFFF',
@@ -63,7 +70,7 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderRadius: 3,
     fontSize: 10,
-    paddingVertical: 6,
+    paddingVertical: 3,
     paddingHorizontal: 3,
     fontWeight: 'bold',
     flex: 1,
@@ -71,7 +78,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontFamily: 'GothamNarrow',
     minHeight: 20,
-    height: 'auto'
+    height: 'auto',
   }
 })
 
@@ -83,7 +90,12 @@ export interface ActaPDFProps {
 }
 
 // Componente ActaPDF2
-const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firmaBase64Chofer, currentPage }) => (
+const ActaPDF: React.FC<ActaPDFProps> = ({
+  formData,
+  firmaBase64Inspector,
+  firmaBase64Chofer,
+  currentPage
+}) => (
   <Document>
     {/* firs part of the document (Page1) */}
 
@@ -98,7 +110,15 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
           />
           <View style={{ alignItems: 'center' }}>
             {' '}
-            <Text style={{ fontSize: 24, fontWeight: 'bold', fontFamily: 'GothamNarrow' }}>ACTA DE DESCARGA </Text>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: 'bold',
+                fontFamily: 'GothamNarrow',
+              }}
+            >
+              ACTA DE DESCARGA{' '}
+            </Text>
             <View style={{ alignItems: 'center', marginTop: 5 }}>
               <Text style={{ fontSize: 14, fontFamily: 'GothamNarrow' }}>
                 F-I-CAL-02-01
@@ -149,11 +169,15 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
 
             <View style={styles.tableRow}>
               <Text style={styles.cellLabel}>Frío de descarga: </Text>
-              <Text style={styles.cellValue}>{formData.frioDescarga ?? ''}</Text>
+              <Text style={styles.cellValue}>
+                {formData.frioDescarga ?? ''}
+              </Text>
               <Text style={styles.cellLabel}>
                 Cajas recibidas: {formData.cajasRecibidas}
               </Text>
-              <Text style={styles.cellValue}>{formData.cajasRecibidas ?? ''}</Text>
+              <Text style={styles.cellValue}>
+                {formData.cajasRecibidas ?? ''}
+              </Text>
             </View>
           </View>
 
@@ -178,10 +202,14 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
               <Text style={[styles.cellLabel, { flex: 0.35 }]}>
                 Placas de Camión
               </Text>
-              <Text style={styles.cellValue}>{formData.placasCamion ?? ''}</Text>
+              <Text style={styles.cellValue}>
+                {formData.placasCamion ?? ''}
+              </Text>
             </View>
             <View style={styles.tableRow}>
-              <Text style={[styles.cellLabel, { flex: 0.35 }]}>Placas Caja</Text>
+              <Text style={[styles.cellLabel, { flex: 0.35 }]}>
+                Placas Caja
+              </Text>
               <Text style={styles.cellValue}>{formData.placasCaja ?? ''}</Text>
             </View>
             <View style={styles.tableRow}>
@@ -192,7 +220,12 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
           <View style={{ marginBottom: 20 }} />
 
           <View style={{ width: '100%' }}>
-            <Text style={[styles.cellLabel, { paddingVertical: 10, paddingTop: 1, width: '100%' }]}>
+            <Text
+              style={[
+                styles.cellLabel,
+                { paddingVertical: 11, paddingTop: 10, width: '100%' }
+              ]}
+            >
               Condiciones de transprte:
             </Text>
 
@@ -209,7 +242,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
                       Temperatura del set point:
                     </Text>
                     <Text style={[styles.cellValue, { flex: 0.4 }]}>
-                      {'\n'}  {formData.tempSetPoint ?? ''}
+                      {'\n'} {formData.tempSetPoint ?? ''}
                     </Text>
 
                     <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
@@ -229,7 +262,9 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
                   </View>
                   <View style={styles.tableRow}>
                     <Text style={[styles.cellLabel, { flex: 0.28 }]} />
-                    <Text style={[styles.cellLabel, { flex: 0.17 }]}>cumple</Text>
+                    <Text style={[styles.cellLabel, { flex: 0.17 }]}>
+                      cumple
+                    </Text>
                     <Text style={[styles.cellLabel, { flex: 0.17 }]}>
                       no cumple
                     </Text>
@@ -380,7 +415,12 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
               </View>
             </View>
 
-            <Text style={[styles.cellLabel, { paddingTop: 4, fontSize: 10 }]}>
+            <Text
+              style={[
+                styles.cellLabel,
+                { paddingVertical: 9, paddingTop: 10, fontSize: 10 }
+              ]}
+            >
               Condiciones de Carga (Maniobra)
             </Text>
             <View style={{ width: '100%' }}>
@@ -388,144 +428,50 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
                 <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>
                   Hay tarimas dañadas :
                 </Text>
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>SI</Text>
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
+                  {formData.optiontarimasDanadas === 'Si' ? 'Si' : ''}
+                </Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
+                  {formData.optiontarimasDanadas === 'No' ? 'No' : ''}
+                </Text>
                 <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>
-                  #{formData.tarimasDanadas}{' '}
+                  {formData.tarimasDanadas}{' '}
                 </Text>
               </View>
               <View style={styles.tableRow}>
                 <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>
                   Cajas identificadas :
                 </Text>
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>SI</Text>
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
+                  {formData.optioncajasIdentificadas === 'Si' ? 'Si' : ''}
+                </Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
+                  {formData.optioncajasIdentificadas === 'No' ? 'No' : ''}
+                </Text>
                 <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>
-                  #{formData.cajasIdentificadas}
+                  {formData.cajasIdentificadas}
                 </Text>
               </View>
               <View style={styles.tableRow}>
                 <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>
                   Cajas dañadas por maniobra:
                 </Text>
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}> SI </Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
+                  {' '}
+                  {formData.optiondanadasManiobra === 'Si' ? 'Si' : ''}{' '}
+                </Text>
 
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>NO</Text>
+                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
+                  {formData.optiondanadasManiobra === 'No' ? 'No' : ''}
+                </Text>
                 <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>
-                  #{formData.danadasManiobra}
+                  {formData.danadasManiobra}
                 </Text>
               </View>
             </View>
           </View>
 
           <View style={{ marginBottom: 20 }} />
-
-          <View style={[styles.tableRow, { marginBottom: 15, width: '100%' }]}>
-            <View style={[{ height: 100, width: '26%' }]}>
-              <Text style={[styles.cellLabel, {}]}>Temperatura de pulpa</Text>
-              <Text style={styles.cellValue}>A</Text>
-              <Text style={styles.cellValue}>M</Text>
-              <Text style={styles.cellValue}>B</Text>
-            </View>
-            <View style={[{ width: '10%' }]}>
-              <Text style={[styles.cellLabel, { height: 20 }]}>Puerta</Text>
-              <Text style={styles.cellValue}>{formData.tempAPuerta}</Text>
-              <Text style={styles.cellValue}>{formData.tempMPuerta}</Text>
-              <Text style={styles.cellValue}>{formData.tempBPuerta}</Text>
-            </View>
-            <View style={[{ width: '10%' }]}>
-              <Text style={[styles.cellLabel, { height: 20 }]}>Medio</Text>
-              <Text style={styles.cellValue}>{formData.tempAMedio}</Text>
-              <Text style={styles.cellValue}>{formData.tempMMedio}</Text>
-              <Text style={styles.cellValue}>{formData.tempBMedio}</Text>
-            </View>
-            <View style={[{ width: '10%' }]}>
-              <Text style={[styles.cellLabel, { height: 20 }]}>Fondo</Text>
-              <Text style={styles.cellValue}>{formData.tempAFondo}</Text>
-              <Text style={styles.cellValue}>{formData.tempMFondo}</Text>
-              <Text style={styles.cellValue}>{formData.tempBFondo}</Text>
-            </View>
-            <View style={[{ width: '30%' }]}>
-              <Text style={[styles.cellLabel]}>Rango de Temperatura</Text>
-              <View style={[styles.tableRow, { height: 50 }]}>
-                <Text style={styles.cellValue}>Min:{formData.tempMin}</Text>
-                <Text style={styles.cellValue}>Max:{formData.tempMax}</Text>
-              </View>
-            </View>
-            <View style={[{ width: '30%' }]}>
-              <Text style={styles.cellLabel}>Ideal</Text>
-              <View style={[styles.tableRow, { height: 50 }]}>
-                <Text style={styles.cellValue}> {formData.tempIdeal}°C </Text>
-              </View>
-            </View>
-          </View>
-
-          <View style={[styles.tableRow, { marginBottom: 15 }]}>
-            {/* Parte en negritas y más grande */}
-            <Text
-              style={[
-                styles.cellLabel,
-                { flex: 0.35, fontSize: 11, fontWeight: 'bold' }
-              ]}
-            >
-              Resultados de la {'\n'}Investigación{'\n'}
-              <Text style={{ fontSize: 6 }}>
-                (PRODUCTO DAÑADO DESEMPLEADO SE ENVIAN A PISO O SE ARREGLAN)
-              </Text>
-            </Text>
-            <Text style={styles.cellValue}>{formData.resultadosInv ?? ''}</Text>
-          </View>
-
-          <Text style={[styles.cellLabel, { flex: 0.15, fontSize: 14 }]}>
-            Hago constar que estoy de acuerdo con lo verificado y registrado en el
-            presente{'\n'}documento
-          </Text>
-
-          <View>
-            <View style={styles.tableRow}>
-              <Text style={[styles.cellLabel, { width: '12%', textAlign: 'center', fontSize: 10, height: 200 }]}>
-                {' '}
-                Verifico descarga{'\n'} (Inspector de Calidad)
-              </Text>
-              <View style={{ width: '38%' }}>
-                <Text style={[styles.cellValue, { flex: 0.3 }]}>
-                  Nombre:{formData.nombreInspector}
-                </Text>
-
-                <View style={[styles.cellValue, {}]}>
-                  <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
-                    Firma:
-                  </Text>
-                  {firmaBase64Inspector !== null && firmaBase64Inspector !== undefined && (
-                    <Image
-                      src={firmaBase64Inspector}
-                      style={{ width: 200, height: 150 }}
-                    />
-                  )}
-                </View>
-              </View>
-              <Text style={[styles.cellLabel, { width: '12%', fontSize: 10 }]}>
-                {' '}
-                Chofer
-              </Text>
-              <View style={{ width: '38%' }}>
-                <Text style={[styles.cellValue, { flex: 0.3 }]}>
-                  Nombre:{formData.nombreChofer}
-                </Text>
-                <View style={[styles.cellValue, {}]}>
-                  <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
-                    Firma:
-                  </Text>
-                  {firmaBase64Chofer != null && (
-                    <Image
-                      src={firmaBase64Chofer}
-                      style={{ width: 200, height: 150 }}
-                    />
-                  )}
-                </View>
-              </View>
-            </View>
-          </View>
         </View>
       </Page>
     )}
@@ -594,7 +540,17 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
 
         <View>
           <View style={styles.tableRow}>
-            <Text style={[styles.cellLabel, { width: '12%', textAlign: 'center', fontSize: 10, height: 200 }]}>
+            <Text
+              style={[
+                styles.cellLabel,
+                {
+                  width: '12%',
+                  textAlign: 'center',
+                  fontSize: 10,
+                  height: 200
+                },
+              ]}
+            >
               {' '}
               Verifico descarga{'\n'} (Inspector de Calidad)
             </Text>
@@ -607,11 +563,12 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
                 <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
                   Firma:
                 </Text>
-                {firmaBase64Inspector !== null && firmaBase64Inspector !== undefined && (
-                  <Image
-                    src={firmaBase64Inspector}
-                    style={{ width: 200, height: 150 }}
-                  />
+                {firmaBase64Inspector !== null &&
+                  firmaBase64Inspector !== undefined && (
+                    <Image
+                      src={firmaBase64Inspector}
+                      style={{ width: 200, height: 150 }}
+                    />
                 )}
               </View>
             </View>
@@ -627,11 +584,12 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
                 <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
                   Firma:
                 </Text>
-                {firmaBase64Chofer !== null && firmaBase64Chofer !== undefined && (
-                  <Image
-                    src={firmaBase64Chofer}
-                    style={{ width: 200, height: 150 }}
-                  />
+                {firmaBase64Chofer !== null &&
+                  firmaBase64Chofer !== undefined && (
+                    <Image
+                      src={firmaBase64Chofer}
+                      style={{ width: 200, height: 150 }}
+                    />
                 )}
               </View>
             </View>
@@ -642,193 +600,550 @@ const ActaPDF: React.FC<ActaPDFProps> = ({ formData, firmaBase64Inspector, firma
 
     {/* Thrird part of the document (Page3) */}
     {currentPage === 3 &&
-          (formData.option === 'No' ||
-            formData.option2 === 'No' ||
-            formData.optionLibre === 'No' ||
-            formData.optionCaja === 'No' ||
-            formData.optionLona === 'No' ||
-            formData.optionCarga === 'No' ||
-            formData.optionSeguridad === 'No' ||
-            formData.optionSellado === 'No' ||
-            formData.optionLimpio === 'No') && (
-              <Page size='A4' style={styles.page}>
-                <View>
-                  <Text
+      (formData.option === 'No' ||
+        formData.option2 === 'No' ||
+        formData.optionLibre === 'No' ||
+        formData.optionCaja === 'No' ||
+        formData.optionLona === 'No' ||
+        formData.optionCarga === 'No' ||
+        formData.optionSeguridad === 'No' ||
+        formData.optionSellado === 'No' ||
+        formData.optionLimpio === 'No' ||
+        formData.optiontarimasDanadas === 'Si' ||
+        formData.optioncajasIdentificadas === 'Si' ||
+        formData.optiondanadasManiobra === 'Si') && (
+          <Page size='A4' style={styles.page}>
+          <View>
+            <Text
+              style={{
+                justifyContent: 'center',
+                textAlign: 'center',
+                borderWidth: 1,
+                borderColor: '#000',
+                backgroundColor: '#ccc',
+              }}
+            >
+              Anexos
+            </Text>
+          </View>
+
+          <View>
+            {formData.option === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple con Termografo1{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.limpio ?? ''}{' '}
+                  </Text>
+
+                  <div
                     style={{
-                      justifyContent: 'center',
-                      textAlign: 'center',
-                      borderWidth: 1,
-                      borderColor: '#000',
-                      backgroundColor: '#ccc'
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
                     }}
                   >
-                    Anexos
+                    {formData.imagecumpletermografo?.map(
+                      (imageUrl: string, index: number) => (
+                        <div
+                          key={index}
+                          style={{
+                            padding: '4px',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                          }}
+                        >
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+            {formData.option2 === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple con Termografo2{' '}
                   </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.limpio ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imagecumpletermografo2?.map(
+                      (imageUrl: string, index: number) => (
+                        <div
+                          key={index}
+                          style={{
+                            padding: '4px',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                          }}
+                        >
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
                 </View>
+              </>
+            )}
 
-                <View>
+            {formData.optionLimpio === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple con Limpio, libre de malos olores{' '}
+                  </Text>
 
-                  {formData.optionLimpio === 'No' && (
-                    <>
-                      <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.limpio ?? ''}{' '}
+                  </Text>
 
-                        <Text style={{ fontSize: '15px' }}>  Evidencia No cumple con Limpio, libre de malos olores  </Text>
-
-                        <Text style={{ fontSize: '10px', paddingTop: 10 }}> {formData.limpio ?? ''} </Text>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-
-                          {formData.imageLimpio?.map((imageUrl: string, index: number) => (
-                            <div key={index} style={{ padding: '4px', borderRadius: '10px', textAlign: 'center' }}>
-                              <Image
-                                src={imageUrl}
-                                style={{ width: '150px', height: '150px', borderRadius: '5px', marginBottom: '10px' }}
-                              />
-                            </div>
-                          ))}
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imageLimpio?.map(
+                      (imageUrl: string, index: number) => (
+                        <div
+                          key={index}
+                          style={{
+                            padding: '4px',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                          }}
+                        >
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
                         </div>
-                      </View>
-                    </>
-                  )}
-
-                  {formData.optionLibre === 'No' && (
-                    <>
-                      <View style={{ borderWidth: 1, borderColor: '#000' }}>
-
-                        <Text style={{ fontSize: '15px' }}>  Evidencia No cumple libre de Fauna nociva  </Text>
-
-                        <Text style={{ fontSize: '10px', paddingTop: 10 }}> {formData.limpio ?? ''} </Text>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-
-                          {formData.imageLibreFauna?.map((imageUrl: string, index: number) => (
-
-                            <div key={index} style={{ padding: '4px', borderRadius: '10px', textAlign: 'center' }}>
-
-                              <Image
-                                src={imageUrl}
-                                style={{ width: '150px', height: '150px', borderRadius: '5px', marginBottom: '10px' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </View>
-                    </>
-                  )}
-
-                  {formData.optionCaja === 'No' && (
-                    <>
-                      <View style={{ borderWidth: 1, borderColor: '#000' }}>
-                        <Text style={{ fontSize: '15px' }}>  Evidencia No cumple Caja cerrada, en buen estado(sin hoyos o endiduras ):  </Text>
-
-                        <Text style={{ fontSize: '10px', paddingTop: 10 }}> {formData.cajaCerrada ?? ''} </Text>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-
-                          {formData.imageCajaCerrada?.map((imageUrl: string, index: number) => (
-                            <div key={index} style={{ margin: '10px' }}>
-                              <Image
-                                src={imageUrl}
-                                style={{ width: '150px', height: '150px', borderRadius: '5px', marginBottom: '10px' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </View>
-                    </>
-                  )}
-                  {formData.optionLona === 'No' && (
-                    <>
-                      <View style={{ borderWidth: 1, borderColor: '#000' }}>
-
-                        <Text style={{ fontSize: '15px' }}>  Evidencia No cumple  Lona en buen estado  </Text>
-
-                        <Text style={{ fontSize: '10px', paddingTop: 10 }}> {formData.lona ?? ''} </Text>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-
-                          {formData.imageLonaBuenEstado?.map((imageUrl: string, index: number) => (
-                            <div key={index} style={{ margin: '10px' }}>
-                              <Image
-                                src={imageUrl}
-                                style={{ width: '150px', height: '150px', borderRadius: '5px', marginBottom: '10px' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </View>
-                    </>
-                  )}
-                  {formData.optionCarga === 'No' && (
-                    <>
-                      <View style={{ borderWidth: 1, borderColor: '#000' }}>
-
-                        <Text style={{ fontSize: '15px' }}>  Evidencia No cumple Carga en buen estado</Text>
-
-                        <Text style={{ fontSize: '10px', paddingTop: 10 }}> {formData.carga ?? ''} </Text>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-
-                          {formData.imageCargaBuenEstado?.map((imageUrl: string, index: number) => (
-                            <div key={index} style={{ margin: '10px' }}>
-                              <Image
-                                src={imageUrl}
-                                style={{ width: '150px', height: '150px', borderRadius: '5px', marginBottom: '10px' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </View>
-                    </>
-                  )}
-                  {formData.optionSeguridad === 'No' && (
-                    <>
-                      <View style={{ borderWidth: 1, borderColor: '#000' }}>
-
-                        <Text style={{ fontSize: '15px' }}>  Evidencia No cumple seguridad de carga </Text>
-
-                        <Text style={{ fontSize: '10px', paddingTop: 10 }}> {formData.seguridadCarga ?? ''} </Text>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-
-                          {formData.imageSeguridadCarga?.map((imageUrl: string, index: number) => (
-                            <div key={index} style={{ margin: '10px' }}>
-                              <Image
-                                src={imageUrl}
-                                style={{ width: '150px', height: '150px', borderRadius: '5px', marginBottom: '10px' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </View>
-                    </>
-                  )}
-
-                  {formData.optionSellado === 'No' && (
-                    <>
-                      <View style={{ borderWidth: 1, borderColor: '#000' }}>
-
-                        <Text style={{ fontSize: '15px' }}>  Evidencia No cumple con el sellado  </Text>
-
-                        <Text style={{ fontSize: '10px', paddingTop: 10 }}> {formData.sellado ?? ''} </Text>
-
-                        <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'flex-start' }}>
-
-                          {formData.imageSellado?.map((imageUrl: string, index: number) => (
-                            <div key={index} style={{ margin: '10px' }}>
-                              <Image
-                                src={imageUrl}
-                                style={{ width: '150px', height: '150px', borderRadius: '5px', marginBottom: '10px' }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </View>
-                    </>
-                  )}
-
+                      )
+                    )}
+                  </div>
                 </View>
-              </Page>
+              </>
+            )}
+
+            {formData.optionLibre === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple libre de Fauna nociva{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.limpio ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imageLibreFauna?.map(
+                      (imageUrl: string, index: number) => (
+                        <div
+                          key={index}
+                          style={{
+                            padding: '4px',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                          }}
+                        >
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+
+            {formData.optionCaja === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple Caja cerrada, en buen estado(sin hoyos o
+                    endiduras ):{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.cajaCerrada ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imageCajaCerrada?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+            {formData.optionLona === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple Lona en buen estado{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.lona ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imageLonaBuenEstado?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+            {formData.optionCarga === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple Carga en buen estado
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.carga ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imageCargaBuenEstado?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+            {formData.optionSeguridad === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple seguridad de carga{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.seguridadCarga ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imageSeguridadCarga?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+
+            {formData.optionSellado === 'No' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple con el sellado{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.sellado ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imageSellado?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+            {formData.optiontarimasDanadas === 'Si' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia No cumple con Tarimas danadas{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.sellado ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imagestarimasDanadas?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+            {formData.optioncajasIdentificadas === 'Si' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia Cajas Identificadas{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.sellado ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imagescajasIdentificadas?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+
+            {formData.optiondanadasManiobra === 'Si' && (
+              <>
+                <View style={{ borderWidth: 1, borderColor: '#000' }}>
+                  <Text style={{ fontSize: '15px' }}>
+                    {' '}
+                    Evidencia Cajas Dañadas por Maniobra{' '}
+                  </Text>
+
+                  <Text style={{ fontSize: '10px', paddingTop: 10 }}>
+                    {' '}
+                    {formData.sellado ?? ''}{' '}
+                  </Text>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                    }}
+                  >
+                    {formData.imagesdanadasManiobra?.map(
+                      (imageUrl: string, index: number) => (
+                        <div key={index} style={{ margin: '10px' }}>
+                          <Image
+                            src={imageUrl}
+                            style={{
+                              width: '150px',
+                              height: '150px',
+                              borderRadius: '5px',
+                              marginBottom: '10px',
+                            }}
+                          />
+                        </div>
+                      )
+                    )}
+                  </div>
+                </View>
+              </>
+            )}
+          </View>
+        </Page>
     )}
   </Document>
 )
