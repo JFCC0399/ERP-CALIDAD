@@ -16,7 +16,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
-import GothamNarrowMedium from '/fonts/GothamNarrow-Medium.otf'
+import GothamNarrowMedium from '@/fonts/GothamNarrow-Medium.otf'
 import { fetchActas, insert } from '@/connections/querys'
 import {
   Dialog,
@@ -1381,20 +1381,22 @@ const ActaDeLlegada = (): JSX.Element => {
         <Button onClick={() => { void handleInsert() }}>Guardar datos en la Bd</Button>
 
         <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
-          {firmaBase64Inspector && firmaBase64Chofer ? (
-            <PDFDownloadLink
+          {firmaBase64Inspector && firmaBase64Chofer
+            ? (
+  <PDFDownloadLink
               document={<DownloadPDF
                 formData={formData}
                 firmaBase64Inspector={firmaBase64Inspector}
                 firmaBase64Chofer={firmaBase64Chofer}
-              />}
+                        />}
               fileName={`Acta_${formData.oc}.pdf`}
             >
               <Button variant='default'>Descargar PDF</Button>
             </PDFDownloadLink>
-          ) : (
-            <Button variant='default' disabled>Faltan firmas</Button>
-          )}
+              )
+            : (
+  <Button variant='default' disabled>Faltan firmas</Button>
+              )}
         </div>
       </div>
       <Dialog>

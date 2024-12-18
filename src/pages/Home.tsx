@@ -1,4 +1,3 @@
-import LoginForm from '@/components/Auth/Login'
 import { Outlet, useNavigate } from 'react-router-dom'
 import useAuthStore from '@/stores/useAuthStore'
 import { useEffect } from 'react'
@@ -13,7 +12,8 @@ const Home = (): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    if (isLoggedIn) {
+    const a = true
+    if (a) {
       const {
         pathname, search
       } = window.location
@@ -23,9 +23,9 @@ const Home = (): JSX.Element => {
   }, [isLoggedIn])
 
   return (
-    isLoggedIn
-      ? <Outlet />
-      : <LoginForm />
+
+    <Outlet />
+
   )
 }
 
