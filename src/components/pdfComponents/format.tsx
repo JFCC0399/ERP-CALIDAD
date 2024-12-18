@@ -30,7 +30,6 @@ export const formInitial = {
   carga: '',
   seguridadCarga: '',
   sellado: '',
-  numeroSerie: '',
   resultadosInv: '',
   tempAPuerta: '',
   tempAMedio: '',
@@ -60,9 +59,7 @@ export const formInitial = {
   optiondanadasManiobra: '',
   imagecumpletermografo: [],
   imagecumpletermografo2: [],
-  imageTermografo: [],
   imageLimpio: [],
-  imageMalosOlores: [],
   imageCajaCerrada: [],
   imageLonaBuenEstado: [],
   imageLibreFauna: [],
@@ -196,7 +193,6 @@ export interface FormData {
   nombreInspector?: string
   nombreChofer?: string
   imageLimpio?: string[]
-  imageMalosOlores?: string[]
   imageLibreFauna?: string[]
   imageCajaCerrada?: string[]
   imageLonaBuenEstado?: string[]
@@ -208,7 +204,6 @@ export interface FormData {
   imagesdanadasManiobra?: string[]
   imagecumpletermografo?: string[]
   imagecumpletermografo2?: string[]
-  imageTermografo?: string[]
   optiontarimasDanadas?: string
   optioncajasIdentificadas?: string
   optiondanadasManiobra?: string
