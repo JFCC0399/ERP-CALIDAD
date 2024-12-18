@@ -95,7 +95,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
   firmaBase64Chofer
 }) => (
   <Document>
-    {/* firs part of the document (Page1) */}
+
 
     <Page style={styles.page}>
         <View style={styles.logoSection}>
@@ -557,13 +557,12 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
                   Firma:
                 </Text>
-                {firmaBase64Inspector !== null &&
-                  firmaBase64Inspector !== undefined && (
-                    <Image
-                      src={firmaBase64Inspector}
-                      style={{ width: 200, height: 150 }}
-                    />
-                )}
+                {firmaBase64Inspector ? (
+    <Image
+      src={firmaBase64Inspector}
+      style={{ width: 200, height: 150 }}
+    />
+  ) : null}
               </View>
             </View>
             <Text style={[styles.cellLabel, { width: '12%', fontSize: 10 }]}>
@@ -578,13 +577,12 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
                   Firma:
                 </Text>
-                {firmaBase64Chofer !== null &&
-                  firmaBase64Chofer !== undefined && (
-                    <Image
-                      src={firmaBase64Chofer}
-                      style={{ width: 200, height: 150 }}
-                    />
-                )}
+                {firmaBase64Chofer ? (
+    <Image
+      src={firmaBase64Chofer}
+      style={{ width: 200, height: 150 }}
+    />
+  ) : null}
               </View>
             </View>
           </View>

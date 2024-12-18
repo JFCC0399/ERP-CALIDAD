@@ -1,25 +1,24 @@
-import { useState, useRef, useEffect } from 'react';
-import { PDFDownloadLink, PDFViewer, Font } from '@react-pdf/renderer';
-import * as pdfjsLib from 'pdfjs-dist';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import Layout from '../components/Layout';
-import SignatureCanvas from 'react-signature-canvas';
-import { validations } from '@/components/pdfComponents/validations';
+import { useState, useRef, useEffect } from 'react'
+import { PDFDownloadLink, PDFViewer, Font } from '@react-pdf/renderer'
+import * as pdfjsLib from 'pdfjs-dist'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import Layout from '../components/Layout'
+import SignatureCanvas from 'react-signature-canvas'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger
-} from '@/components/ui/accordion';
+} from '@/components/ui/accordion'
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem
-} from '@/components/ui/select';
-import { Check, ChevronsUpDown } from 'lucide-react';
+} from '@/components/ui/select'
+import { Check, ChevronsUpDown } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -37,7 +36,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger
-} from '@/components/ui/dialog';
+} from '@/components/ui/dialog'
 import {
   Command,
   CommandEmpty,
@@ -45,41 +44,33 @@ import {
   CommandInput,
   CommandItem,
   CommandList
-} from '@/components/ui/command';
+} from '@/components/ui/command'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger
-} from '@/components/ui/popover';
+} from '@/components/ui/popover'
 
-import { formInitial } from '../components/pdfComponents/format';
+import { formInitial, FormData, Acta } from '../components/pdfComponents/format'
 
-import ActaPDF from '../components/pdfComponents/pdfView';
-import DownloadPDF from '@/components/pdfComponents/PdfDownload';
+import ActaPDF from '../components/pdfComponents/pdfView'
+import DownloadPDF from '@/components/pdfComponents/PdfDownload'
 
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  'https://unpkg.com/pdfjs-dist@2.11.338/es5/build/pdf.worker.min.js';
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@2.11.338/es5/build/pdf.worker.min.js'
 
 Font.register({
   family: 'GothamNarrow',
   src: GothamNarrowMedium
 })
-import { FormData } from '../components/pdfComponents/format';
-import { Acta } from '../components/pdfComponents/format';
 
 const ActaDeLlegada = (): JSX.Element => {
-
   const [formData, setFormData] = useState<FormData>(formInitial)
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState<number | null>(null)
   const [actasList, setActasList] = useState<Acta[]>([])
 
-  const [firmaBase64Inspector, setFirmaBase64Inspector] = useState<
-    string | undefined
-  >('')
-  const [firmaBase64Chofer, setFirmaBase64Chofer] = useState<
-    string | undefined
-  >('')
+  const [firmaBase64Inspector, setFirmaBase64Inspector] = useState<string | undefined>('')
+  const [firmaBase64Chofer, setFirmaBase64Chofer] = useState<string | undefined>('')
 
   const signaturePadInspector = useRef<any>(null) // Refs para el signature pad
   const signaturePadChofer = useRef<any>(null)
@@ -88,21 +79,22 @@ const ActaDeLlegada = (): JSX.Element => {
     await insert(formData) // Llama a la función insert y pasa formData
   }
 
-  const handleSelectChange = ( value: string): void =>{
+  const handleSelectChange = (value: string): void => {
     console.log(value)
-    setFormData((prevData) => ({ ...prevData, ['tempIdeal']: value }))
-
+    setFormData((prevData) => ({ ...prevData, tempIdeal: value }))
+    getIncompleteFields(formData)
   }
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target
     setFormData((prevData) => ({ ...prevData, [name]: value }))
+    getIncompleteFields(formData)
   }
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     const { name, value } = e.currentTarget // Usa `currentTarget` para acceder al botón
     setFormData((prevData) => ({ ...prevData, [name]: value }))
+    getIncompleteFields(formData)
   }
 
   const handleSelect = (idActa: number): void => {
@@ -147,7 +139,6 @@ const ActaDeLlegada = (): JSX.Element => {
         carga: selectedActa.load_state ?? '',
         seguridadCarga: selectedActa.load_sec ?? '',
         sellado: selectedActa.seal ?? '',
-        numeroSerie: selectedActa.box_id ?? '',
         resultadosInv: selectedActa.invest_res ?? '',
         tempAPuerta: selectedActa.tempa_door ?? '',
         tempAMedio: selectedActa.tempa_mid ?? '',
@@ -291,6 +282,16 @@ const ActaDeLlegada = (): JSX.Element => {
     }
   }
 
+  const getIncompleteFields = (data: FormData): string[] => {
+    // Filtra las claves cuyo valor sea `undefined`, vacío, o no válido
+    return Object.keys(data).filter((key) => {
+      const value = data[key]
+      return value === undefined || value === null || value === '' ||
+        (Array.isArray(value) && value.length === 0)
+    })
+  }
+  const incompleteFields = getIncompleteFields(formData)
+
   return (
     <Layout>
       <div style={{ padding: '20px' }}>
@@ -347,7 +348,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 borderRadius: '8px',
                 border: '2px solid #7A2A1E',
                 textAlign: 'center',
-                cursor: 'pointer',
+                cursor: 'pointer'
               }}
             >
               Datos Pedido
@@ -360,12 +361,12 @@ const ActaDeLlegada = (): JSX.Element => {
                     {
                       label: 'Inicio de verificación:',
                       type: 'text',
-                      name: 'inicioVerificacion',
+                      name: 'inicioVerificacion'
                     },
                     {
                       label: 'Término de verificación:',
                       type: 'text',
-                      name: 'terminoVerificacion',
+                      name: 'terminoVerificacion'
                     },
                     { label: 'O.C.:', type: 'text', name: 'oc' },
                     { label: 'Proveedor:', type: 'text', name: 'proveedor' },
@@ -376,12 +377,12 @@ const ActaDeLlegada = (): JSX.Element => {
                     {
                       label: 'Frío de descarga:',
                       type: 'text',
-                      name: 'frioDescarga',
+                      name: 'frioDescarga'
                     },
                     {
                       label: 'Cajas recibidas:',
                       type: 'text',
-                      name: 'cajasRecibidas',
+                      name: 'cajasRecibidas'
                     }
                   ].map(({ label, type, name }) => (
                     <div
@@ -389,7 +390,7 @@ const ActaDeLlegada = (): JSX.Element => {
                       style={{
                         display: 'flex',
                         alignItems: 'center',
-                        marginBottom: '10px',
+                        marginBottom: '10px'
                       }}
                     >
                       <label style={{ flex: '0 0 200px', fontWeight: 'bold' }}>
@@ -425,7 +426,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 borderRadius: '8px', // Bordes redondeados para un diseño moderno
                 border: '2px solid #7A2A1E', // Borde para resaltar el elemento
                 textAlign: 'center', // Centrar el texto
-                cursor: 'pointer', // Cambia el cursor para que parezca un botón
+                cursor: 'pointer' // Cambia el cursor para que parezca un botón
               }}
             >
               Transporte
@@ -443,7 +444,7 @@ const ActaDeLlegada = (): JSX.Element => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '10px',
+                    marginBottom: '10px'
                   }}
                 >
                   <label style={{ flex: '0 0 200px', fontWeight: 'bold' }}>
@@ -458,7 +459,7 @@ const ActaDeLlegada = (): JSX.Element => {
                       flex: '1',
                       padding: '8px',
                       borderRadius: '4px',
-                      border: '1px solid #ccc',
+                      border: '1px solid #ccc'
                     }}
                   />
                 </div>
@@ -477,7 +478,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 borderRadius: '8px',
                 border: '2px solid #7A2A1E',
                 textAlign: 'center',
-                cursor: 'pointer',
+                cursor: 'pointer'
               }}
             >
               Condiciones de transporte
@@ -487,12 +488,12 @@ const ActaDeLlegada = (): JSX.Element => {
                 { label: 'Temperatura de set point:', name: 'tempSetPoint' },
                 {
                   label: 'Observaciones set point:',
-                  name: 'observacionesSetPoint',
+                  name: 'observacionesSetPoint'
                 },
                 { label: 'Temperatura de pantalla:', name: 'tempPantalla' },
                 {
                   label: 'Observaciones pantalla:',
-                  name: 'observacionesPantalla',
+                  name: 'observacionesPantalla'
                 },
                 { label: 'Temperatura de origen:', name: 'tempOrigen' },
                 { label: 'Temperatura de destino:', name: 'tempDestino' }
@@ -502,7 +503,7 @@ const ActaDeLlegada = (): JSX.Element => {
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '10px',
+                    marginBottom: '10px'
                   }}
                 >
                   <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
@@ -517,7 +518,7 @@ const ActaDeLlegada = (): JSX.Element => {
                       flex: '1',
                       padding: '8px',
                       borderRadius: '4px',
-                      border: '1px solid #ccc',
+                      border: '1px solid #ccc'
                     }}
                   />
                 </div>
@@ -541,12 +542,12 @@ const ActaDeLlegada = (): JSX.Element => {
                     flex: '1',
                     padding: '8px',
                     borderRadius: '4px',
-                    border: '1px solid #ccc',
+                    border: '1px solid #ccc'
                   }}
                 />
               </div>
               <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
-                cunmple termografo:
+                cumple termografo:
               </label>
               <div style={{ marginBottom: 20 }}>
                 <Button
@@ -588,10 +589,10 @@ const ActaDeLlegada = (): JSX.Element => {
                         style={{
                           display: 'flex',
                           flexWrap: 'wrap',
-                          marginTop: '20px',
+                          marginTop: '20px'
                         }}
                       >
-                        {formData.imagecumpletermografo && formData.imagecumpletermografo.map(
+                        {formData.imagecumpletermografo?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -600,7 +601,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                 width: '200px',
                                 height: '200px',
                                 margin: '10px',
-                                objectFit: 'cover',
+                                objectFit: 'cover'
                               }}
                             />
                           )
@@ -611,7 +612,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 )}
               </div>
               <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
-                cunmple termografo2:
+                cumple termografo2:
               </label>
               <div style={{ marginBottom: 20 }}>
                 <Button
@@ -653,10 +654,10 @@ const ActaDeLlegada = (): JSX.Element => {
                         style={{
                           display: 'flex',
                           flexWrap: 'wrap',
-                          marginTop: '20px',
+                          marginTop: '20px'
                         }}
                       >
-                        {formData.imagecumpletermografo2 && formData.imagecumpletermografo2.map(
+                        {formData.imagecumpletermografo2?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -665,7 +666,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                 width: '200px',
                                 height: '200px',
                                 margin: '10px',
-                                objectFit: 'cover',
+                                objectFit: 'cover'
                               }}
                             />
                           )
@@ -689,7 +690,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 borderRadius: '8px',
                 border: '2px solid #7A2A1E',
                 textAlign: 'center',
-                cursor: 'pointer',
+                cursor: 'pointer'
               }}
             >
               Inspección de transporte
@@ -726,7 +727,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             Seleccionar Imagen
                           </label>
                         </Button>
-                        {formData.imageLimpio && formData.imageLimpio.length < 8
+                        {(formData.imageLimpio != null) && formData.imageLimpio.length < 8
                           ? (
                             <input
                               type='file'
@@ -748,10 +749,10 @@ const ActaDeLlegada = (): JSX.Element => {
                           style={{
                             display: 'flex',
                             flexWrap: 'wrap',
-                            marginTop: '20px',
+                            marginTop: '20px'
                           }}
                         >
-                          {formData.imageLimpio && formData.imageLimpio.map(
+                          {formData.imageLimpio?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -761,7 +762,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                   width: '200px',
                                   height: '200px',
                                   margin: '10px',
-                                  objectFit: 'cover',
+                                  objectFit: 'cover'
                                 }}
                               />
                             )
@@ -810,7 +811,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             Seleccionar Imagen
                           </label>
                         </Button>
-                        {formData.imageCajaCerrada && formData.imageCajaCerrada.length < 8
+                        {(formData.imageCajaCerrada != null) && formData.imageCajaCerrada.length < 8
                           ? (
                             <input
                               type='file'
@@ -832,10 +833,10 @@ const ActaDeLlegada = (): JSX.Element => {
                           style={{
                             display: 'flex',
                             flexWrap: 'wrap',
-                            marginTop: '20px',
+                            marginTop: '20px'
                           }}
                         >
-                          {formData.imageCajaCerrada && formData.imageCajaCerrada.map(
+                          {formData.imageCajaCerrada?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -845,7 +846,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                   width: '200px',
                                   height: '200px',
                                   margin: '10px',
-                                  objectFit: 'cover',
+                                  objectFit: 'cover'
                                 }}
                               />
                             )
@@ -909,10 +910,10 @@ const ActaDeLlegada = (): JSX.Element => {
                           style={{
                             display: 'flex',
                             flexWrap: 'wrap',
-                            marginTop: '20px',
+                            marginTop: '20px'
                           }}
                         >
-                          {formData.imageLonaBuenEstado && formData.imageLonaBuenEstado.map(
+                          {(formData.imageLonaBuenEstado != null) && formData.imageLonaBuenEstado.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -921,7 +922,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                   width: '200px',
                                   height: '200px',
                                   margin: '10px',
-                                  objectFit: 'cover',
+                                  objectFit: 'cover'
                                 }}
                               />
                             )
@@ -986,7 +987,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {formData.imageLibreFauna && formData.imageLibreFauna.map(
+                          {(formData.imageLibreFauna != null) && formData.imageLibreFauna.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -995,7 +996,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                   width: '200px',
                                   height: '200px',
                                   margin: '10px',
-                                  objectFit: 'cover',
+                                  objectFit: 'cover'
                                 }}
                               />
                             )
@@ -1060,7 +1061,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {formData.imageCargaBuenEstado && formData.imageCargaBuenEstado.map(
+                          {(formData.imageCargaBuenEstado != null) && formData.imageCargaBuenEstado.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1135,7 +1136,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {formData.imageSeguridadCarga && formData.imageSeguridadCarga.map(
+                          {(formData.imageSeguridadCarga != null) && formData.imageSeguridadCarga.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1145,7 +1146,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                   width: '200px',
                                   height: '200px',
                                   margin: '10px',
-                                  objectFit: 'cover',
+                                  objectFit: 'cover'
                                 }}
                               />
                             )
@@ -1211,7 +1212,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {formData.imageSellado && formData.imageSellado.map(
+                          {(formData.imageSellado != null) && formData.imageSellado.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1221,7 +1222,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                   width: '200px',
                                   height: '200px',
                                   margin: '10px',
-                                  objectFit: 'cover',
+                                  objectFit: 'cover'
                                 }}
                               />
                             )
@@ -1253,7 +1254,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 borderRadius: '8px',
                 border: '2px solid #7A2A1E',
                 textAlign: 'center',
-                cursor: 'pointer',
+                cursor: 'pointer'
               }}
             >
               Placas Caja
@@ -1290,7 +1291,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           Seleccionar Imagen
                         </label>
                       </Button>
-                      {formData.imagestarimasDanadas && formData.imagestarimasDanadas.length < 8
+                      {(formData.imagestarimasDanadas != null) && formData.imagestarimasDanadas.length < 8
                         ? (
                           <input
                             type='file'
@@ -1311,10 +1312,10 @@ const ActaDeLlegada = (): JSX.Element => {
                         style={{
                           display: 'flex',
                           flexWrap: 'wrap',
-                          marginTop: '20px',
+                          marginTop: '20px'
                         }}
                       >
-                        {formData.imagestarimasDanadas && formData.imagestarimasDanadas.map(
+                        {(formData.imagestarimasDanadas != null) && formData.imagestarimasDanadas.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1324,7 +1325,7 @@ const ActaDeLlegada = (): JSX.Element => {
                                 width: '200px',
                                 height: '200px',
                                 margin: '10px',
-                                objectFit: 'cover',
+                                objectFit: 'cover'
                               }}
                             />
                           )
@@ -1373,7 +1374,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           Seleccionar Imagen
                         </label>
                       </Button>
-                      {formData.imagescajasIdentificadas && formData.imagescajasIdentificadas.length < 8
+                      {(formData.imagescajasIdentificadas != null) && formData.imagescajasIdentificadas.length < 8
                         ? (
                           <input
                             type='file'
@@ -1397,7 +1398,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {formData.imagescajasIdentificadas && formData.imagescajasIdentificadas.map(
+                        {(formData.imagescajasIdentificadas != null) && formData.imagescajasIdentificadas.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1455,7 +1456,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           Seleccionar Imagen
                         </label>
                       </Button>
-                      {formData.imagesdanadasManiobra && formData.imagesdanadasManiobra.length < 8
+                      {(formData.imagesdanadasManiobra != null) && formData.imagesdanadasManiobra.length < 8
                         ? (
                           <input
                             type='file'
@@ -1479,7 +1480,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {formData.imagesdanadasManiobra && formData.imagesdanadasManiobra.map(
+                        {(formData.imagesdanadasManiobra != null) && formData.imagesdanadasManiobra.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1657,7 +1658,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 <Select
                   name='tempIdeal'
                   onValueChange={(value) =>
-                    handleSelectChange( value )}
+                    handleSelectChange(value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder='Selecciona una fruta' />
@@ -1777,7 +1778,7 @@ const ActaDeLlegada = (): JSX.Element => {
                       canvasProps={{
                         width: 250,
                         height: 100,
-                        className: 'signature-canvas',
+                        className: 'signature-canvas'
                       }}
                     />
                   </div>
@@ -1805,9 +1806,10 @@ const ActaDeLlegada = (): JSX.Element => {
         </Button>
 
         <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
-          { validations(formData)
-            ? (
-              <PDFDownloadLink
+          
+            {(() => {
+        return incompleteFields.length === 0 ? (
+          <PDFDownloadLink
                 document={<DownloadPDF
                   formData={formData}
                   firmaBase64Inspector={firmaBase64Inspector}
@@ -1817,20 +1819,23 @@ const ActaDeLlegada = (): JSX.Element => {
               >
                 <Button variant='default'>Descargar PDF</Button>
               </PDFDownloadLink>
-            )
-            : (
-              <Button variant='default' disabled>Faltan firmas</Button>
-            )}
+         
+        ) : (
+          <Button variant="default" disabled>
+            Faltan campos: {incompleteFields.join(', ')}
+          </Button>
+        );
+      })()}
+
+
         </div>
       </div>
-      {firmaBase64Inspector && firmaBase64Chofer
-        ? (
+      
           <Dialog>
             <DialogTrigger asChild>
-
-              <Button variant='outline'>Ver PDF</Button>
+              <Button variant="outline">Ver PDF</Button>
             </DialogTrigger>
-            <DialogContent className='sm:max-w-[800px]'>
+            <DialogContent className="sm:max-w-[800px]">
               <DialogHeader>
                 <DialogTitle>Vista del Documento</DialogTitle>
                 <DialogDescription>
@@ -1838,12 +1843,8 @@ const ActaDeLlegada = (): JSX.Element => {
                   entre las páginas.
                 </DialogDescription>
               </DialogHeader>
-
-              <div
-                style={{ display: 'flex', flexDirection: 'column', height: '100%' }}
-              >
-
-                <PDFViewer width='100%' height='500px'>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <PDFViewer width="100%" height="500px">
                   <ActaPDF
                     formData={formData}
                     firmaBase64Inspector={firmaBase64Inspector}
@@ -1854,17 +1855,16 @@ const ActaDeLlegada = (): JSX.Element => {
                   style={{
                     padding: '10px',
                     display: 'flex',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
                   }}
                 />
                 <div style={{ marginTop: 20, textAlign: 'center' }} />
               </div>
             </DialogContent>
           </Dialog>
-          )
-        : (
-          <Button variant='default' disabled>Faltan firmas</Button>
-          )}
+     
+          
+       
     </Layout>
   )
 }
