@@ -1,5 +1,5 @@
 export const formInitial = {
-  id: null,
+  id: 1,
   fecha: "",
   inicioVerificacion: "",
   terminoVerificacion: "",
@@ -76,6 +76,5 @@ export const formInitial = {
   cajasIdentificadas: "",
   danadasManiobra: "",
 };
-
 
 

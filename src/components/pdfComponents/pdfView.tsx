@@ -5,8 +5,8 @@ import {
   Document,
   StyleSheet,
   Image
-} from '@react-pdf/renderer';
-import { formInitial } from './format';
+} from '@react-pdf/renderer'
+import { FormData } from './format'
 // Estilos
 const styles = StyleSheet.create({
   page: { padding: 20 },
@@ -27,18 +27,18 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     border: '1px solid #ccc',
     padding: '10px',
-    marginTop: '20px',
+    marginTop: '20px'
   },
   table: {
     width: '100%',
     borderWidth: 2,
     borderColor: '#000',
     marginTop: 4,
-    height: 'auto',
+    height: 'auto'
   },
   tableRow: {
     flexDirection: 'row',
-    height: 'auto',
+    height: 'auto'
   },
   cellLabel: {
     flex: 1,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     fontFamily: 'GothamNarrow',
     flexWrap: 'wrap', // Permite que el texto se envuelva si no cabe
     overflow: 'hidden',
-    height: 'auto',
+    height: 'auto'
   },
   cellValue: {
     flex: 1,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     padding: 1,
     fontSize: 12,
     fontFamily: 'GothamNarrow',
-    height: 'auto',
+    height: 'auto'
   },
   cellLabelWhite: {
     backgroundColor: '#FFFFFF',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     fontFamily: 'GothamNarrow',
     minHeight: 20,
-    height: 'auto',
+    height: 'auto'
   }
 })
 
@@ -86,21 +86,18 @@ export interface ActaPDFProps {
   formData: FormData
   firmaBase64Inspector?: string
   firmaBase64Chofer?: string
-  currentPage: number
 }
 
 // Componente ActaPDF2
 const ActaPDF: React.FC<ActaPDFProps> = ({
   formData,
   firmaBase64Inspector,
-  firmaBase64Chofer,
-  currentPage
+  firmaBase64Chofer
 }) => (
   <Document>
     {/* firs part of the document (Page1) */}
 
-    {currentPage === 1 && (
-      <Page style={styles.page}>
+    <Page style={styles.page}>
         <View style={styles.logoSection}>
           {/* image */}
 
@@ -114,7 +111,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
               style={{
                 fontSize: 24,
                 fontWeight: 'bold',
-                fontFamily: 'GothamNarrow',
+                fontFamily: 'GothamNarrow'
               }}
             >
               ACTA DE DESCARGA{' '}
@@ -474,10 +471,8 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
           <View style={{ marginBottom: 20 }} />
         </View>
       </Page>
-    )}
 
-    {currentPage === 2 && (
-      <Page>
+    <Page>
         <View style={{ marginBottom: 20 }} />
         <View style={[styles.tableRow, { marginBottom: 15, width: '100%' }]}>
           <View style={[{ height: 100, width: '26%' }]}>
@@ -519,7 +514,6 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
           </View>
         </View>
         <View style={[styles.tableRow, { marginBottom: 15 }]}>
-          {/* Parte en negritas y más grande */}
           <Text
             style={[
               styles.cellLabel,
@@ -548,7 +542,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                   textAlign: 'center',
                   fontSize: 10,
                   height: 200
-                },
+                }
               ]}
             >
               {' '}
@@ -596,11 +590,8 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
           </View>
         </View>
       </Page>
-    )}
 
-    {/* Thrird part of the document (Page3) */}
-    {currentPage === 3 &&
-      (formData.option === 'No' ||
+    {(formData.option === 'No' ||
         formData.option2 === 'No' ||
         formData.optionLibre === 'No' ||
         formData.optionCaja === 'No' ||
@@ -613,21 +604,21 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
         formData.optioncajasIdentificadas === 'Si' ||
         formData.optiondanadasManiobra === 'Si') && (
           <Page size='A4' style={styles.page}>
-          <View>
+            <View>
             <Text
               style={{
                 justifyContent: 'center',
                 textAlign: 'center',
                 borderWidth: 1,
                 borderColor: '#000',
-                backgroundColor: '#ccc',
+                backgroundColor: '#ccc'
               }}
             >
               Anexos
             </Text>
           </View>
 
-          <View>
+            <View>
             {formData.option === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
@@ -646,7 +637,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imagecumpletermografo?.map(
@@ -656,7 +647,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                           style={{
                             padding: '4px',
                             borderRadius: '10px',
-                            textAlign: 'center',
+                            textAlign: 'center'
                           }}
                         >
                           <Image
@@ -665,7 +656,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -693,7 +684,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imagecumpletermografo2?.map(
@@ -703,7 +694,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                           style={{
                             padding: '4px',
                             borderRadius: '10px',
-                            textAlign: 'center',
+                            textAlign: 'center'
                           }}
                         >
                           <Image
@@ -712,7 +703,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -741,7 +732,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imageLimpio?.map(
@@ -751,7 +742,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                           style={{
                             padding: '4px',
                             borderRadius: '10px',
-                            textAlign: 'center',
+                            textAlign: 'center'
                           }}
                         >
                           <Image
@@ -760,7 +751,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -789,7 +780,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imageLibreFauna?.map(
@@ -799,7 +790,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                           style={{
                             padding: '4px',
                             borderRadius: '10px',
-                            textAlign: 'center',
+                            textAlign: 'center'
                           }}
                         >
                           <Image
@@ -808,7 +799,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -838,7 +829,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imageCajaCerrada?.map(
@@ -850,7 +841,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -878,7 +869,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imageLonaBuenEstado?.map(
@@ -890,7 +881,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -918,7 +909,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imageCargaBuenEstado?.map(
@@ -930,7 +921,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -958,7 +949,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imageSeguridadCarga?.map(
@@ -970,7 +961,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -999,7 +990,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imageSellado?.map(
@@ -1011,7 +1002,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -1039,7 +1030,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imagestarimasDanadas?.map(
@@ -1051,7 +1042,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -1079,7 +1070,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imagescajasIdentificadas?.map(
@@ -1091,7 +1082,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -1120,7 +1111,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                       display: 'flex',
                       flexWrap: 'wrap',
                       flexDirection: 'row',
-                      justifyContent: 'flex-start',
+                      justifyContent: 'flex-start'
                     }}
                   >
                     {formData.imagesdanadasManiobra?.map(
@@ -1132,7 +1123,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                               width: '150px',
                               height: '150px',
                               borderRadius: '5px',
-                              marginBottom: '10px',
+                              marginBottom: '10px'
                             }}
                           />
                         </div>
@@ -1143,7 +1134,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
               </>
             )}
           </View>
-        </Page>
+          </Page>
     )}
   </Document>
 )
