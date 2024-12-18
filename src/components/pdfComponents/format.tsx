@@ -1,5 +1,4 @@
 export const formInitial = {
-  id: undefined,
   fecha: '',
   inicioVerificacion: '',
   terminoVerificacion: '',
@@ -20,7 +19,6 @@ export const formInitial = {
   observacionesSetPoint: '',
   tempPantalla: '',
   observacionesPantalla: '',
-  termografo: '',
   tempOrigen: '',
   tempDestino: '',
   limpio: '',
@@ -74,68 +72,8 @@ export const formInitial = {
   danadasManiobra: ''
 }
 
-export interface Acta {
-  id: number
-  fecha: string
-  start_verification: string
-  end_verification: string
-  oc: string
-  provider: string
-  termografo: string
-  origin: string
-  bill: string
-  varieties: string
-  cold_disc: string
-  boxes_received: string
-  carrier_line: string
-  num_cont: string
-  truck_plt: string
-  box_plt: string
-  driver: string
-  setpoint_temp: string
-  setpoint_obs: string
-  screen_temp: string
-  screen_obs: string
-  therm_org: string
-  therm_dst: string
-  clean_free: string
-  close: string
-  tarp_state: string
-  pest_free: string
-  load_state: string
-  load_sec: string
-  seal: string
-  box_id: string
-  invest_res: string
-  tempa_door: string
-  tempa_mid: string
-  tempa_back: string
-  tempm_door: string
-  tempm_mid: string
-  tempm_back: string
-  tempb_door: string
-  tempb_mid: string
-  tempb_back: string
-  temp_max: string
-  temp_min: string
-  temp_ideal: string
-  insp_name: string
-  clean_obs: string
-  close_obs: string
-  tarp_obs: string
-  pest_obs: string
-  load_obs: string
-  sec_obs: string
-  seal_obs: string
-  pallet_dmg: string
-  box_num: string
-  dmg_num: string
-}
-
 export interface FormData {
   [key: string]: string | number | string[] | undefined
-  termografo?: string | number | string[] | undefined
-  id?: number
   fecha?: string
   inicioVerificacion?: string
   terminoVerificacion?: string
@@ -207,4 +145,61 @@ export interface FormData {
   optiontarimasDanadas?: string
   optioncajasIdentificadas?: string
   optiondanadasManiobra?: string
+}
+
+export interface Acta {
+  fecha: string
+  start_verification: string
+  end_verification: string
+  oc: string
+  provider: string
+  origin: string
+  bill: string
+  varieties: string
+  cold_disc: string
+  boxes_received: string
+  carrier_line: string
+  num_cont: string
+  truck_plt: string
+  box_plt: string
+  driver: string
+  setpoint_temp: string
+  setpoint_obs: string
+  screen_temp: string
+  screen_obs: string
+  therm_org: string
+  therm_dst: string
+  clean_free: string
+  close: string
+  tarp_state: string
+  pest_free: string
+  load_state: string
+  load_sec: string
+  seal: string
+  box_id: string
+  invest_res: string
+  tempa_door: string
+  tempa_mid: string
+  tempa_back: string
+  tempm_door: string
+  tempm_mid: string
+  tempm_back: string
+  tempb_door: string
+  tempb_mid: string
+  tempb_back: string
+  temp_max: string
+  temp_min: string
+  temp_ideal: string
+  insp_name: string
+  clean_obs: string
+  close_obs: string
+  tarp_obs: string
+  pest_obs: string
+  load_obs: string
+  sec_obs: string
+  seal_obs: string
+  pallet_dmg: string
+  box_num: string
+  dmg_num: string
+  especie: string
 }

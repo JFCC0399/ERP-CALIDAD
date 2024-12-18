@@ -40,7 +40,6 @@ export const insert = async (formData: any) => {
         screen_temp: formData.tempPantalla,
         setpoint_obs: formData.observacionesSetPoint,
         screen_obs: formData.observacionesPantalla,
-        therm_org: formData.termografo,
         therm_dst: formData.tempDestino,
         therm_org_obs: formData.tempOrigen,
         therm_dst_obs: formData.tempDestino,
@@ -97,7 +96,6 @@ export const fetchActas = async () => {
   const { data, error } = await supabase
     .from('ActaDescarga')
     .select(`
-      id,
       fecha,
       start_verification,
       end_verification,
