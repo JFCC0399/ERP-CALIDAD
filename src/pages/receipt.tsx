@@ -738,13 +738,13 @@ const ActaDeLlegada = (): JSX.Element => {
                               onChange={(e) =>
                                 handleFileChange3(e, 'imageLimpio')}
                             />
-                          )
+                            )
                           : (
                             <p style={{ color: 'red', marginTop: '10px' }}>
                               {' '}
                               No puedes agregar más de 8 imágenes{' '}
                             </p>
-                          )}
+                            )}
                         <div
                           style={{
                             display: 'flex',
@@ -822,13 +822,13 @@ const ActaDeLlegada = (): JSX.Element => {
                               onChange={(e) =>
                                 handleFileChange3(e, 'imageCajaCerrada')}
                             />
-                          )
+                            )
                           : (
                             <p style={{ color: 'red', marginTop: '10px' }}>
                               {' '}
                               No puedes agregar más de 8 imágenes{' '}
                             </p>
-                          )}
+                            )}
                         <div
                           style={{
                             display: 'flex',
@@ -913,7 +913,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageLonaBuenEstado != null) && formData.imageLonaBuenEstado.map(
+                          {formData.imageLonaBuenEstado?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -987,7 +987,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageLibreFauna != null) && formData.imageLibreFauna.map(
+                          {formData.imageLibreFauna?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1061,7 +1061,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageCargaBuenEstado != null) && formData.imageCargaBuenEstado.map(
+                          {formData.imageCargaBuenEstado?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1136,7 +1136,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageSeguridadCarga != null) && formData.imageSeguridadCarga.map(
+                          {formData.imageSeguridadCarga?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1212,7 +1212,7 @@ const ActaDeLlegada = (): JSX.Element => {
                             marginTop: '20px'
                           }}
                         >
-                          {(formData.imageSellado != null) && formData.imageSellado.map(
+                          {formData.imageSellado?.map(
                             (imageUrl: string, index: number) => (
                               <img
                                 key={index}
@@ -1302,12 +1302,12 @@ const ActaDeLlegada = (): JSX.Element => {
                             onChange={(e) =>
                               handleFileChange3(e, 'imagestarimasDanadas')}
                           />
-                        )
+                          )
                         : (
                           <p style={{ color: 'red', marginTop: '10px' }}>
                             No puedes agregar más de 8 imágenes
                           </p>
-                        )}
+                          )}
                       <div
                         style={{
                           display: 'flex',
@@ -1315,7 +1315,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {(formData.imagestarimasDanadas != null) && formData.imagestarimasDanadas.map(
+                        {formData.imagestarimasDanadas?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1336,7 +1336,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 )}
               </div>
 
-              <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
+              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
               <Input
                 type='text'
                 name='tarimasDanadas'
@@ -1385,12 +1385,12 @@ const ActaDeLlegada = (): JSX.Element => {
                             onChange={(e) =>
                               handleFileChange3(e, 'imagescajasIdentificadas')}
                           />
-                        )
+                          )
                         : (
                           <p style={{ color: 'red', marginTop: '10px' }}>
                             No puedes agregar más de 8 imágenes
                           </p>
-                        )}
+                          )}
                       <div
                         style={{
                           display: 'flex',
@@ -1398,7 +1398,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {(formData.imagescajasIdentificadas != null) && formData.imagescajasIdentificadas.map(
+                        {formData.imagescajasIdentificadas?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1419,7 +1419,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 )}
               </div>
 
-              <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
+              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
               <Input
                 type='text'
                 name='cajasIdentificadas'
@@ -1467,12 +1467,12 @@ const ActaDeLlegada = (): JSX.Element => {
                             onChange={(e) =>
                               handleFileChange3(e, 'imagesdanadasManiobra')}
                           />
-                        )
+                          )
                         : (
                           <p style={{ color: 'red', marginTop: '10px' }}>
                             No puedes agregar más de 8 imágenes
                           </p>
-                        )}
+                          )}
                       <div
                         style={{
                           display: 'flex',
@@ -1480,7 +1480,7 @@ const ActaDeLlegada = (): JSX.Element => {
                           marginTop: '20px'
                         }}
                       >
-                        {(formData.imagesdanadasManiobra != null) && formData.imagesdanadasManiobra.map(
+                        {formData.imagesdanadasManiobra?.map(
                           (imageUrl: string, index: number) => (
                             <img
                               key={index}
@@ -1501,7 +1501,7 @@ const ActaDeLlegada = (): JSX.Element => {
                 )}
               </div>
 
-              <label style={{ marginBottom: 30 }}>Pon una descripcion </label>
+              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
               <Input
                 type='text'
                 name='danadasManiobra'
@@ -1818,50 +1818,52 @@ const ActaDeLlegada = (): JSX.Element => {
               >
                 <Button variant='default'>Descargar PDF</Button>
               </PDFDownloadLink>
-            )
+              )
             : (
               <Button variant='default' disabled>Faltan firmas</Button>
-            )}
+              )}
         </div>
       </div>
       {(() => {
-        return incompleteFields.length === 0 ? (
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Ver PDF</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[800px]">
-              <DialogHeader>
-                <DialogTitle>Vista del Documento</DialogTitle>
-                <DialogDescription>
-                  Navega por el documento PDF y haz clic en los botones para moverte
-                  entre las páginas.
-                </DialogDescription>
-              </DialogHeader>
-              <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                <PDFViewer width="100%" height="500px">
-                  <ActaPDF
-                    formData={formData}
-                    firmaBase64Inspector={firmaBase64Inspector}
-                    firmaBase64Chofer={firmaBase64Chofer}
+        return incompleteFields.length === 0
+          ? (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant='outline'>Ver PDF</Button>
+              </DialogTrigger>
+              <DialogContent className='sm:max-w-[800px]'>
+                <DialogHeader>
+                  <DialogTitle>Vista del Documento</DialogTitle>
+                  <DialogDescription>
+                    Navega por el documento PDF y haz clic en los botones para moverte
+                    entre las páginas.
+                  </DialogDescription>
+                </DialogHeader>
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                  <PDFViewer width='100%' height='500px'>
+                    <ActaPDF
+                      formData={formData}
+                      firmaBase64Inspector={firmaBase64Inspector}
+                      firmaBase64Chofer={firmaBase64Chofer}
+                    />
+                  </PDFViewer>
+                  <div
+                    style={{
+                      padding: '10px',
+                      display: 'flex',
+                      justifyContent: 'center'
+                    }}
                   />
-                </PDFViewer>
-                <div
-                  style={{
-                    padding: '10px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                />
-                <div style={{ marginTop: 20, textAlign: 'center' }} />
-              </div>
-            </DialogContent>
-          </Dialog>
-        ) : (
-          <Button variant="default" disabled>
-            Faltan campos: {incompleteFields.join(', ')}
-          </Button>
-        );
+                  <div style={{ marginTop: 20, textAlign: 'center' }} />
+                </div>
+              </DialogContent>
+            </Dialog>
+            )
+          : (
+            <Button variant='default' disabled>
+              Faltan campos: {incompleteFields.join(', ')}
+            </Button>
+            )
       })()}
     </Layout>
   )
