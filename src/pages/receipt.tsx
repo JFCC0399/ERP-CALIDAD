@@ -56,6 +56,7 @@ import { formInitial, FormData, Acta } from '../components/pdfComponents/format'
 
 import ActaPDF from '../components/pdfComponents/pdfView'
 import DownloadPDF from '@/components/pdfComponents/PdfDownload'
+import { getIncompleteFields } from '@/components/validationEmptyFiles'
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@2.11.338/es5/build/pdf.worker.min.js'
 
@@ -82,8 +83,6 @@ const ActaDeLlegada = (): JSX.Element => {
 
   const handleUpdate = async (): Promise<void> => {
     await update(formData)
-
-
   }
 
   const handleSelectChange = (value: string): void => {
@@ -110,7 +109,7 @@ const ActaDeLlegada = (): JSX.Element => {
 
     // Buscar detalles del acta seleccionada
     const selectedActa = actasList.find((acta) => acta.oc === oc)
-    console.log("lo que tiene acta es",selectedActa)
+    console.log('lo que tiene acta es', selectedActa)
 
     if (selectedActa != null) {
       // Actualizar formData con los datos del acta seleccionada
@@ -191,24 +190,26 @@ const ActaDeLlegada = (): JSX.Element => {
         ? [...prevData[key], ...fileArray]
         : fileArray
     }))
-
   }
-  const getActasData = async (): Promise<void> => {
-    const data = await fetchActas()
-
-
-    if (data != null) {
-
-      setActasList(
-        data.map((acta: any) => ({
-          ...acta
-        }))
-      )
-    }
-  }
-
 
   useEffect(() => {
+    const getActasData = async (): Promise<void> => {
+      const data = await fetchActas()
+      if (data != null) {
+        setActasList(
+          data.map((acta: any) => ({
+            ...acta,
+            clean_obs: acta.clean_obs ?? '',
+            close_obs: acta.close_obs ?? '',
+            tarp_obs: acta.tarp_obs ?? '',
+            pest_obs: acta.pest_obs ?? '',
+            load_obs: acta.load_obs ?? '',
+            sec_obs: acta.sec_obs ?? '',
+            seal_obs: acta.seal_obs ?? ''
+          }))
+        )
+      }
+    }
 
     void getActasData()
 
@@ -228,7 +229,7 @@ const ActaDeLlegada = (): JSX.Element => {
         const num = Number(temp)
         return isNaN(num) ? null : num
       })
-      .filter((temp) => temp !== null)  // Aseguramos que sean números válidos
+      .filter((temp) => temp !== null)
 
     // Si no hay temperaturas válidas, no hacer nada
     if (allTemperatures.length === 0) return
@@ -288,24 +289,7 @@ const ActaDeLlegada = (): JSX.Element => {
     }
   }
 
-  const getIncompleteFields = (data: FormData): string[] => {
-    // Filtra las claves cuyo valor sea `undefined`, vacío, o no válido, excluyendo las de imágenes y opciones
-    const excludedFields = [
-      'imagecumpletermografo', 'imageCajaCerrada', 'imageCargaBuenEstado',
-      'imagestarimasDanadas', 'imagecumpletermografo2', 'imageLonaBuenEstado',
-      'imageSeguridadCarga', 'imagescajasIdentificadas', 'imageLimpio',
-      'imageLibreFauna', 'imageSellado', 'imagesdanadasManiobra'
-    ]
 
-    return Object.keys(data).filter((key) => {
-      // Ignorar claves que estén en el array `excludedFields`
-      if (excludedFields.includes(key)) return false
-
-      const value = data[key];
-      return value === undefined || value === null || value === '' ||
-        (Array.isArray(value) && value.length === 0)
-    })
-  }
   const incompleteFields = getIncompleteFields(formData)
 
   return (
@@ -501,311 +485,288 @@ const ActaDeLlegada = (): JSX.Element => {
             </AccordionTrigger>
             <AccordionContent>
               {[
-                { label: 'Temperatura de set point:', name: 'tempSetPoint' },
                 {
-                  label: 'Observaciones set point:',
-                  name: 'observacionesSetPoint'
+                  label1: 'Temperatura de set point:',
+                  name1: 'tempSetPoint',
+                  label2: 'Observaciones set point:',
+                  name2: 'observacionesSetPoint',
                 },
-                { label: 'Temperatura de pantalla:', name: 'tempPantalla' },
                 {
-                  label: 'Observaciones pantalla:',
-                  name: 'observacionesPantalla'
+                  label1: 'Temperatura de pantalla:',
+                  name1: 'tempPantalla',
+                  label2: 'Observaciones pantalla:',
+                  name2: 'observacionesPantalla',
                 },
-                { label: 'Temperatura de origen:', name: 'tempOrigen' },
-                { label: 'Temperatura de destino:', name: 'tempDestino' }
-              ].map(({ label, name }) => (
+              ].map(({ label1, name1, label2, name2 }) => (
                 <div
-                  key={name}
+                  key={name1}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                   }}
                 >
-                  <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
-                    {label}
+                  {/* Sección de Temperatura */}
+                  <div style={{ flex: '1', marginRight: '10px' }}>
+                    <label style={{ display: 'block', fontWeight: 'bold' }}>{label1}</label>
+                    <Input
+                      type="text"
+                      name={name1}
+                      value={formData[name1]}
+                      onChange={handleInputChange}
+                      style={{
+                        width: '100%',
+                        padding: '8px',
+                        borderRadius: '4px',
+                        border: '1px solid #ccc',
+                      }}
+                    />
+                  </div>
+
+                  {/* Sección de Observaciones */}
+                  <div style={{ flex: '1' }}>
+                    <label style={{ display: 'block', fontWeight: 'bold' }}>{label2}</label>
+                    <Input
+                      type="text"
+                      name={name2}
+                      value={formData[name2]}
+                      onChange={handleInputChange}
+                      style={{
+                        width: '100%',
+                        padding: '8px',
+                        borderRadius: '4px',
+                        border: '1px solid #ccc',
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+
+
+
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '20px',
+                  gap: '20px', // Espacio entre las dos secciones
+                }}
+              >
+                {/* Sección para "Cumple termógrafo origen" y botones */}
+                <div style={{ display: 'flex', alignItems: 'center', flex: '1' }}>
+                  <label
+                    style={{
+                      flex: '0 0 250px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Cumple termógrafo origen:
+                  </label>
+                  <div style={{ display: 'flex', gap: '10px' }}>
+                    <Button
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                      }}
+                      name="option"
+                      value="Si"
+                      onClick={handleButtonClick}
+                    >
+                      Sí
+                    </Button>
+                    <Button
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '4px',
+                      }}
+                      name="option"
+                      value="No"
+                      onClick={handleButtonClick}
+                    >
+                      No
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Sección para "Temperatura origen termógrafo" y su input */}
+                <div style={{ display: 'flex', alignItems: 'center', flex: '3' }}>
+                  <label
+                    style={{
+                      flex: '0 0 250px',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Temperatura origen termógrafo:
                   </label>
                   <Input
-                    type='text'
-                    name={name}
-                    value={formData[name]}
+                    type="text"
+                    name="tempOrigen"
+                    value={formData.tempOrigen}
                     onChange={handleInputChange}
                     style={{
                       flex: '1',
                       padding: '8px',
                       borderRadius: '4px',
-                      border: '1px solid #ccc'
+                      border: '1px solid #ccc',
                     }}
                   />
                 </div>
-              ))}
+              </div>
+
+
+
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  marginBottom: '10px'
+                  marginBottom: '20px',
+                  gap: '20px', // Espacio entre las dos secciones
                 }}
               >
                 <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
-                  Termógrafo
+                  cumple Territorio nacional:
                 </label>
-              </div>
-              <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
-                cumple termografo:
-              </label>
-              <div style={{ marginBottom: 20 }}>
-                <Button
-                  style={{ flex: 5, marginRight: '10px' }}
-                  name='option'
-                  value='Si'
-                  onClick={handleButtonClick}
-                >
-                  {' '}
-                  Sí{' '}
-                </Button>
-                <Button name='option' value='No' onClick={handleButtonClick}>
-                  {' '}
-                  No{' '}
-                </Button>
-                {formData.option === 'No' && (
-                  <div>
-                    <div style={{ marginBottom: 30 }}>
-                      <Button>
-                        <label
-                          htmlFor='file-input-termografo1'
-                          style={{ cursor: 'pointer' }}
-                        >
-                          Seleccionar Imagen
-                        </label>
-                      </Button>
 
-                      {formData.imagecumpletermografo?.length < 8 ? (
-
-
-                        <input
-                          type='file'
-                          id='file-input-termografo1'
-                          accept='image/*'
-                          multiple
-                          style={{ display: 'none' }}
-                          onChange={(e) =>
-                            handleFileChange3(e, 'imagecumpletermografo')}
-                        />
-                      ) : (<p style={{ color: 'red', marginTop: '10px' }}>
-                        {' '}
-                        No puedes agregar más de 8 imágenes{' '}
-                      </p>)}
-
-
-
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          marginTop: '20px'
-                        }}
-                      >
-                        {formData.imagecumpletermografo?.map(
-                          (imageUrl: string, index: number) => (
-                            <img
-                              key={index}
-                              src={imageUrl}
-                              style={{
-                                width: '200px',
-                                height: '200px',
-                                margin: '10px',
-                                objectFit: 'cover'
-                              }}
-                            />
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>
-                cumple termografo2:
-              </label>
-              <div style={{ marginBottom: 20 }}>
-                <Button
-                  style={{ flex: 5, marginRight: '10px' }}
-                  name='option2'
-                  value='Si'
-                  onClick={handleButtonClick}
-                >
-                  {' '}
-                  Sí{' '}
-                </Button>
-                <Button name='option2' value='No' onClick={handleButtonClick}>
-                  {' '}
-                  No{' '}
-                </Button>
-                {formData.option2 === 'No' && (
-                  <div>
-                    <div style={{ marginBottom: 30 }}>
-                      <Button>
-                        <label
-                          htmlFor='file-input-termografo2'
-                          style={{ cursor: 'pointer' }}
-                        >
-                          Seleccionar Imagen
-                        </label>
-                      </Button>
-                      {formData.imagecumpletermografo2?.length < 8 ? (
-                        <input
-                          type='file'
-                          id='file-input-termografo2'
-                          accept='image/*'
-                          multiple
-                          style={{ display: 'none' }}
-                          onChange={(e) =>
-                            handleFileChange3(e, 'imagecumpletermografo2')}
-                        />
-
-
-                      ) :
-                        (
-                          <p style={{ color: 'red', marginTop: '10px' }}>
-                            {' '}
-                            No puedes agregar más de 8 imágenes{' '}
-                          </p>
-
-                        )}
-
-
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          marginTop: '20px'
-                        }}
-                      >
-                        {formData.imagecumpletermografo2?.map(
-                          (imageUrl: string, index: number) => (
-                            <img
-                              key={index}
-                              src={imageUrl}
-                              style={{
-                                width: '200px',
-                                height: '200px',
-                                margin: '10px',
-                                objectFit: 'cover'
-                              }}
-                            />
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-
-        <Accordion type='single' collapsible style={{ padding: '8px 0' }}>
-          <AccordionItem value='item-2'>
-            <AccordionTrigger
-              style={{
-                fontSize: '20px',
-                fontWeight: 'bold',
-                padding: '12px 16px',
-                borderRadius: '8px',
-                border: '2px solid #7A2A1E',
-                textAlign: 'center',
-                cursor: 'pointer'
-              }}
-            >
-              Inspección de transporte
-            </AccordionTrigger>
-            <AccordionContent>
-              <div style={{ marginBottom: 30 }}>
-                <label>Limpio </label>
                 <div style={{ marginBottom: 20 }}>
                   <Button
                     style={{ flex: 5, marginRight: '10px' }}
-                    name='optionLimpio'
+                    name='option2'
                     value='Si'
                     onClick={handleButtonClick}
                   >
                     {' '}
                     Sí{' '}
                   </Button>
-                  <Button
-                    name='optionLimpio'
-                    value='No'
-                    onClick={handleButtonClick}
-                  >
+                  <Button name='option2' value='No' onClick={handleButtonClick}>
                     {' '}
                     No{' '}
                   </Button>
-                  {formData.optionLimpio === 'No' && (
-                    <div>
-                      <div style={{ marginBottom: 30 }}>
-                        <Button>
-                          <label
-                            htmlFor='file-input-limpio'
-                            style={{ cursor: 'pointer' }}
-                          >
-                            Seleccionar Imagen
-                          </label>
-                        </Button>
-                        {(formData.imageLimpio != null) && formData.imageLimpio.length < 8
-                          ? (
-                            <input
-                              type='file'
-                              id='file-input-limpio'
-                              accept='image/*'
-                              multiple
-                              style={{ display: 'none' }}
-                              onChange={(e) =>
-                                handleFileChange3(e, 'imageLimpio')}
-                            />
-                          )
-                          : (
-                            <p style={{ color: 'red', marginTop: '10px' }}>
-                              {' '}
-                              No puedes agregar más de 8 imágenes{' '}
-                            </p>
-                          )}
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            marginTop: '20px'
-                          }}
-                        >
-                          {formData.imageLimpio?.map(
-                            (imageUrl: string, index: number) => (
-                              <img
-                                key={index}
-                                src={imageUrl}
-                                alt='imageLimpio'
-                                style={{
-                                  width: '200px',
-                                  height: '200px',
-                                  margin: '10px',
-                                  objectFit: 'cover'
-                                }}
-                              />
-                            )
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
+
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginBottom: '10px',
+                  }}
+                >
+                  <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Temperatura Territorio nacional  </label>
+                  <Input
+                    type='text'
+                    name='tempDestino'
+                    value={formData.tempDestino}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
-              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
-              <Input
-                type='text'
-                name='limpio'
-                value={formData.limpio}
-                onChange={handleInputChange}
-              />
+
+
+
+
+            </AccordionContent>
+            <AccordionContent>
+            <div
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '20px',
+    gap: '20px', // Espacio entre las secciones
+  }}
+>
+  <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Limpio</label>
+  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+    <Button
+      name='optionLimpio'
+      value='Si'
+      onClick={handleButtonClick}
+    >
+      Sí
+    </Button>
+    <Button
+      name='optionLimpio'
+      value='No'
+      onClick={handleButtonClick}
+    >
+      No
+    </Button>
+
+    {/* Descripción al lado del botón "No" */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <label style={{ fontWeight: 'bold' }}>Pon una descripción</label>
+      <Input
+        type='text'
+        name='limpio'
+        value={formData.limpio}
+        onChange={handleInputChange}
+        style={{
+          padding: '8px',
+          borderRadius: '4px',
+          border: '1px solid #ccc',
+          width: '200px', // Tamaño fijo para el input
+        }}
+      />
+    </div>
+  </div>
+
+  {/* Mostrar la opción de Seleccionar Imagen solo cuando la opción es "No" */}
+ 
+</div>
+{formData.optionLimpio === 'No' && (
+    <div style={{ marginTop: '20px' }}>
+      <Button>
+        <label
+          htmlFor='file-input-limpio'
+          style={{ cursor: 'pointer' }}
+        >
+          Seleccionar Imagen
+        </label>
+      </Button>
+      {(formData.imageLimpio != null) && formData.imageLimpio.length < 8 ? (
+        <input
+          type='file'
+          id='file-input-limpio'
+          accept='image/*'
+          multiple
+          style={{ display: 'none' }}
+          onChange={(e) => handleFileChange3(e, 'imageLimpio')}
+        />
+      ) : (
+        <p style={{ color: 'red', marginTop: '10px' }}>
+          No puedes agregar más de 8 imágenes
+        </p>
+      )}
+      <div
+        style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          marginTop: '20px',
+        }}
+      >
+        {formData.imageLimpio?.map((imageUrl: string, index: number) => (
+          <img
+            key={index}
+            src={imageUrl}
+            alt='imageLimpio'
+            style={{
+              width: '200px',
+              height: '200px',
+              margin: '10px',
+              objectFit: 'cover',
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  )}
+
+
+
+
               <div style={{ marginBottom: 30 }}>
-                <label>Caja cerrada, en buen estado </label>
+                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Caja cerrada, en buen estado </label>
                 <div style={{ marginBottom: 20 }}>
                   <Button
                     style={{ flex: 5, marginRight: '10px' }}
@@ -881,15 +842,24 @@ const ActaDeLlegada = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <label>Description</label>
-              <Input
-                type='text'
-                name='cajaCerrada'
-                value={formData.cajaCerrada}
-                onChange={handleInputChange}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripcion</label>
+                <Input
+                  type='text'
+                  name='cajaCerrada'
+                  value={formData.cajaCerrada}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div style={{ marginBottom: 30 }}>
-                <label>Lona en buen estado: </label>
+                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Lona en buen estado: </label>
 
                 <div style={{ marginBottom: 20 }}>
                   <Button
@@ -921,29 +891,25 @@ const ActaDeLlegada = (): JSX.Element => {
                           </label>
                         </Button>
 
-                        {formData.imageLonaBuenEstado.length < 8 ? (
-                          <input
-                            type='file'
-                            id='file-input-lona'
-                            accept='image/*'
-                            multiple
-                            style={{ display: 'none' }}
-                            onChange={(e) =>
-                              handleFileChange3(e, 'imageLonaBuenEstado')}
-                          />
+                        {formData.imageLonaBuenEstado.length < 8
+                          ? (
+                            <input
+                              type='file'
+                              id='file-input-lona'
+                              accept='image/*'
+                              multiple
+                              style={{ display: 'none' }}
+                              onChange={(e) =>
+                                handleFileChange3(e, 'imageLonaBuenEstado')}
+                            />
 
-                        )
-                          :
-                          (
+                          )
+                          : (
                             <p style={{ color: 'red', marginTop: '10px' }}>
                               {' '}
                               No puedes agregar más de 8 imágenes{' '}
                             </p>
-                          )
-
-
-                        }
-
+                          )}
 
                         <div
                           style={{
@@ -972,15 +938,24 @@ const ActaDeLlegada = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <label>Descripción</label>
-              <Input
-                type='text'
-                name='lona'
-                value={formData.lona}
-                onChange={handleInputChange}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripción</label>
+                <Input
+                  type='text'
+                  name='lona'
+                  value={formData.lona}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div style={{ marginBottom: 30 }}>
-                <label>Libre de fauna nociva: </label>
+                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Libre de fauna nociva: </label>
                 <div style={{ marginBottom: 20 }}>
                   <Button
                     style={{ flex: 5, marginRight: '10px' }}
@@ -1011,8 +986,8 @@ const ActaDeLlegada = (): JSX.Element => {
                           </label>
                         </Button>
 
-                        {formData.imageLibreFauna.length < 8 ?
-                          (
+                        {formData.imageLibreFauna.length < 8
+                          ? (
 
                             <input
                               type='file'
@@ -1024,16 +999,12 @@ const ActaDeLlegada = (): JSX.Element => {
                                 handleFileChange3(e, 'imageLibreFauna')}
                             />
 
-
                           )
 
                           : (<p style={{ color: 'red', marginTop: '10px' }}>
                             {' '}
                             No puedes agregar más de 8 imágenes{' '}
-                          </p>)
-
-
-                        }
+                          </p>)}
 
                         <div
                           style={{
@@ -1062,15 +1033,24 @@ const ActaDeLlegada = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <label>Descripción: </label>
-              <Input
-                type='text'
-                name='fauna'
-                value={formData.fauna}
-                onChange={handleInputChange}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripción: </label>
+                <Input
+                  type='text'
+                  name='fauna'
+                  value={formData.fauna}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div style={{ marginBottom: 30 }}>
-                <label>Carga en buen estado: </label>
+                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Carga en buen estado: </label>
                 <div style={{ marginBottom: 20 }}>
                   <Button
                     style={{ flex: 5, marginRight: '10px' }}
@@ -1100,29 +1080,26 @@ const ActaDeLlegada = (): JSX.Element => {
                             Seleccionar Imagen
                           </label>
                         </Button>
-                        {formData.imageCargaBuenEstado?.length < 8 ? (
-                          <input
-                            type='file'
-                            id='file-input'
-                            accept='image/*'
-                            multiple
-                            style={{ display: 'none' }}
-                            onChange={(e) =>
-                              handleFileChange3(e, 'imageCargaBuenEstado')}
-                          />
+                        {formData.imageCargaBuenEstado?.length < 8
+                          ? (
+                            <input
+                              type='file'
+                              id='file-input'
+                              accept='image/*'
+                              multiple
+                              style={{ display: 'none' }}
+                              onChange={(e) =>
+                                handleFileChange3(e, 'imageCargaBuenEstado')}
+                            />
 
-
-                        )
+                          )
                           : (
                             <p style={{ color: 'red', marginTop: '10px' }}>
                               {' '}
                               No puedes agregar más de 8 imágenes{' '}
                             </p>
 
-                          )
-                        }
-
-
+                          )}
 
                         <div
                           style={{
@@ -1152,15 +1129,24 @@ const ActaDeLlegada = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <label>Descripción: </label>
-              <Input
-                type='text'
-                name='carga'
-                value={formData.carga}
-                onChange={handleInputChange}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripción: </label>
+                <Input
+                  type='text'
+                  name='carga'
+                  value={formData.carga}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div style={{ marginBottom: 30 }}>
-                <label>Seguridad de carga: </label>
+                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Seguridad de carga(Gatas,trancas,etc..): </label>
                 <div style={{ marginBottom: 20 }}>
                   <Button
                     style={{ flex: 5, marginRight: '10px' }}
@@ -1191,28 +1177,26 @@ const ActaDeLlegada = (): JSX.Element => {
                           </label>
                         </Button>
 
-                        {formData.imageSeguridadCarga.length < 8 ? (
-                          <input
-                            type='file'
-                            id='file-input-seguridad'
-                            accept='image/*'
-                            multiple
-                            style={{ display: 'none' }}
-                            onChange={(e) =>
-                              handleFileChange3(e, 'imageSeguridadCarga')}
-                          />
+                        {formData.imageSeguridadCarga.length < 8
+                          ? (
+                            <input
+                              type='file'
+                              id='file-input-seguridad'
+                              accept='image/*'
+                              multiple
+                              style={{ display: 'none' }}
+                              onChange={(e) =>
+                                handleFileChange3(e, 'imageSeguridadCarga')}
+                            />
 
-                        ) :
-                          (
+                          )
+                          : (
                             <p style={{ color: 'red', marginTop: '10px' }}>
                               {' '}
                               No puedes agregar más de 8 imágenes{' '}
                             </p>
 
-                          )
-
-                        }
-
+                          )}
 
                         <div
                           style={{
@@ -1242,15 +1226,24 @@ const ActaDeLlegada = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <label>Descripción: </label>
-              <Input
-                type='text'
-                name='seguridadCarga'
-                value={formData.seguridadCarga}
-                onChange={handleInputChange}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripción: </label>
+                <Input
+                  type='text'
+                  name='seguridadCarga'
+                  value={formData.seguridadCarga}
+                  onChange={handleInputChange}
+                />
+              </div>
               <div style={{ marginBottom: 30 }}>
-                <label>Sellado: </label>
+                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Sellado: </label>
                 <div style={{ marginBottom: 20 }}>
                   <Button
                     style={{ flex: 5, marginRight: '10px' }}
@@ -1281,23 +1274,19 @@ const ActaDeLlegada = (): JSX.Element => {
                           </label>
                         </Button>
 
-                        {formData.imageSellado?.length < 8 ?
-                          (<input
+                        {formData.imageSellado?.length < 8
+                          ? (<input
                             type='file'
                             id='file-input-sellado'
                             accept='image/*'
                             multiple
                             style={{ display: 'none' }}
                             onChange={(e) => handleFileChange3(e, 'imageSellado')}
-                          />) :
-                          <p style={{ color: 'red', marginTop: '10px' }}>
+                          />)
+                          : <p style={{ color: 'red', marginTop: '10px' }}>
                             {' '}
                             No puedes agregar más de 8 imágenes{' '}
-                          </p>
-
-                        }
-
-
+                          </p>}
 
                         <div
                           style={{
@@ -1327,16 +1316,27 @@ const ActaDeLlegada = (): JSX.Element => {
                   )}
                 </div>
               </div>
-              <label>Descripción: </label>
-              <Input
-                type='text'
-                name='sellado'
-                value={formData.sellado}
-                onChange={handleInputChange}
-              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripción: </label>
+                <Input
+                  type='text'
+                  name='sellado'
+                  value={formData.sellado}
+                  onChange={handleInputChange}
+                />
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+
+
 
         <Accordion type='single' collapsible style={{ padding: '8px 0' }}>
           <AccordionItem value='item-6'>
@@ -1351,10 +1351,10 @@ const ActaDeLlegada = (): JSX.Element => {
                 cursor: 'pointer'
               }}
             >
-              Placas Caja
+              Transbordo
             </AccordionTrigger>
             <AccordionContent>
-              <label>Hay tarimas dañadas?: </label>
+              <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Hay tarimas dañadas?: </label>
               <div style={{ marginBottom: 20 }}>
                 <Button
                   style={{ flex: 5, marginRight: '10px' }}
@@ -1429,98 +1429,24 @@ const ActaDeLlegada = (): JSX.Element => {
                   </div>
                 )}
               </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
 
-              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
-              <Input
-                type='text'
-                name='tarimasDanadas'
-                value={formData.tarimasDanadas}
-                onChange={handleInputChange}
-              />
-              <label>Cajas Identificadas: </label>
-
-              <div style={{ marginBottom: 20 }}>
-                <Button
-                  style={{ flex: 5, marginRight: '10px' }}
-                  name='optioncajasIdentificadas'
-                  value='Si'
-                  onClick={handleButtonClick}
-                >
-                  {' '}
-                  Sí{' '}
-                </Button>
-                <Button
-                  name='optioncajasIdentificadas'
-                  value='No'
-                  onClick={handleButtonClick}
-                >
-                  {' '}
-                  No{' '}
-                </Button>
-                {formData.optioncajasIdentificadas === 'Si' && (
-                  <div>
-                    <div style={{ marginBottom: 30 }}>
-                      <Button>
-                        <label
-                          htmlFor='file-input-caja'
-                          style={{ cursor: 'pointer' }}
-                        >
-                          Seleccionar Imagen
-                        </label>
-                      </Button>
-                      {(formData.imagescajasIdentificadas != null) && formData.imagescajasIdentificadas.length < 8
-                        ? (
-                          <input
-                            type='file'
-                            id='file-input-caja'
-                            accept='image/*'
-                            multiple
-                            style={{ display: 'none' }}
-                            onChange={(e) =>
-                              handleFileChange3(e, 'imagescajasIdentificadas')}
-                          />
-                        )
-                        : (
-                          <p style={{ color: 'red', marginTop: '10px' }}>
-                            No puedes agregar más de 8 imágenes
-                          </p>
-                        )}
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexWrap: 'wrap',
-                          marginTop: '20px'
-                        }}
-                      >
-                        {formData.imagescajasIdentificadas?.map(
-                          (imageUrl: string, index: number) => (
-                            <img
-                              key={index}
-                              src={imageUrl}
-                              alt='imagescajasIdentificadas'
-                              style={{
-                                width: '200px',
-                                height: '200px',
-                                margin: '10px',
-                                objectFit: 'cover'
-                              }}
-                            />
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                <label style={{ flex: '0 0 150px', fontWeight: 'bold' }}>Pon una descripción </label>
+                <Input
+                  type='text'
+                  name='tarimasDanadas'
+                  value={formData.tarimasDanadas}
+                  onChange={handleInputChange}
+                />
               </div>
-
-              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
-              <Input
-                type='text'
-                name='cajasIdentificadas'
-                value={formData.cajasIdentificadas}
-                onChange={handleInputChange}
-              />
-              <label>Cajas Dañadas por Maniobra: </label>
+              <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Cajas Dañadas por Maniobra: </label>
               <div style={{ marginBottom: 20 }}>
                 <Button
                   style={{ flex: 5, marginRight: '10px' }}
@@ -1594,14 +1520,24 @@ const ActaDeLlegada = (): JSX.Element => {
                   </div>
                 )}
               </div>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
 
-              <label style={{ marginBottom: 30 }}>Pon una descripción </label>
-              <Input
-                type='text'
-                name='danadasManiobra'
-                value={formData.danadasManiobra}
-                onChange={handleInputChange}
-              />
+                <label style={{ flex: '0 0 150px', fontWeight: 'bold' }}>Pon una descripción </label>
+                <Input
+                  type='text'
+                  name='danadasManiobra'
+                  value={formData.danadasManiobra}
+                  onChange={handleInputChange}
+                />
+
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -1898,6 +1834,14 @@ const ActaDeLlegada = (): JSX.Element => {
         >
           Guardar datos en la Bd
         </Button>
+        <Button
+          onClick={() => {
+            void handleUpdate()
+            // void getActasData()
+          }}
+        >
+          Actualizar en la base de datos
+        </Button>
       </div>
       {isMobile || isTablet
         ? (
@@ -1912,12 +1856,12 @@ const ActaDeLlegada = (): JSX.Element => {
                         firmaBase64Inspector={firmaBase64Inspector}
                         firmaBase64Chofer={firmaBase64Chofer}
                       />
-                  }
+                    }
                     fileName={`Acta_${formData.oc ?? 'Descarga'}.pdf`}
                   >
                     <Button variant='default'>Descargar PDF</Button>
                   </PDFDownloadLink>
-                  )
+                )
                 : (
                   <Dialog>
                     <DialogTrigger asChild>
@@ -1948,10 +1892,10 @@ const ActaDeLlegada = (): JSX.Element => {
                       </div>
                     </DialogContent>
                   </Dialog>
-                  )
+                )
             })()}
           </div>
-          )
+        )
         : (
           <Dialog>
             <DialogTrigger asChild>
@@ -1984,7 +1928,7 @@ const ActaDeLlegada = (): JSX.Element => {
               </div>
             </DialogContent>
           </Dialog>
-          )}
+        )}
     </Layout>
   )
 }

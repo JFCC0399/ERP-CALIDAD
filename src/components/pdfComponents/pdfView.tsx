@@ -96,9 +96,8 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
 }) => (
   <Document>
 
-
     <Page style={styles.page}>
-        <View style={styles.logoSection}>
+      <View style={styles.logoSection}>
           {/* image */}
 
           <Image
@@ -126,8 +125,8 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
             </View>
           </View>
         </View>
-        <View style={{ marginBottom: 2 }} />
-        <View style={{ width: '100%' }}>
+      <View style={{ marginBottom: 2 }} />
+      <View style={{ width: '100%' }}>
           <View style={styles.table}>
             <View style={styles.tableRow}>
               <Text style={styles.cellLabel}>Fecha: </Text>
@@ -435,20 +434,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                   {formData.tarimasDanadas}{' '}
                 </Text>
               </View>
-              <View style={styles.tableRow}>
-                <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>
-                  Cajas identificadas :
-                </Text>
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
-                  {formData.optioncajasIdentificadas === 'Si' ? 'Si' : ''}
-                </Text>
-                <Text style={[styles.cellLabelWhite, { flex: 0.4 }]}>
-                  {formData.optioncajasIdentificadas === 'No' ? 'No' : ''}
-                </Text>
-                <Text style={[styles.cellLabelWhite, { flex: 1.3 }]}>
-                  {formData.cajasIdentificadas}
-                </Text>
-              </View>
+             
               <View style={styles.tableRow}>
                 <Text style={[styles.cellLabelWhite, { flex: 0.7 }]}>
                   Cajas dañadas por maniobra:
@@ -470,11 +456,11 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
 
           <View style={{ marginBottom: 20 }} />
         </View>
-      </Page>
+    </Page>
 
     <Page>
-        <View style={{ marginBottom: 20 }} />
-        <View style={[styles.tableRow, { marginBottom: 15, width: '100%' }]}>
+      <View style={{ marginBottom: 20 }} />
+      <View style={[styles.tableRow, { marginBottom: 15, width: '100%' }]}>
           <View style={[{ height: 100, width: '26%' }]}>
             <Text style={[styles.cellLabel, {}]}>Temperatura de pulpa</Text>
             <Text style={styles.cellValue}>A</Text>
@@ -513,7 +499,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
             </View>
           </View>
         </View>
-        <View style={[styles.tableRow, { marginBottom: 15 }]}>
+      <View style={[styles.tableRow, { marginBottom: 15 }]}>
           <Text
             style={[
               styles.cellLabel,
@@ -527,12 +513,12 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
           </Text>
           <Text style={styles.cellValue}>{formData.resultadosInv ?? ''}</Text>
         </View>
-        <Text style={[styles.cellLabel, { flex: 0.15, fontSize: 14 }]}>
+      <Text style={[styles.cellLabel, { flex: 0.15, fontSize: 14 }]}>
           Hago constar que estoy de acuerdo con lo verificado y registrado en el
           presente{'\n'}documento
         </Text>
 
-        <View>
+      <View>
           <View style={styles.tableRow}>
             <Text
               style={[
@@ -557,12 +543,14 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
                   Firma:
                 </Text>
-                {firmaBase64Inspector ? (
-    <Image
+                {firmaBase64Inspector
+? (
+                  <Image
       src={firmaBase64Inspector}
       style={{ width: 200, height: 150 }}
     />
-  ) : null}
+                )
+: null}
               </View>
             </View>
             <Text style={[styles.cellLabel, { width: '12%', fontSize: 10 }]}>
@@ -577,17 +565,19 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 <Text style={[styles.inputLabel, { paddingBottom: 10 }]}>
                   Firma:
                 </Text>
-                {firmaBase64Chofer ? (
-    <Image
+                {firmaBase64Chofer
+? (
+                  <Image
       src={firmaBase64Chofer}
       style={{ width: 200, height: 150 }}
     />
-  ) : null}
+                )
+: null}
               </View>
             </View>
           </View>
         </View>
-      </Page>
+    </Page>
 
     {(formData.option === 'No' ||
         formData.option2 === 'No' ||
@@ -603,7 +593,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
         formData.optiondanadasManiobra === 'Si') && (
           <Page size='A4' style={styles.page}>
             <View>
-            <Text
+              <Text
               style={{
                 justifyContent: 'center',
                 textAlign: 'center',
@@ -614,10 +604,10 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
             >
               Anexos
             </Text>
-          </View>
+            </View>
 
             <View>
-            {formData.option === 'No' && (
+              {formData.option === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -664,7 +654,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 </View>
               </>
             )}
-            {formData.option2 === 'No' && (
+              {formData.option2 === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -712,7 +702,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
               </>
             )}
 
-            {formData.optionLimpio === 'No' && (
+              {formData.optionLimpio === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -760,7 +750,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
               </>
             )}
 
-            {formData.optionLibre === 'No' && (
+              {formData.optionLibre === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -808,7 +798,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
               </>
             )}
 
-            {formData.optionCaja === 'No' && (
+              {formData.optionCaja === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -849,7 +839,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 </View>
               </>
             )}
-            {formData.optionLona === 'No' && (
+              {formData.optionLona === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -889,7 +879,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 </View>
               </>
             )}
-            {formData.optionCarga === 'No' && (
+              {formData.optionCarga === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -929,7 +919,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 </View>
               </>
             )}
-            {formData.optionSeguridad === 'No' && (
+              {formData.optionSeguridad === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -970,7 +960,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
               </>
             )}
 
-            {formData.optionSellado === 'No' && (
+              {formData.optionSellado === 'No' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -1010,7 +1000,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 </View>
               </>
             )}
-            {formData.optiontarimasDanadas === 'Si' && (
+              {formData.optiontarimasDanadas === 'Si' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -1050,7 +1040,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 </View>
               </>
             )}
-            {formData.optioncajasIdentificadas === 'Si' && (
+              {formData.optioncajasIdentificadas === 'Si' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -1091,7 +1081,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
               </>
             )}
 
-            {formData.optiondanadasManiobra === 'Si' && (
+              {formData.optiondanadasManiobra === 'Si' && (
               <>
                 <View style={{ borderWidth: 1, borderColor: '#000' }}>
                   <Text style={{ fontSize: '15px' }}>
@@ -1131,7 +1121,7 @@ const ActaPDF: React.FC<ActaPDFProps> = ({
                 </View>
               </>
             )}
-          </View>
+            </View>
           </Page>
     )}
   </Document>

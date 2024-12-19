@@ -1,4 +1,6 @@
 import { supabase } from './supabase'
+import Swal from 'sweetalert2'
+import { getIncompleteFields } from '@/components/validationEmptyFiles'
 
 export const query = async () => {
   try {
@@ -18,24 +20,37 @@ export const query = async () => {
 
 export const verificationOC = async (oc) => {
   const { data, error } = await supabase.from('ActaDescarga').select('*').eq('oc', oc)
-  console.log('console log este elemento ya existe ')
+
   if (error != null) {
-    console.log(' hay un error :0', error)
-  }
-  if (data?.length > 0 && (data != null)) {
-    console.log(' contiene algo ')
+    console.error('Error al verificar la orden de compra:', error)
     return false
-  } else {
-    console.log(' no contiene algo ')
-    return true
   }
+
+  if (data?.length > 0 && data != null) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Elemento existente',
+      text: 'La orden de compra ya fue registrada con este ID.',
+      confirmButtonText: 'Aceptar',
+      confirmButtonColor: '#9A3424',
+      iconColor: '#9A3424'
+    })
+    return false
+  }
+
+  return true
 }
 
 export const insert = async (formData: any) => {
   try {
-    const state = await verificationOC(formData.oc)
 
-    if (state) {
+    const incompleteFiles=getIncompleteFields(formData)
+    console.log(incompleteFiles.length)
+
+    const state = await verificationOC(formData.oc)
+    
+
+    if (state && incompleteFiles.length<=0) {
       const { data, error } = await supabase
         .from('ActaDescarga')
         .insert([{
