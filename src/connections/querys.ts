@@ -18,7 +18,7 @@ export const query = async () => {
   }
 }
 
-export const verificationOC = async (oc) => {
+export const verificationOC = async (oc: string): Promise<boolean> => {
   const { data, error } = await supabase.from('ActaDescarga').select('*').eq('oc', oc)
 
   if (error != null) {
@@ -41,16 +41,14 @@ export const verificationOC = async (oc) => {
   return true
 }
 
-export const insert = async (formData: any) => {
+export const insert = async (formData: any): Promise<void> => {
   try {
-
-    const incompleteFiles=getIncompleteFields(formData)
+    const incompleteFiles = getIncompleteFields(formData)
     console.log(incompleteFiles.length)
 
     const state = await verificationOC(formData.oc)
-    
 
-    if (state && incompleteFiles.length<=0) {
+    if (state && incompleteFiles.length <= 0) {
       const { data, error } = await supabase
         .from('ActaDescarga')
         .insert([{

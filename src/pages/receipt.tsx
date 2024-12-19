@@ -668,104 +668,112 @@ const ActaDeLlegada = (): JSX.Element => {
 
             </AccordionContent>
             <AccordionContent>
-            <div
-  style={{
-    display: 'flex',
-    alignItems: 'center',
-    marginBottom: '20px',
-    gap: '20px', // Espacio entre las secciones
-  }}
->
-  <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Limpio</label>
-  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-    <Button
-      name='optionLimpio'
-      value='Si'
-      onClick={handleButtonClick}
-    >
-      Sí
-    </Button>
-    <Button
-      name='optionLimpio'
-      value='No'
-      onClick={handleButtonClick}
-    >
-      No
-    </Button>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '20px',
+                  gap: '10px', // Espacio entre los botones "Sí" y "No", y la descripción
+                }}
+              >
+                <label style={{ flex: '0 0 50px', fontWeight: 'bold' }}>Limpio</label>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <Button
+                    name='optionLimpio'
+                    value='Si'
+                    onClick={handleButtonClick}
+                    style={{ marginRight: '0' }} // Eliminar espacio entre botones
+                  >
+                    Sí
+                  </Button>
+                  <Button
+                    name='optionLimpio'
+                    value='No'
+                    onClick={handleButtonClick}
+                    style={{ marginRight: '0' }} // Eliminar espacio entre botones
+                  >
+                    No
+                  </Button>
 
-    {/* Descripción al lado del botón "No" */}
-    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      <label style={{ fontWeight: 'bold' }}>Pon una descripción</label>
-      <Input
-        type='text'
-        name='limpio'
-        value={formData.limpio}
-        onChange={handleInputChange}
-        style={{
-          padding: '8px',
-          borderRadius: '4px',
-          border: '1px solid #ccc',
-          width: '200px', // Tamaño fijo para el input
-        }}
-      />
-    </div>
-  </div>
+                  {/* Descripción al lado del botón "No" */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <label style={{ fontWeight: 'bold' }}>Pon una descripción</label>
+                    <Input
+                      type='text'
+                      name='limpio'
+                      value={formData.limpio}
+                      onChange={handleInputChange}
+                      style={{
+                        padding: '8px',
+                        borderRadius: '4px',
+                        border: '1px solid #ccc',
+                        width: '200px', // Tamaño fijo para el input
+                      }}
+                    />
+                  </div>
+                </div>
 
-  {/* Mostrar la opción de Seleccionar Imagen solo cuando la opción es "No" */}
- 
-</div>
-{formData.optionLimpio === 'No' && (
-    <div style={{ marginTop: '20px' }}>
-      <Button>
-        <label
-          htmlFor='file-input-limpio'
-          style={{ cursor: 'pointer' }}
-        >
-          Seleccionar Imagen
-        </label>
-      </Button>
-      {(formData.imageLimpio != null) && formData.imageLimpio.length < 8 ? (
-        <input
-          type='file'
-          id='file-input-limpio'
-          accept='image/*'
-          multiple
-          style={{ display: 'none' }}
-          onChange={(e) => handleFileChange3(e, 'imageLimpio')}
-        />
-      ) : (
-        <p style={{ color: 'red', marginTop: '10px' }}>
-          No puedes agregar más de 8 imágenes
-        </p>
-      )}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          marginTop: '20px',
-        }}
-      >
-        {formData.imageLimpio?.map((imageUrl: string, index: number) => (
-          <img
-            key={index}
-            src={imageUrl}
-            alt='imageLimpio'
-            style={{
-              width: '200px',
-              height: '200px',
-              margin: '10px',
-              objectFit: 'cover',
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  )}
-
-
+                {/* Mostrar la opción de Seleccionar Imagen solo cuando la opción es "No" */}
+                {formData.optionLimpio === 'No' && (
+                  <div style={{ marginTop: '20px' }}>
+                    <Button>
+                      <label
+                        htmlFor='file-input-limpio'
+                        style={{ cursor: 'pointer' }}
+                      >
+                        Seleccionar Imagen
+                      </label>
+                    </Button>
+                    {(formData.imageLimpio != null) && formData.imageLimpio.length < 8 ? (
+                      <input
+                        type='file'
+                        id='file-input-limpio'
+                        accept='image/*'
+                        multiple
+                        style={{ display: 'none' }}
+                        onChange={(e) => handleFileChange3(e, 'imageLimpio')}
+                      />
+                    ) : (
+                      <p style={{ color: 'red', marginTop: '10px' }}>
+                        No puedes agregar más de 8 imágenes
+                      </p>
+                    )}
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        marginTop: '20px',
+                      }}
+                    >
+                      {formData.imageLimpio?.map((imageUrl: string, index: number) => (
+                        <img
+                          key={index}
+                          src={imageUrl}
+                          alt='imageLimpio'
+                          style={{
+                            width: '200px',
+                            height: '200px',
+                            margin: '10px',
+                            objectFit: 'cover',
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+             
 
 
               <div style={{ marginBottom: 30 }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginBottom: '20px',
+                  gap: '10px', // Espacio entre los botones "Sí" y "No", y la descripción
+                }}
+              >
                 <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Caja cerrada, en buen estado </label>
                 <div style={{ marginBottom: 20 }}>
                   <Button
@@ -785,7 +793,24 @@ const ActaDeLlegada = (): JSX.Element => {
                     {' '}
                     No{' '}
                   </Button>
-                  {formData.optionCaja === 'No' && (
+                </div>
+                  <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '10px',
+                }}
+              >
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripcion</label>
+                <Input
+                  type='text'
+                  name='cajaCerrada'
+                  value={formData.cajaCerrada}
+                  onChange={handleInputChange}
+                />
+              </div>
+              {formData.optionCaja === 'No' && (
                     <div>
                       <div style={{ marginBottom: 30 }}>
                         <Button>
@@ -840,9 +865,51 @@ const ActaDeLlegada = (): JSX.Element => {
                       </div>
                     </div>
                   )}
+                
                 </div>
               </div>
+
+
+
+            
+
+
+
+              <div style={{ marginBottom: 30 }}>
               <div
+  style={{
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: '20px',
+    gap: '20px', // Espacio entre las dos secciones
+  }}
+>
+<label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Lona en buen estado: </label>
+
+<div style={{ marginBottom: 20 }}>
+  <Button
+    style={{ flex: 5, marginRight: '10px' }}
+    name='optionLona'
+    value='Si'
+    onClick={handleButtonClick}
+  >
+    {' '}
+    Sí{' '}
+  </Button>
+  <Button
+    name='optionLona'
+    value='No'
+    onClick={handleButtonClick}
+  >
+    {' '}
+    No{' '}
+  </Button>
+
+
+</div>
+                
+                 
+                   <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -850,36 +917,16 @@ const ActaDeLlegada = (): JSX.Element => {
                   marginBottom: '10px',
                 }}
               >
-                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripcion</label>
+                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripción</label>
                 <Input
                   type='text'
-                  name='cajaCerrada'
-                  value={formData.cajaCerrada}
+                  name='lona'
+                  value={formData.lona}
                   onChange={handleInputChange}
                 />
               </div>
-              <div style={{ marginBottom: 30 }}>
-                <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Lona en buen estado: </label>
 
-                <div style={{ marginBottom: 20 }}>
-                  <Button
-                    style={{ flex: 5, marginRight: '10px' }}
-                    name='optionLona'
-                    value='Si'
-                    onClick={handleButtonClick}
-                  >
-                    {' '}
-                    Sí{' '}
-                  </Button>
-                  <Button
-                    name='optionLona'
-                    value='No'
-                    onClick={handleButtonClick}
-                  >
-                    {' '}
-                    No{' '}
-                  </Button>
-                  {formData.optionLona === 'No' && (
+                   {formData.optionLona === 'No' && (
                     <div>
                       <div style={{ marginBottom: 30 }}>
                         <Button>
@@ -937,23 +984,10 @@ const ActaDeLlegada = (): JSX.Element => {
                     </div>
                   )}
                 </div>
+
+
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  marginBottom: '10px',
-                }}
-              >
-                <label style={{ flex: '0 0 100px', fontWeight: 'bold' }}>Descripción</label>
-                <Input
-                  type='text'
-                  name='lona'
-                  value={formData.lona}
-                  onChange={handleInputChange}
-                />
-              </div>
+             
               <div style={{ marginBottom: 30 }}>
                 <label style={{ flex: '0 0 250px', fontWeight: 'bold' }}>Libre de fauna nociva: </label>
                 <div style={{ marginBottom: 20 }}>
