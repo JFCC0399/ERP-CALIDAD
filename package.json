@@ -74,6 +74,7 @@
     "react-css-modules": "^4.7.11",
     "react-datepicker": "^7.3.0",
     "react-day-picker": "^8.10.1",
+    "react-device-detect": "^2.2.3",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.3.1",

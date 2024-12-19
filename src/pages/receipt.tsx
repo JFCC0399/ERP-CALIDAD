@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Layout from '../components/Layout'
 import SignatureCanvas from 'react-signature-canvas'
+import { isMobile, isTablet } from 'react-device-detect'
 import {
   Accordion,
   AccordionContent,
@@ -260,7 +261,6 @@ const ActaDeLlegada = (): JSX.Element => {
     formData.tempBMedio,
     formData.tempBFondo
   ])
-
 
   // Función para limpiar ambas firmas
   const clearSignature = (): void => {
@@ -1898,100 +1898,93 @@ const ActaDeLlegada = (): JSX.Element => {
         >
           Guardar datos en la Bd
         </Button>
-        <Button
-          onClick={() => {
-            void handleUpdate()
-            void getActasData()
-
-          }}
-        >
-          Actualizar en la base de datos
-        </Button>
-
-
-
-        <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
-          {(() => {
-            return incompleteFields.length === 0
-              ? (
-                <PDFDownloadLink
-                  document={
-                    <DownloadPDF
-                      formData={formData}
-                      firmaBase64Inspector={firmaBase64Inspector}
-                      firmaBase64Chofer={firmaBase64Chofer}
-                    />
-                  }
-                  fileName={`Acta_${formData.oc ?? 'Descarga'}.pdf`}
-                >
-                  <Button variant='default'>Descargar PDF</Button>
-                </PDFDownloadLink>
-              )
-              : (
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant='default'>
-                      Faltan campos
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className='sm:max-w-[1000px]'>
-                    <DialogHeader>
-                      <DialogTitle>Campos Incompletos</DialogTitle>
-                      <DialogDescription>
-                        Por favor completa los siguientes campos antes de descargar el PDF:
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className='flex flex-wrap gap-4'>
-                      {/* Ajusta el ancho de cada columna */}
-                      {[...Array(3)].map((_, colIndex) => (
-                        <ul key={colIndex} className='flex-1 min-w-[150px]'>
-                          {incompleteFields
-                            .filter((_, index) => index % 3 === colIndex) // Divide los elementos por columna
-                            .map((field, index) => (
-                              <li key={index} className='mb-2'>
-                                {field}
-                              </li>
-                            ))}
-                        </ul>
-                      ))}
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              )
-          })()}
-        </div>
       </div>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant='outline'>Ver PDF</Button>
-        </DialogTrigger>
-        <DialogContent className='sm:max-w-[800px]'>
-          <DialogHeader>
-            <DialogTitle>Vista del Documento</DialogTitle>
-            <DialogDescription>
-              Navega por el documento PDF y haz clic en los botones para moverte
-              entre las páginas.
-            </DialogDescription>
-          </DialogHeader>
-          <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-            <PDFViewer width='100%' height='500px'>
-              <ActaPDF
-                formData={formData}
-                firmaBase64Inspector={firmaBase64Inspector}
-                firmaBase64Chofer={firmaBase64Chofer}
-              />
-            </PDFViewer>
-            <div
-              style={{
-                padding: '10px',
-                display: 'flex',
-                justifyContent: 'center'
-              }}
-            />
-            <div style={{ marginTop: 20, textAlign: 'center' }} />
+      {isMobile || isTablet
+        ? (
+          <div style={{ padding: '10px', display: 'flex', justifyContent: 'center' }}>
+            {(() => {
+              return incompleteFields.length === 0
+                ? (
+                  <PDFDownloadLink
+                    document={
+                      <DownloadPDF
+                        formData={formData}
+                        firmaBase64Inspector={firmaBase64Inspector}
+                        firmaBase64Chofer={firmaBase64Chofer}
+                      />
+                  }
+                    fileName={`Acta_${formData.oc ?? 'Descarga'}.pdf`}
+                  >
+                    <Button variant='default'>Descargar PDF</Button>
+                  </PDFDownloadLink>
+                  )
+                : (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant='default'>
+                        Faltan campos
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className='sm:max-w-[1000px]'>
+                      <DialogHeader>
+                        <DialogTitle>Campos Incompletos</DialogTitle>
+                        <DialogDescription>
+                          Por favor completa los siguientes campos antes de descargar el PDF:
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className='flex flex-wrap gap-4'>
+                        {/* Ajusta el ancho de cada columna */}
+                        {[...Array(3)].map((_, colIndex) => (
+                          <ul key={colIndex} className='flex-1 min-w-[150px]'>
+                            {incompleteFields
+                              .filter((_, index) => index % 3 === colIndex) // Divide los elementos por columna
+                              .map((field, index) => (
+                                <li key={index} className='mb-2'>
+                                  {field}
+                                </li>
+                              ))}
+                          </ul>
+                        ))}
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                  )
+            })()}
           </div>
-        </DialogContent>
-      </Dialog>
+          )
+        : (
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant='outline'>Ver PDF</Button>
+            </DialogTrigger>
+            <DialogContent className='sm:max-w-[800px]'>
+              <DialogHeader>
+                <DialogTitle>Vista del Documento</DialogTitle>
+                <DialogDescription>
+                  Navega por el documento PDF y haz clic en los botones para moverte
+                  entre las páginas.
+                </DialogDescription>
+              </DialogHeader>
+              <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <PDFViewer width='100%' height='500px'>
+                  <ActaPDF
+                    formData={formData}
+                    firmaBase64Inspector={firmaBase64Inspector}
+                    firmaBase64Chofer={firmaBase64Chofer}
+                  />
+                </PDFViewer>
+                <div
+                  style={{
+                    padding: '10px',
+                    display: 'flex',
+                    justifyContent: 'center'
+                  }}
+                />
+                <div style={{ marginTop: 20, textAlign: 'center' }} />
+              </div>
+            </DialogContent>
+          </Dialog>
+          )}
     </Layout>
   )
 }
