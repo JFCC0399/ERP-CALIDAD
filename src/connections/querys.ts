@@ -17,7 +17,7 @@ export const query = async () => {
   }
 }
 
-export const verificationOC = async (oc) => {
+export const verificationOC = async (oc: string): Promise<boolean> => {
   const { data, error } = await supabase.from('ActaDescarga').select('*').eq('oc', oc)
 
   if (error != null) {
@@ -40,12 +40,12 @@ export const verificationOC = async (oc) => {
   return true
 }
 
-export const insert = async (formData: any) => {
+export const insert = async (formData: any): Promise<void> => {
   try {
     const state = await verificationOC(formData.oc)
 
     if (state) {
-      const { data, error } = await supabase
+      await supabase
         .from('ActaDescarga')
         .insert([{
           fecha: formData.fecha,
