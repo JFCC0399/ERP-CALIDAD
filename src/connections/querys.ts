@@ -16,77 +16,92 @@ export const query = async () => {
   }
 }
 
+export const verificationOC = async (oc) => {
+  const { data, error } = await supabase.from('ActaDescarga').select('*').eq('oc', oc)
+  console.log('console log este elemento ya existe ')
+  if (error != null) {
+    console.log(' hay un error :0', error)
+  }
+  if (data?.length > 0 && (data != null)) {
+    console.log(' contiene algo ')
+    return false
+  } else {
+    console.log(' no contiene algo ')
+    return true
+  }
+}
+
 export const insert = async (formData: any) => {
   try {
-    const { data, error } = await supabase
-      .from('ActaDescarga')
-      .insert([{
-        fecha: formData.fecha,
-        start_verification: formData.inicioVerificacion,
-        end_verification: formData.terminoVerificacion,
-        oc: formData.oc,
-        provider: formData.proveedor,
-        origin: formData.origen,
-        bill: formData.factura,
-        specie:formData.especie,
-        boxes_received: formData.cajasRecibidas,
-        varieties: formData.especie,
-        cold_disc: formData.frioDescarga,
-        carrier_line: formData.lineaTransportista,
-        num_cont: formData.numeroContenedor,
-        truck_plt: formData.placasCamion,
-        box_plt: formData.placasCaja,
-        driver: formData.chofer,
-        setpoint_temp: formData.tempSetPoint,
-        screen_temp: formData.tempPantalla,
-        setpoint_obs: formData.observacionesSetPoint,
-        screen_obs: formData.observacionesPantalla,
-        therm_dst: formData.tempDestino,
-        therm_org_obs: formData.tempOrigen,
-        therm_dst_obs: formData.tempDestino,
-        clean_free: formData.limpio,
-        clean_obs: formData.observacionesSetPoint, 
-        close: formData.cajaCerrada,
-        close_obs: formData.observacionesSetPoint,
-        box_state: formData.lona,
-        box_obs: formData.observacionesSetPoint, 
-        tarp_state: formData.fauna,
-        tarp_obs: formData.observacionesSetPoint, 
-        pest_free: formData.carga,
-        pest_obs: formData.observacionesSetPoint, 
-        load_state: formData.seguridadCarga,
-        load_obs: formData.observacionesSetPoint,
-        load_sec: formData.seguridadCarga,
-        sec_obs: formData.observacionesSetPoint,
-        seal: formData.sellado,
-        seal_obs: formData.observacionesSetPoint,
-        pallet_dmg: formData.numeroSerie,
-        pallet_num: formData.resultadosInv,
-        box_id: formData.numeroSerie,
-        box_num: formData.resultadosInv,
-        box_dmg: formData.numeroSerie,
-        dmg_num: formData.resultadosInv,
-        tempa_door: formData.tempAPuerta,
-        tempa_mid: formData.tempAMedio,
-        tempa_back: formData.tempAFondo,
-        tempm_door: formData.tempMPuerta,
-        tempm_mid: formData.tempMMedio,
-        tempm_back: formData.tempMFondo,
-        tempb_door: formData.tempBPuerta,
-        tempb_mid: formData.tempBMedio,
-        tempb_back: formData.tempBFondo,
-        temp_min: formData.tempMin,
-        temp_max: formData.tempMax,
-        temp_ideal: formData.tempIdeal,
-        invest_res: formData.resultadosInv,
-        insp_name: formData.nombreInspector,
-        driver_sign: formData.nombreChofer
-      }])
+    const state = await verificationOC(formData.oc)
 
-    if (error != null) {
-      console.log('Hubo un error:', error)
+    if (state) {
+      const { data, error } = await supabase
+        .from('ActaDescarga')
+        .insert([{
+          fecha: formData.fecha,
+          start_verification: formData.inicioVerificacion,
+          end_verification: formData.terminoVerificacion,
+          oc: formData.oc,
+          provider: formData.proveedor,
+          origin: formData.origen,
+          bill: formData.factura,
+          specie: formData.especie,
+          boxes_received: formData.cajasRecibidas,
+          varieties: formData.especie,
+          cold_disc: formData.frioDescarga,
+          carrier_line: formData.lineaTransportista,
+          num_cont: formData.numeroContenedor,
+          truck_plt: formData.placasCamion,
+          box_plt: formData.placasCaja,
+          driver: formData.chofer,
+          setpoint_temp: formData.tempSetPoint,
+          screen_temp: formData.tempPantalla,
+          setpoint_obs: formData.observacionesSetPoint,
+          screen_obs: formData.observacionesPantalla,
+          therm_dst: formData.tempDestino,
+          therm_org_obs: formData.tempOrigen,
+          therm_dst_obs: formData.tempDestino,
+          clean_free: formData.limpio,
+          clean_obs: formData.observacionesSetPoint,
+          close: formData.cajaCerrada,
+          close_obs: formData.observacionesSetPoint,
+          box_state: formData.lona,
+          box_obs: formData.observacionesSetPoint,
+          tarp_state: formData.fauna,
+          tarp_obs: formData.observacionesSetPoint,
+          pest_free: formData.carga,
+          pest_obs: formData.observacionesSetPoint,
+          load_state: formData.seguridadCarga,
+          load_obs: formData.observacionesSetPoint,
+          load_sec: formData.seguridadCarga,
+          sec_obs: formData.observacionesSetPoint,
+          seal: formData.sellado,
+          seal_obs: formData.observacionesSetPoint,
+          pallet_dmg: formData.numeroSerie,
+          pallet_num: formData.resultadosInv,
+          box_id: formData.numeroSerie,
+          box_num: formData.resultadosInv,
+          box_dmg: formData.numeroSerie,
+          dmg_num: formData.resultadosInv,
+          tempa_door: formData.tempAPuerta,
+          tempa_mid: formData.tempAMedio,
+          tempa_back: formData.tempAFondo,
+          tempm_door: formData.tempMPuerta,
+          tempm_mid: formData.tempMMedio,
+          tempm_back: formData.tempMFondo,
+          tempb_door: formData.tempBPuerta,
+          tempb_mid: formData.tempBMedio,
+          tempb_back: formData.tempBFondo,
+          temp_min: formData.tempMin,
+          temp_max: formData.tempMax,
+          temp_ideal: formData.tempIdeal,
+          invest_res: formData.resultadosInv,
+          insp_name: formData.nombreInspector,
+          driver_sign: formData.nombreChofer
+        }])
     } else {
-      console.log('Datos insertados correctamente:', data)
+      console.log(' is not true ')
     }
   } catch (e) {
     console.log('El error es:', e)
@@ -105,7 +120,7 @@ export const update = async (formData: any) => {
         provider: formData.proveedor,
         origin: formData.origen,
         bill: formData.factura,
-        specie:formData.especie,
+        specie: formData.especie,
         boxes_received: formData.cajasRecibidas,
         varieties: formData.especie,
         cold_disc: formData.frioDescarga,
@@ -122,15 +137,15 @@ export const update = async (formData: any) => {
         therm_org_obs: formData.tempOrigen,
         therm_dst_obs: formData.tempDestino,
         clean_free: formData.limpio,
-        clean_obs: formData.observacionesSetPoint, 
+        clean_obs: formData.observacionesSetPoint,
         close: formData.cajaCerrada,
         close_obs: formData.observacionesSetPoint,
         box_state: formData.lona,
-        box_obs: formData.observacionesSetPoint, 
+        box_obs: formData.observacionesSetPoint,
         tarp_state: formData.fauna,
-        tarp_obs: formData.observacionesSetPoint, 
+        tarp_obs: formData.observacionesSetPoint,
         pest_free: formData.carga,
-        pest_obs: formData.observacionesSetPoint, 
+        pest_obs: formData.observacionesSetPoint,
         load_state: formData.seguridadCarga,
         load_obs: formData.observacionesSetPoint,
         load_sec: formData.seguridadCarga,
@@ -158,7 +173,7 @@ export const update = async (formData: any) => {
         invest_res: formData.resultadosInv,
         insp_name: formData.nombreInspector,
         driver_sign: formData.nombreChofer
-      }]).eq("oc",formData.oc)
+      }]).eq('oc', formData.oc)
 
     if (error != null) {
       console.log('Hubo un error:', error)
@@ -169,7 +184,6 @@ export const update = async (formData: any) => {
     console.log('El error es:', e)
   }
 }
-
 
 export const fetchActas = async () => {
   const { data, error } = await supabase
