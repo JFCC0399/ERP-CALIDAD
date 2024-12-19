@@ -29,7 +29,7 @@ import {
   CardTitle
 } from '@/components/ui/card'
 import GothamNarrowMedium from '@/fonts/GothamNarrow-Medium.otf'
-import { fetchActas, insert } from '@/connections/querys'
+import { fetchActas, insert, update } from '@/connections/querys'
 import {
   Dialog,
   DialogContent,
@@ -80,6 +80,10 @@ const ActaDeLlegada = (): JSX.Element => {
     await insert(formData) // Llama a la función insert y pasa formData
   }
 
+  const handleUpdate = async (): Promise<void> => {
+    await update(formData)
+  }
+
   const handleSelectChange = (value: string): void => {
     console.log(value)
     setFormData((prevData) => ({ ...prevData, tempIdeal: value }))
@@ -104,6 +108,7 @@ const ActaDeLlegada = (): JSX.Element => {
 
     // Buscar detalles del acta seleccionada
     const selectedActa = actasList.find((acta) => acta.oc === oc)
+    console.log('lo que tiene acta es', selectedActa)
 
     if (selectedActa != null) {
       // Actualizar formData con los datos del acta seleccionada
@@ -116,7 +121,7 @@ const ActaDeLlegada = (): JSX.Element => {
         proveedor: selectedActa.provider ?? '',
         origen: selectedActa.origin ?? '',
         factura: selectedActa.bill ?? '',
-        especie: selectedActa.especie ?? '',
+        especie: selectedActa.specie ?? '',
         variedades: selectedActa.varieties ?? '',
         frioDescarga: selectedActa.cold_disc ?? '',
         cajasRecibidas: selectedActa.boxes_received ?? '',
@@ -184,12 +189,17 @@ const ActaDeLlegada = (): JSX.Element => {
         ? [...prevData[key], ...fileArray]
         : fileArray
     }))
-    console.log(
-      'La longitud de imageCajaCerrada es:',
-      Array.isArray(formData.imageCajaCerrada)
-        ? formData.imageCajaCerrada.length + 1
-        : 1
-    )
+  }
+  const getActasData = async (): Promise<void> => {
+    const data = await fetchActas()
+
+    if (data != null) {
+      setActasList(
+        data.map((acta: any) => ({
+          ...acta
+        }))
+      )
+    }
   }
 
   useEffect(() => {
@@ -580,15 +590,23 @@ const ActaDeLlegada = (): JSX.Element => {
                         </label>
                       </Button>
 
-                      <input
-                        type='file'
-                        id='file-input-termografo1'
-                        accept='image/*'
-                        multiple
-                        style={{ display: 'none' }}
-                        onChange={(e) =>
-                          handleFileChange3(e, 'imagecumpletermografo')}
-                      />
+                      {formData.imagecumpletermografo?.length < 8
+? (
+
+                        <input
+                          type='file'
+                          id='file-input-termografo1'
+                          accept='image/*'
+                          multiple
+                          style={{ display: 'none' }}
+                          onChange={(e) =>
+                            handleFileChange3(e, 'imagecumpletermografo')}
+                        />
+                      )
+: (<p style={{ color: 'red', marginTop: '10px' }}>
+                        {' '}
+                        No puedes agregar más de 8 imágenes{' '}
+                           </p>)}
 
                       <div
                         style={{
@@ -644,16 +662,26 @@ const ActaDeLlegada = (): JSX.Element => {
                           Seleccionar Imagen
                         </label>
                       </Button>
+                      {formData.imagecumpletermografo2?.length < 8
+? (
+                        <input
+                          type='file'
+                          id='file-input-termografo2'
+                          accept='image/*'
+                          multiple
+                          style={{ display: 'none' }}
+                          onChange={(e) =>
+                            handleFileChange3(e, 'imagecumpletermografo2')}
+                        />
 
-                      <input
-                        type='file'
-                        id='file-input-termografo2'
-                        accept='image/*'
-                        multiple
-                        style={{ display: 'none' }}
-                        onChange={(e) =>
-                          handleFileChange3(e, 'imagecumpletermografo2')}
-                      />
+                      )
+                        : (
+                          <p style={{ color: 'red', marginTop: '10px' }}>
+                            {' '}
+                            No puedes agregar más de 8 imágenes{' '}
+                          </p>
+
+                          )}
 
                       <div
                         style={{
@@ -871,6 +899,7 @@ const ActaDeLlegada = (): JSX.Element => {
               />
               <div style={{ marginBottom: 30 }}>
                 <label>Lona en buen estado: </label>
+
                 <div style={{ marginBottom: 20 }}>
                   <Button
                     style={{ flex: 5, marginRight: '10px' }}
@@ -901,15 +930,25 @@ const ActaDeLlegada = (): JSX.Element => {
                           </label>
                         </Button>
 
-                        <input
-                          type='file'
-                          id='file-input-lona'
-                          accept='image/*'
-                          multiple
-                          style={{ display: 'none' }}
-                          onChange={(e) =>
-                            handleFileChange3(e, 'imageLonaBuenEstado')}
-                        />
+                        {formData.imageLonaBuenEstado.length < 8
+? (
+                          <input
+                            type='file'
+                            id='file-input-lona'
+                            accept='image/*'
+                            multiple
+                            style={{ display: 'none' }}
+                            onChange={(e) =>
+                              handleFileChange3(e, 'imageLonaBuenEstado')}
+                          />
+
+                        )
+                          :                          (
+                            <p style={{ color: 'red', marginTop: '10px' }}>
+                              {' '}
+                              No puedes agregar más de 8 imágenes{' '}
+                            </p>
+                            )}
 
                         <div
                           style={{
@@ -976,15 +1015,27 @@ const ActaDeLlegada = (): JSX.Element => {
                             Seleccionar Imagen
                           </label>
                         </Button>
-                        <input
-                          type='file'
-                          id='file-input-libre'
-                          accept='image/*'
-                          multiple
-                          style={{ display: 'none' }}
-                          onChange={(e) =>
-                            handleFileChange3(e, 'imageLibreFauna')}
-                        />
+
+                        {formData.imageLibreFauna.length < 8
+                          ? (
+
+                            <input
+                              type='file'
+                              id='file-input-libre'
+                              accept='image/*'
+                              multiple
+                              style={{ display: 'none' }}
+                              onChange={(e) =>
+                                handleFileChange3(e, 'imageLibreFauna')}
+                            />
+
+                            )
+
+                          : (<p style={{ color: 'red', marginTop: '10px' }}>
+                            {' '}
+                            No puedes agregar más de 8 imágenes{' '}
+                             </p>)}
+
                         <div
                           style={{
                             display: 'flex',
@@ -1050,15 +1101,27 @@ const ActaDeLlegada = (): JSX.Element => {
                             Seleccionar Imagen
                           </label>
                         </Button>
-                        <input
-                          type='file'
-                          id='file-input'
-                          accept='image/*'
-                          multiple
-                          style={{ display: 'none' }}
-                          onChange={(e) =>
-                            handleFileChange3(e, 'imageCargaBuenEstado')}
-                        />
+                        {formData.imageCargaBuenEstado?.length < 8
+? (
+                          <input
+                            type='file'
+                            id='file-input'
+                            accept='image/*'
+                            multiple
+                            style={{ display: 'none' }}
+                            onChange={(e) =>
+                              handleFileChange3(e, 'imageCargaBuenEstado')}
+                          />
+
+                        )
+                          : (
+                            <p style={{ color: 'red', marginTop: '10px' }}>
+                              {' '}
+                              No puedes agregar más de 8 imágenes{' '}
+                            </p>
+
+                            )}
+
                         <div
                           style={{
                             display: 'flex',
@@ -1125,15 +1188,28 @@ const ActaDeLlegada = (): JSX.Element => {
                             Seleccionar Imagen
                           </label>
                         </Button>
-                        <input
-                          type='file'
-                          id='file-input-seguridad'
-                          accept='image/*'
-                          multiple
-                          style={{ display: 'none' }}
-                          onChange={(e) =>
-                            handleFileChange3(e, 'imageSeguridadCarga')}
-                        />
+
+                        {formData.imageSeguridadCarga.length < 8
+? (
+                          <input
+                            type='file'
+                            id='file-input-seguridad'
+                            accept='image/*'
+                            multiple
+                            style={{ display: 'none' }}
+                            onChange={(e) =>
+                              handleFileChange3(e, 'imageSeguridadCarga')}
+                          />
+
+                        )
+                          : (
+                            <p style={{ color: 'red', marginTop: '10px' }}>
+                              {' '}
+                              No puedes agregar más de 8 imágenes{' '}
+                            </p>
+
+                            )}
+
                         <div
                           style={{
                             display: 'flex',
@@ -1201,14 +1277,19 @@ const ActaDeLlegada = (): JSX.Element => {
                           </label>
                         </Button>
 
-                        <input
-                          type='file'
-                          id='file-input-sellado'
-                          accept='image/*'
-                          multiple
-                          style={{ display: 'none' }}
-                          onChange={(e) => handleFileChange3(e, 'imageSellado')}
-                        />
+                        {formData.imageSellado?.length < 8
+                          ? (<input
+                            type='file'
+                            id='file-input-sellado'
+                            accept='image/*'
+                            multiple
+                            style={{ display: 'none' }}
+                            onChange={(e) => handleFileChange3(e, 'imageSellado')}
+                          />)
+                          : <p style={{ color: 'red', marginTop: '10px' }}>
+                            {' '}
+                            No puedes agregar más de 8 imágenes{' '}
+                          </p>}
 
                         <div
                           style={{
@@ -1808,6 +1889,14 @@ const ActaDeLlegada = (): JSX.Element => {
           }}
         >
           Guardar datos en la Bd
+        </Button>
+        <Button
+          onClick={() => {
+            void handleUpdate()
+            void getActasData()
+          }}
+        >
+          Actualizar en la base de datos
         </Button>
       </div>
       {isMobile || isTablet

@@ -201,5 +201,5 @@ export interface Acta {
   pallet_dmg: string
   box_num: string
   dmg_num: string
-  especie: string
+  specie: string
 }

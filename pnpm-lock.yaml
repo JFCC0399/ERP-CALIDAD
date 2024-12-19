@@ -233,6 +233,9 @@ importers:
       sonner:
         specifier: ^1.5.0
         version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      sweetalert2:
+        specifier: ^11.15.2
+        version: 11.15.2
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
@@ -5830,6 +5833,9 @@ packages:
 
   svg-arc-to-cubic-bezier@3.2.0:
     resolution: {integrity: sha512-djbJ/vZKZO+gPoSDThGNpKDO+o+bAeA4XQKovvkNCqnIS2t+S4qnLAGQhyyrulhCFRl1WWzAp0wUDV8PpTVU3g==}
+
+  sweetalert2@11.15.2:
+    resolution: {integrity: sha512-KSfHZTU2f+iivA2wudlL1jv9FjvEtJW9Fc0GKC6hhEsZS7SNz3Ppfv92Nerw0E2qqGNT9mPB/07SYEASbHvS+A==}
 
   symbol-observable@1.0.1:
     resolution: {integrity: sha512-Kb3PrPYz4HanVF1LVGuAdW6LoVgIwjUYJGzFe7NDrBLCN4lsV/5J0MFurV+ygS4bRVwrCEt2c7MQ1R2a72oJDw==}
@@ -12640,6 +12646,8 @@ snapshots:
   supports-preserve-symlinks-flag@1.0.0: {}
 
   svg-arc-to-cubic-bezier@3.2.0: {}
+
+  sweetalert2@11.15.2: {}
 
   symbol-observable@1.0.1: {}
 
